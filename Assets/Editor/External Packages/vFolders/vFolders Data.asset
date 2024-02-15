@@ -1,0 +1,152 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adb9c12a8c6c949f7af83a3d238359d0, type: 3}
+  m_Name: vFolders Data
+  m_EditorClassIdentifier: 
+  folderDatas_byGuid:
+    keys:
+    - 9a7505c37c8f5344ab428156cae6d934
+    - dc1b50b0354a91540bba0477c157c049
+    - c15ca8c0a9b5f3341bc6a44897e8ed83
+    - 3ec24afdb127f7e448609faf6ab4b600
+    - 1504efece09a55d44ba1202c7f0b7d91
+    - ab3b40737cfaf0f44a8bc4537d26c88c
+    - 60da3b407ee9dbd4591e7f3c7488df86
+    - 69ce1bffccf9322438571d284fb8b3a2
+    - 49c7d22562773c641986ef6e42836e91
+    - a214ce1dc3413934c9ff9429344fe0d9
+    - 8525ec55422fbbf4faa63a18d608d465
+    - ccafdc97e8c9d4245a7bc07b1619ddf8
+    - 34c4e1dfe92fcc6468e8c91bfec5f6d2
+    - 0a279184b1a9a5f4ab81dac48c99d6b1
+    - ca0c5b6f2ec619b4ba382045b72e959d
+    - c6dc6635528ac394ea72e0ce47cc6355
+    - e227250432708284386a4eb748253bcb
+    - f54d1bd14bd3ca042bd867b519fee8cc
+    - cbf7a66ea67ab114a8a9f2d85014cb9a
+    - 07e8c4d930e0d2e429372fa8667e8362
+    - a96dcf8f9e3907d4bacfd54fa5a7a9f4
+    - 33b9af383de2da440b8f30f85b87afb0
+    - 61b7a1cd6c139284cbdd0ca800a5c3a2
+    - 5dba0ba925482dd44863bb9e8fdb5cce
+    - 0bd275221dbe34d409bdc86f4cc3a3fc
+    - 7c524f902c03edf4ab1900fad8852b9d
+    - 516ae1a81ef9baa4ea8673c27a9e7552
+    - 949b5c08f681cfd4e90e2fdf63a7ec77
+    - c21b2ad3261bf8840a0f993a6041bb55
+    - 9196d40440c87ca46981288e83657ebf
+    - 709f11a7f3c4041caa4ef136ea32d874
+    - a862cf4329c851445a3dccc62b4403f4
+    - f5786865d0398264fb893571e38413fc
+    - e5594e1e7ea598d409319855db3fd1f5
+    - 09ee70a2d5b8f45fda3b8ee45a3a3c25
+    - 9ac392bdcff17c840a86abb9a580eb12
+    - 9d0e7261e8cf62845a047319cf27c4fe
+    - f4a7fdc172d39ac4cbe37492121f6cc5
+    - 79f5734a9e3462340b4afca6f8e72b37
+    - b43aedf3ea086df4f8ff3fd991fe94dc
+    - 4163dc4973e990c41a44ee550caf84cf
+    - 93ab018ae9a56da45bd6544e48780533
+    - 00f79d9d36f5326469c3d231e2842e12
+    - 95834b6504db4fa4485b7e07ffa26001
+    - 6ab87a22a383863418fe31188dce0d0e
+    values:
+    - colorIndex: 6
+      iconNameOrGuid: ebd7d20882d5abb42abb240c354a0631
+    - colorIndex: 4
+      iconNameOrGuid: Prefab Icon
+    - colorIndex: 0
+      iconNameOrGuid: 7c05578092876a0458b8b480269aef86
+    - colorIndex: 0
+      iconNameOrGuid: Prefab Icon
+    - colorIndex: 4
+      iconNameOrGuid: Material Icon
+    - colorIndex: 0
+      iconNameOrGuid: Material Icon
+    - colorIndex: 0
+      iconNameOrGuid: Material Icon
+    - colorIndex: 0
+      iconNameOrGuid: Material Icon
+    - colorIndex: 0
+      iconNameOrGuid: Material Icon
+    - colorIndex: 0
+      iconNameOrGuid: Material Icon
+    - colorIndex: 4
+      iconNameOrGuid: SceneAsset Icon
+    - colorIndex: 0
+      iconNameOrGuid: Texture Icon
+    - colorIndex: 0
+      iconNameOrGuid: RawImage Icon
+    - colorIndex: 0
+      iconNameOrGuid: RawImage Icon
+    - colorIndex: 0
+      iconNameOrGuid: PrefabModel Icon
+    - colorIndex: 0
+      iconNameOrGuid: Terrain Icon
+    - colorIndex: 0
+      iconNameOrGuid: Shader Icon
+    - colorIndex: 7
+      iconNameOrGuid: 2fd6421f253b4ef1a19526541f9ffc0c
+    - colorIndex: 4
+      iconNameOrGuid: Font Icon
+    - colorIndex: 0
+      iconNameOrGuid: Material Icon
+    - colorIndex: 0
+      iconNameOrGuid: Font Icon
+    - colorIndex: 0
+      iconNameOrGuid: ee148e281f3c41c5b4ff5f8a5afe5a6c
+    - colorIndex: 0
+      iconNameOrGuid: AudioClip Icon
+    - colorIndex: 0
+      iconNameOrGuid: AudioSource Icon
+    - colorIndex: 4
+      iconNameOrGuid: AudioMixerController Icon
+    - colorIndex: 4
+      iconNameOrGuid: 546589f6c4c3ffa4f99d35cf043fc00f
+    - colorIndex: 0
+      iconNameOrGuid: AnimationClip Icon
+    - colorIndex: 0
+      iconNameOrGuid: AnimationClip Icon
+    - colorIndex: 4
+      iconNameOrGuid: AnimatorController Icon
+    - colorIndex: 2
+      iconNameOrGuid: be8abf3ed47609740b490372ece90428
+    - colorIndex: 1
+      iconNameOrGuid: Settings Icon
+    - colorIndex: 0
+      iconNameOrGuid: Material Icon
+    - colorIndex: 0
+      iconNameOrGuid: LightProbes Icon
+    - colorIndex: 0
+      iconNameOrGuid: 0dcefafee79e7de43ad13fab5cdb7135
+    - colorIndex: 0
+      iconNameOrGuid: 2807f87acc0dc464ab05c8a62e42ca29
+    - colorIndex: 0
+      iconNameOrGuid: Settings Icon
+    - colorIndex: 4
+      iconNameOrGuid: ComputeShader Icon
+    - colorIndex: 0
+      iconNameOrGuid: 7c05578092876a0458b8b480269aef86
+    - colorIndex: 0
+      iconNameOrGuid: ScriptableObject Icon
+    - colorIndex: 0
+      iconNameOrGuid: TextAsset Icon
+    - colorIndex: 0
+      iconNameOrGuid: cs Script Icon
+    - colorIndex: 0
+      iconNameOrGuid: LightmapParameters Icon
+    - colorIndex: 0
+      iconNameOrGuid: 188dfe7e559f13248ba2c41eb5a59328
+    - colorIndex: 0
+      iconNameOrGuid: 4a7e6c454e1d78e42af4ef68dbca9f07
+    - colorIndex: 0
+      iconNameOrGuid: be8abf3ed47609740b490372ece90428

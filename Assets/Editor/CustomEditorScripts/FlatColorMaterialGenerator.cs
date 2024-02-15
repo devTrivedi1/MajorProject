@@ -11,8 +11,6 @@ using Color = UnityEngine.Color;
 
 public static class FlatColorMaterialGenerator
 {
-
-
     public static void GenerateMaterial(string hexInput,string materialName)
     {
         Material newMaterial = new Material(Shader.Find("Universal Render Pipeline/Lit"));
@@ -41,7 +39,6 @@ public class MaterialGeneratorWindow : EditorWindow
         window.minSize = window.windowSize;
         window.maxSize = window.windowSize;
         window.Show();
-
     }
 
     void OnGUI()

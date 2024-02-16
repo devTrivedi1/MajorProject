@@ -1,5 +1,108 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-6887487577137570803
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 447ed90198624d459ee11f60dbf86ffc, type: 3}
+  m_Name: Bloom
+  m_EditorClassIdentifier: 
+  _active: 1
+  _shader: {fileID: 4800000, guid: a181405f9bf44aef9074ccf0a6292106, type: 3}
+  _samples: 7
+  _scatter:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.8594513
+      inSlope: 0
+      outSlope: 0.16878475
+      tangentMode: 0
+      weightedMode: 3
+      inWeight: 0
+      outWeight: 0.9040921
+    - serializedVersion: 3
+      time: 1
+      value: 2.1807241
+      inSlope: 7.4170947
+      outSlope: 1.3360401
+      tangentMode: 0
+      weightedMode: 3
+      inWeight: 0.060102284
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _mode: 0
+  _flicker:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.5
+      value: 0.77
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 1
+    m_RotationOrder: 4
+  _flickerPeriod: 7
+  _bloomOnly: 0
+--- !u!114 &-5995856100957941502
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff530a28ee2942c429ac8879889d8215, type: 3}
+  m_Name: Grayscale
+  m_EditorClassIdentifier: 
+  _active: 1
+  _shader: {fileID: 4800000, guid: fc78cc8bb01197248b8a758ee38592b9, type: 3}
+--- !u!114 &-4252229681590731752
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b112dda1e626fd4994e8b9c5b84df3e, type: 3}
+  m_Name: Adjustments
+  m_EditorClassIdentifier: 
+  _active: 1
+  _shader: {fileID: 4800000, guid: f3f2512ee1fe3774ba15927559ebdd5d, type: 3}
 --- !u!114 &-1878332245247344467
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53,7 +156,9 @@ MonoBehaviour:
     hdrDebugViewPS: {fileID: 4800000, guid: 573620ae32aec764abd4d728906d2587, type: 3}
   m_RendererFeatures:
   - {fileID: -1878332245247344467}
-  m_RendererFeatureMap: adc0de57c6d2eee5
+  - {fileID: 5119326373698051780}
+  - {fileID: 7999654548038428059}
+  m_RendererFeatureMap: adc0de57c6d2eee5c49e8fa936800b479b25ab6d6d7b046f
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
@@ -96,3 +201,131 @@ MonoBehaviour:
   m_CopyDepthMode: 0
   m_AccurateGbufferNormals: 0
   m_IntermediateTextureMode: 1
+--- !u!114 &979240341329984066
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e74a3c1ae8c044449049a98373e05c46, type: 3}
+  m_Name: Blur
+  m_EditorClassIdentifier: 
+  _active: 1
+  _shader: {fileID: 4800000, guid: b653195d866dd764b888bc5edc759074, type: 3}
+  _response:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0.03
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _filter:
+  - 0.003236246
+  - 0.0077324267
+  - 0.019586023
+  - 0.03634456
+  - 0.055555556
+  - 0.074766554
+  - 0.091525085
+  - 0.10337868
+  - 0.10787487
+  - 0.10787487
+  - 0.10337868
+  - 0.091525085
+  - 0.074766554
+  - 0.055555556
+  - 0.03634456
+  - 0.019586023
+  - 0.0077324267
+  - 0.003236246
+--- !u!114 &4878683270951053469
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1254846a14680e74fac3c525122dd788, type: 3}
+  m_Name: Blit
+  m_EditorClassIdentifier: 
+  _active: 1
+  _shader: {fileID: 0}
+  _showInInspector: 1
+  _invert: 0
+  _mat: {fileID: 0}
+  _pass:
+    enabled: 0
+    value: 0
+--- !u!114 &5119326373698051780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2df16983cdbc45e59623974172f2908b, type: 3}
+  m_Name: VolFx
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  _event: 600
+  _format:
+    enabled: 1
+    value: 0
+  _volumeMask:
+    enabled: 1
+    value:
+      serializedVersion: 2
+      m_Bits: 2
+  _source:
+    _source: 0
+    _sourceTex: _inputTex
+    _renderTex: {fileID: 0}
+    _buffer: {fileID: 0}
+    _output: 0
+    _screenOutput: 0
+    _outputTex: _outputTex
+  _passes:
+    m_List:
+    - {fileID: -4252229681590731752}
+    - {fileID: -6887487577137570803}
+    - {fileID: -5995856100957941502}
+    - {fileID: 4878683270951053469}
+    - {fileID: 979240341329984066}
+  _blitShader: {fileID: 4800000, guid: a8a709d9db2241741ab3032b946ef258, type: 3}
+--- !u!114 &7999654548038428059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e48cd081ba96af4c8c934238173d03b, type: 3}
+  m_Name: SimplePostProcess
+  m_EditorClassIdentifier: 
+  m_Active: 1

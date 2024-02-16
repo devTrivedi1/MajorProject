@@ -108,6 +108,18 @@ MonoBehaviour:
     - 283e837c190fc3b49a9f4f26f28f581e
     - 2461bc028e9cb2144a76417db581c8dc
     - f595d7c833313c1428b32fdef1f7fccc
+    - 2277893f37dc78f4cb6b7fa86edf475c
+    - ae6b5a9856946714c997beb28cf295b9
+    - e94f11a2fb9cff546a80e2d921aba643
+    - 3ad3d05627d88834d83ea2900597e7cc
+    - f4855a47ff1061245a9c20121fde0a2e
+    - 9f15505c6ca58d147a84d18aaff4c58d
+    - 8ac32fd71cd0cce48b8bbb5b2d8ddb99
+    - bd9210a41ac121948b3fc525a956f5ba
+    - e6baab4671dc81f42bac3df9a3b52f0d
+    - 25dabc01702082b4a9b234e8f93235b0
+    - 828effdb1839a4a4b874f5b485de821b
+    - 23df60e6b4e195d4da0d72169b05a51b
     values:
     - colorIndex: 7
       iconNameOrGuid: ebd7d20882d5abb42abb240c354a0631
@@ -143,7 +155,7 @@ MonoBehaviour:
       iconNameOrGuid: Terrain Icon
     - colorIndex: 0
       iconNameOrGuid: Shader Icon
-    - colorIndex: 3
+    - colorIndex: 6
       iconNameOrGuid: 2fd6421f253b4ef1a19526541f9ffc0c
     - colorIndex: 4
       iconNameOrGuid: Font Icon
@@ -179,7 +191,7 @@ MonoBehaviour:
       iconNameOrGuid: 0dcefafee79e7de43ad13fab5cdb7135
     - colorIndex: 7
       iconNameOrGuid: 2807f87acc0dc464ab05c8a62e42ca29
-    - colorIndex: 3
+    - colorIndex: 6
       iconNameOrGuid: Settings Icon
     - colorIndex: 4
       iconNameOrGuid: ComputeShader Icon
@@ -200,9 +212,9 @@ MonoBehaviour:
     - colorIndex: 2
       iconNameOrGuid: be8abf3ed47609740b490372ece90428
     - colorIndex: 7
-      iconNameOrGuid: ebd7d20882d5abb42abb240c354a0631
+      iconNameOrGuid: 050130b943cdea04b9580c3038b7a945
     - colorIndex: 1
-      iconNameOrGuid: ComputeShader Icon
+      iconNameOrGuid: cs Script Icon
     - colorIndex: 1
       iconNameOrGuid: ScriptableObject Icon
     - colorIndex: 1
@@ -292,8 +304,32 @@ MonoBehaviour:
     - colorIndex: 2
       iconNameOrGuid: LightProbes Icon
     - colorIndex: 2
+      iconNameOrGuid: be8abf3ed47609740b490372ece90428
+    - colorIndex: 6
+      iconNameOrGuid: cs Script Icon
+    - colorIndex: 6
+      iconNameOrGuid: 188dfe7e559f13248ba2c41eb5a59328
+    - colorIndex: 2
+      iconNameOrGuid: cs Script Icon
+    - colorIndex: 2
+      iconNameOrGuid: cs Script Icon
+    - colorIndex: 2
+      iconNameOrGuid: cs Script Icon
+    - colorIndex: 2
+      iconNameOrGuid: cs Script Icon
+    - colorIndex: 2
+      iconNameOrGuid: cs Script Icon
+    - colorIndex: 2
+      iconNameOrGuid: cs Script Icon
+    - colorIndex: 2
+      iconNameOrGuid: cs Script Icon
+    - colorIndex: 2
+      iconNameOrGuid: cs Script Icon
+    - colorIndex: 2
+      iconNameOrGuid: cs Script Icon
+    - colorIndex: 7
       iconNameOrGuid: 
-    - colorIndex: 3
+    - colorIndex: 7
       iconNameOrGuid: 
-    - colorIndex: 3
-      iconNameOrGuid: 
+    - colorIndex: 2
+      iconNameOrGuid: 4a7e6c454e1d78e42af4ef68dbca9f07

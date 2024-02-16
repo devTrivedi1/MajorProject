@@ -59,8 +59,57 @@ MonoBehaviour:
     - 00f79d9d36f5326469c3d231e2842e12
     - 95834b6504db4fa4485b7e07ffa26001
     - 6ab87a22a383863418fe31188dce0d0e
+    - 15699dc67b3228244afd243f065d1ffa
+    - cac9a2850527fed42b293513cc6517d1
+    - 0bb5fa6907683f94bb7d9dd7792669d1
+    - c7553d4a4286b574ebf505bcbffe7e36
+    - 515be4b40a5ddce42840e95fddfca72f
+    - 9673bea536cd25742b0c63805898c635
+    - 1120bb6e287e1de428f332ba0327d305
+    - d4c3a9ab64d38594bab0dfe628d7a390
+    - ad5788a2d048c78468b9ba2896ca8a24
+    - 5fa7edd2bf66a82408c40a617df832fb
+    - 3fa49ed469b7b5a408d80b0afaacfcd5
+    - 9391b5e3889f03a4a8b50b0d412198bb
+    - 43f359ed546d3c942b0b94239a460070
+    - de0d05608206a42af8845c2cfefff32b
+    - b28bd598f01704a77bdfb0d3be458d75
+    - acbd38264c6b44d8793f649f090c335f
+    - 88d676f16e76c413c8073f2108c260f3
+    - 5d16d2009bbe6411cb3e1c14d69b840c
+    - 9ed7faaeecb7be2ed8d22a6083acb0e3
+    - 13784f0efda91d84e8357cc878bb8577
+    - ef177f393da751a4aaebdf7d11d02ebc
+    - cfdda16d2f4c29046a4c1c389d384cce
+    - b5bc412dffe4ce648ae4650d5b2662f5
+    - 1e44c794c9139c847926fed1a5de0999
+    - ab2def3b6deb4ed4faf9e8db1601e9f1
+    - 4b1666893612ca745b5648c6ad2aa481
+    - 166406b343fa12c48a05e80115c3ff77
+    - 2718218815a36e04aacb107dc4c79a80
+    - 3a137a32ed6967f4f997b6da9e34dda6
+    - 5a2c7cbd505c0764abf6dd0592ca2e37
+    - 9ac0970259a87e945ae5b2f155e6c23f
+    - 549bda25b5068574282d149ae0dc530f
+    - 5d9bdf7caf499eb4ea85e5bcf6fba49b
+    - e7a6f15da258fd14f9d67cb56b3cc199
+    - 22c4952286d689b4eb9279c921425bb0
+    - 428f452bf04126f4c8cd18713db72210
+    - 359106978fe3d9149bfc3c345e8cbd63
+    - c286fd49f06a33642a2fd9dc05923ac0
+    - 495931ee48887a34b880ac3c4ae17d0a
+    - 2c965952f7a11ca4192af60d408e2f32
+    - ef17d7dec7fd20d4292dfc451fcc5dcb
+    - 0e5ced343c9b5b84a86087a2fab15bb0
+    - 233577ecded45b845b0b9a43428965d0
+    - 81dd6a73b1ea901478c3799decb7780c
+    - 0eaa9ae957620b84ab3783ff6332dc5d
+    - a0a165126195da540852b5b13e31d306
+    - 283e837c190fc3b49a9f4f26f28f581e
+    - 2461bc028e9cb2144a76417db581c8dc
+    - f595d7c833313c1428b32fdef1f7fccc
     values:
-    - colorIndex: 6
+    - colorIndex: 7
       iconNameOrGuid: ebd7d20882d5abb42abb240c354a0631
     - colorIndex: 4
       iconNameOrGuid: Prefab Icon
@@ -80,12 +129,12 @@ MonoBehaviour:
       iconNameOrGuid: Material Icon
     - colorIndex: 0
       iconNameOrGuid: Material Icon
-    - colorIndex: 4
+    - colorIndex: 1
       iconNameOrGuid: SceneAsset Icon
     - colorIndex: 0
       iconNameOrGuid: Texture Icon
-    - colorIndex: 0
-      iconNameOrGuid: RawImage Icon
+    - colorIndex: 2
+      iconNameOrGuid: 546589f6c4c3ffa4f99d35cf043fc00f
     - colorIndex: 0
       iconNameOrGuid: RawImage Icon
     - colorIndex: 0
@@ -94,7 +143,7 @@ MonoBehaviour:
       iconNameOrGuid: Terrain Icon
     - colorIndex: 0
       iconNameOrGuid: Shader Icon
-    - colorIndex: 7
+    - colorIndex: 3
       iconNameOrGuid: 2fd6421f253b4ef1a19526541f9ffc0c
     - colorIndex: 4
       iconNameOrGuid: Font Icon
@@ -110,7 +159,7 @@ MonoBehaviour:
       iconNameOrGuid: AudioSource Icon
     - colorIndex: 4
       iconNameOrGuid: AudioMixerController Icon
-    - colorIndex: 4
+    - colorIndex: 1
       iconNameOrGuid: 546589f6c4c3ffa4f99d35cf043fc00f
     - colorIndex: 0
       iconNameOrGuid: AnimationClip Icon
@@ -120,17 +169,17 @@ MonoBehaviour:
       iconNameOrGuid: AnimatorController Icon
     - colorIndex: 2
       iconNameOrGuid: be8abf3ed47609740b490372ece90428
-    - colorIndex: 1
+    - colorIndex: 8
       iconNameOrGuid: Settings Icon
     - colorIndex: 0
       iconNameOrGuid: Material Icon
     - colorIndex: 0
       iconNameOrGuid: LightProbes Icon
-    - colorIndex: 0
+    - colorIndex: 7
       iconNameOrGuid: 0dcefafee79e7de43ad13fab5cdb7135
-    - colorIndex: 0
+    - colorIndex: 7
       iconNameOrGuid: 2807f87acc0dc464ab05c8a62e42ca29
-    - colorIndex: 0
+    - colorIndex: 3
       iconNameOrGuid: Settings Icon
     - colorIndex: 4
       iconNameOrGuid: ComputeShader Icon
@@ -148,5 +197,103 @@ MonoBehaviour:
       iconNameOrGuid: 188dfe7e559f13248ba2c41eb5a59328
     - colorIndex: 0
       iconNameOrGuid: 4a7e6c454e1d78e42af4ef68dbca9f07
-    - colorIndex: 0
+    - colorIndex: 2
       iconNameOrGuid: be8abf3ed47609740b490372ece90428
+    - colorIndex: 7
+      iconNameOrGuid: ebd7d20882d5abb42abb240c354a0631
+    - colorIndex: 1
+      iconNameOrGuid: ComputeShader Icon
+    - colorIndex: 1
+      iconNameOrGuid: ScriptableObject Icon
+    - colorIndex: 1
+      iconNameOrGuid: AnimationClip Icon
+    - colorIndex: 1
+      iconNameOrGuid: Prefab Icon
+    - colorIndex: 1
+      iconNameOrGuid: AudioMixerController Icon
+    - colorIndex: 1
+      iconNameOrGuid: ee148e281f3c41c5b4ff5f8a5afe5a6c
+    - colorIndex: 2
+      iconNameOrGuid: AnimationClip Icon
+    - colorIndex: 7
+      iconNameOrGuid: 
+    - colorIndex: 7
+      iconNameOrGuid: 
+    - colorIndex: 7
+      iconNameOrGuid: 
+    - colorIndex: 7
+      iconNameOrGuid: 
+    - colorIndex: 7
+      iconNameOrGuid: 
+    - colorIndex: 7
+      iconNameOrGuid: 
+    - colorIndex: 7
+      iconNameOrGuid: 
+    - colorIndex: 7
+      iconNameOrGuid: 
+    - colorIndex: 7
+      iconNameOrGuid: 
+    - colorIndex: 7
+      iconNameOrGuid: 
+    - colorIndex: 7
+      iconNameOrGuid: 
+    - colorIndex: 2
+      iconNameOrGuid: AnimationClip Icon
+    - colorIndex: 2
+      iconNameOrGuid: 546589f6c4c3ffa4f99d35cf043fc00f
+    - colorIndex: 2
+      iconNameOrGuid: PrefabModel Icon
+    - colorIndex: 2
+      iconNameOrGuid: AnimationClip Icon
+    - colorIndex: 2
+      iconNameOrGuid: AnimationClip Icon
+    - colorIndex: 2
+      iconNameOrGuid: AnimationClip Icon
+    - colorIndex: 2
+      iconNameOrGuid: LightmapParameters Icon
+    - colorIndex: 2
+      iconNameOrGuid: Material Icon
+    - colorIndex: 2
+      iconNameOrGuid: Shader Icon
+    - colorIndex: 2
+      iconNameOrGuid: Texture Icon
+    - colorIndex: 2
+      iconNameOrGuid: RawImage Icon
+    - colorIndex: 2
+      iconNameOrGuid: 188dfe7e559f13248ba2c41eb5a59328
+    - colorIndex: 2
+      iconNameOrGuid: 7c05578092876a0458b8b480269aef86
+    - colorIndex: 2
+      iconNameOrGuid: RawImage Icon
+    - colorIndex: 2
+      iconNameOrGuid: 4a7e6c454e1d78e42af4ef68dbca9f07
+    - colorIndex: 2
+      iconNameOrGuid: AudioEchoFilter Icon
+    - colorIndex: 2
+      iconNameOrGuid: AudioClip Icon
+    - colorIndex: 2
+      iconNameOrGuid: AudioSource Icon
+    - colorIndex: 2
+      iconNameOrGuid: Font Icon
+    - colorIndex: 2
+      iconNameOrGuid: 
+    - colorIndex: 2
+      iconNameOrGuid: 
+    - colorIndex: 2
+      iconNameOrGuid: 
+    - colorIndex: 2
+      iconNameOrGuid: 
+    - colorIndex: 2
+      iconNameOrGuid: 
+    - colorIndex: 2
+      iconNameOrGuid: Terrain Icon
+    - colorIndex: 2
+      iconNameOrGuid: 
+    - colorIndex: 2
+      iconNameOrGuid: LightProbes Icon
+    - colorIndex: 2
+      iconNameOrGuid: 
+    - colorIndex: 3
+      iconNameOrGuid: 
+    - colorIndex: 3
+      iconNameOrGuid: 

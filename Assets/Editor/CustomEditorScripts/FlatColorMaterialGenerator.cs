@@ -63,11 +63,11 @@ public class MaterialGeneratorWindow : EditorWindow
     Dictionary<FilePathType, string> filePathTypes = new Dictionary<FilePathType, string>();
     FilePathType selectedFilePathType = 0;
 
-    string customMaterialsPath = "Assets/PROJECT/ArtAssets/Materials/CustomMaterials/";
-    string flatColorMaterialsPath = "Assets/PROJECT/ArtAssets/Materials/FlatColorMaterials/";
-    string flatColorEmissiveMaterialsPath = "Assets/PROJECT/ArtAssets/Materials/FlatColorEmmisiveMaterials/";
-    string particleMaterialsPath = "Assets/PROJECT/ArtAssets/Materials/ParticleMaterials/";
-    string UIMaterialsPath = "Assets/PROJECT/ArtAssets/Materials/UIMaterials/";
+    string customMaterialsPath = "Assets/PROJECT/ArtAssets/Materials/Custom/";
+    string flatColorMaterialsPath = "Assets/PROJECT/ArtAssets/Materials/FlatColor/";
+    string flatColorEmissiveMaterialsPath = "Assets/PROJECT/ArtAssets/Materials/FlatColorEmmisive/";
+    string particleMaterialsPath = "Assets/PROJECT/ArtAssets/Materials/Particle/";
+    string UIMaterialsPath = "Assets/PROJECT/ArtAssets/Materials/UI/";
 
     enum FilePathType
     {

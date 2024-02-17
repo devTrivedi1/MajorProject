@@ -204,6 +204,7 @@ MonoBehaviour:
   progress: 0
   autoPlay: 1
   playDelay: 0
+  useUnscaledTime: 0
   autoDestroy: 0
   destroyDelay: 0
   destroyAllTransitions: 0

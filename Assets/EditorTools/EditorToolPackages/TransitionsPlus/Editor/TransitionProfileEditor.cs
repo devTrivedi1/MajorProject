@@ -186,7 +186,7 @@ namespace TransitionsPlus {
             }
 
             if (serializedObject.ApplyModifiedProperties()) {
-                TransitionAnimator[] animators = FindObjectsOfType<TransitionAnimator>();
+                TransitionAnimator[] animators = Misc.FindObjectsOfType<TransitionAnimator>();
                 TransitionProfile thisProfile = (TransitionProfile)target;
                 foreach(TransitionAnimator animator in animators) {
                     if (animator.profile == thisProfile) {

@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
-using System.Collections.Generic;
 
 namespace TransitionsPlus {
 
@@ -200,7 +199,7 @@ namespace TransitionsPlus {
                 onTransitionEnd?.Invoke();
                 if (autoDestroy) {
                     if (destroyAllTransitions) {
-                        TransitionAnimator[] animators = FindObjectsOfType<TransitionAnimator>();
+                        TransitionAnimator[] animators = Misc.FindObjectsOfType<TransitionAnimator>();
                         foreach (TransitionAnimator anim in animators) {
                             Destroy(anim.gameObject, destroyDelay);
                         }
@@ -538,7 +537,7 @@ namespace TransitionsPlus {
 
         public void PlayAudio() {
             if (profile == null || profile.sound == null) return;
-            AudioListener listener = FindObjectOfType<AudioListener>();
+            AudioListener listener = Misc.FindObjectOfType<AudioListener>();
             if (listener != null) {
                 AudioSource.PlayClipAtPoint(profile.sound, listener.transform.position);
             }
@@ -563,7 +562,13 @@ namespace TransitionsPlus {
             return o.GetComponentInChildren<TransitionAnimator>();
         }
 
-        public static TransitionAnimator Start(TransitionProfile profile, bool autoDestroy = true, float destroyDelay = 1f, string sceneNameToLoad = null, LoadSceneMode sceneLoadMode = LoadSceneMode.Single, bool fadeToCamera = false, Camera mainCamera = null, Camera secondCamera = null, bool switchActiveCamera = true, bool autoFollow = false, Transform followTarget = null, int sortingOrder = int.MinValue, float playDelay = 0, Vector3 followPositionOffset = default) {
+
+        /// <summary>
+        /// Starts a new transition from code.
+        /// </summary>
+        /// <param name="customScreen">The RawImage where transition should be inserted when renderMode is InsideUI</param>
+        /// <returns></returns>
+        public static TransitionAnimator Start(TransitionProfile profile, bool autoDestroy = true, float destroyDelay = 1f, string sceneNameToLoad = null, LoadSceneMode sceneLoadMode = LoadSceneMode.Single, bool fadeToCamera = false, Camera mainCamera = null, Camera secondCamera = null, bool switchActiveCamera = true, bool autoFollow = false, Transform followTarget = null, int sortingOrder = int.MinValue, float playDelay = 0, Vector3 followPositionOffset = default, RenderMode renderMode = RenderMode.FullScreen, RawImage customScreen = null) {
 
             TransitionAnimator animator = CreateTransitionAnimator();
             animator.autoDestroy = autoDestroy;
@@ -571,6 +576,8 @@ namespace TransitionsPlus {
             animator.autoFollow = autoFollow;
             animator.followTarget = followTarget;
             animator.followPositionOffset = followPositionOffset;
+            animator.renderMode = renderMode;
+            animator.customScreen = customScreen;
             if (sortingOrder > int.MinValue) {
                 animator.sortingOrder = sortingOrder;
             }
@@ -590,7 +597,7 @@ namespace TransitionsPlus {
 
         }
 
-        public static TransitionAnimator Start(TransitionType type, float duration = 2f, Color color = default, Gradient gradient = null, Texture2D texture = null, Vector2 center = default, bool keepAspectRatio = false, float rotation = 0, float rotationMultiplier = 0, float toonDotIntensity = 0, int toonGradientIntensity = 1, float noiseIntensity = 0.5f, Texture2D noiseTex = null, Vector2 noiseScale = default, bool invert = false, bool autoDestroy = true, float vignetteIntensity = 0.5f, float contrast = 1f, int splits = 5, int centersCount = 8, int seed = 0, int cellsDivisions = 64, float spread = 16f, float destroyDelay = 1, string sceneNameToLoad = null, LoadSceneMode sceneLoadMode = LoadSceneMode.Single, AudioClip sound = null, bool fadeToCamera = false, Camera mainCamera = null, Camera secondCamera = null, bool switchActiveCamera = true, float timeMultiplier = 1f, bool autoFollow = false, Transform followTarget = null, Texture2D shapeTexture = null, int sortingOrder = int.MinValue, float playDelay = 0, Vector3 followPositionOffset = default) {
+        public static TransitionAnimator Start(TransitionType type, float duration = 2f, Color color = default, Gradient gradient = null, Texture2D texture = null, Vector2 center = default, bool keepAspectRatio = false, float rotation = 0, float rotationMultiplier = 0, float toonDotIntensity = 0, int toonGradientIntensity = 1, float noiseIntensity = 0.5f, Texture2D noiseTex = null, Vector2 noiseScale = default, bool invert = false, bool autoDestroy = true, float vignetteIntensity = 0.5f, float contrast = 1f, int splits = 5, int centersCount = 8, int seed = 0, int cellsDivisions = 64, float spread = 16f, float destroyDelay = 1, string sceneNameToLoad = null, LoadSceneMode sceneLoadMode = LoadSceneMode.Single, AudioClip sound = null, bool fadeToCamera = false, Camera mainCamera = null, Camera secondCamera = null, bool switchActiveCamera = true, float timeMultiplier = 1f, bool autoFollow = false, Transform followTarget = null, Texture2D shapeTexture = null, int sortingOrder = int.MinValue, float playDelay = 0, Vector3 followPositionOffset = default, RenderMode renderMode = RenderMode.FullScreen, RawImage customScreen = null) {
 
             TransitionProfile profile = ScriptableObject.CreateInstance<TransitionProfile>();
             profile.type = type;
@@ -626,7 +633,7 @@ namespace TransitionsPlus {
             profile.timeMultiplier = timeMultiplier;
             profile.shapeTexture = shapeTexture;
 
-            return Start(profile, autoDestroy, destroyDelay, sceneNameToLoad, sceneLoadMode, fadeToCamera, mainCamera, secondCamera, switchActiveCamera, autoFollow, followTarget, sortingOrder, playDelay, followPositionOffset);
+            return Start(profile, autoDestroy, destroyDelay, sceneNameToLoad, sceneLoadMode, fadeToCamera, mainCamera, secondCamera, switchActiveCamera, autoFollow, followTarget, sortingOrder, playDelay, followPositionOffset, renderMode, customScreen);
         }
 
         #endregion

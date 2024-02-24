@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
-using System.Diagnostics;
-
+using Dreamteck;
 
 public class GrindController : MonoBehaviour
 {
@@ -105,7 +104,10 @@ public class GrindController : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.D))
             {
+
                 if (Vector3.Distance(transform.position, closestNode.transform.position) > distanceToSwitchNode) return;
+
+
 
                 foreach (var connection in closestNode.GetConnections())
                 {
@@ -116,18 +118,52 @@ public class GrindController : MonoBehaviour
                     }
                 }
 
+                Node.Connection mostConvenientConnection = GetMostConvenientConnection(KeyCode.D);
+                if (mostConvenientConnection == null) return;
+
+
+                if (mostConvenientConnection.spline != splineFollower.spline)
+                {
+
+                    isInputPressed = true;
+                    Invoke(nameof(disableInputEnabled), 0.15f);
+                    SwitchSpline(currentConnection, mostConvenientConnection);
+                    closestNode = null;
+                    return;
+                }
+
+            }
+
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+
+                if (Vector3.Distance(transform.position, closestNode.transform.position) > distanceToSwitchNode) return;
+
+
 
                 foreach (var connection in closestNode.GetConnections())
                 {
-                    if (connection.spline != splineFollower.spline)
+                    if (connection.spline == splineFollower.spline)
                     {
-                        isInputPressed = true;
-                        Invoke(nameof(disableInputEnabled), 0.15f);
-                        SwitchSpline(currentConnection, connection);
-                        closestNode = null;
-                        return;
+                        currentConnection = connection;
+                        break;
                     }
                 }
+
+                Node.Connection mostConvenientConnection = GetMostConvenientConnection(KeyCode.A);
+                if (mostConvenientConnection == null) return;
+
+
+                if (mostConvenientConnection.spline != splineFollower.spline)
+                {
+
+                    isInputPressed = true;
+                    Invoke(nameof(disableInputEnabled), 0.15f);
+                    SwitchSpline(currentConnection, mostConvenientConnection);
+                    closestNode = null;
+                    return;
+                }
+
             }
         }
 
@@ -156,15 +192,32 @@ public class GrindController : MonoBehaviour
         }
     }
 
+
+    Node.Connection GetMostConvenientConnection(KeyCode keyPress)
+    {
+        if(keyPress == KeyCode.D)
+        {
+            Node.Connection[] availableConnections = closestNode.GetConnections();
+            return availableConnections[0];
+        }
+        else if(keyPress == KeyCode.A)
+        {
+            Node.Connection[] availableConnections = closestNode.GetConnections();
+            return availableConnections[2];
+        }
+        return null;
+    
+    }
+
     // this  will choose a default track if the current track is closed and no input is pressed
     private void OnNode(List<SplineTracer.NodeConnection> passed)
     {
         if (isInputPressed || !isGrinding) return;
 
         if (closestNode == null) return;
-        
+
         bool ProceedSwitchingProccess = ShouldSwitchMovingForward();
-        if (ProceedSwitchingProccess) { return;}
+        if (ProceedSwitchingProccess) { return; }
         Node.Connection[] availableConnections = new Node.Connection[closestNode.GetConnections().Length];
         closestNode.GetConnections().CopyTo(availableConnections, 0);
 
@@ -180,9 +233,9 @@ public class GrindController : MonoBehaviour
         foreach (var connection in closestNode.GetConnections())
         {
 
-            if (!currentConnection.spline.isClosed && connection.spline != splineFollower.spline )
+            if (!currentConnection.spline.isClosed && connection.spline != splineFollower.spline)
             {
-                if(isSwitchingTrack) { return; }
+                if (isSwitchingTrack) { return; }
                 isSwitchingTrack = true;
 
                 SwitchSpline(currentConnection, connection);
@@ -195,7 +248,7 @@ public class GrindController : MonoBehaviour
 
     bool ShouldSwitchMovingForward()
     {
-       RaycastHit[] colliderHits = Physics.SphereCastAll(transform.position, 2f, transform.forward, 20);
+        RaycastHit[] colliderHits = Physics.SphereCastAll(transform.position, 1f, transform.forward, 50);
 
         foreach (var hit in colliderHits)
         {

@@ -1,25 +1,48 @@
+using CustomInspector;
 using System.Collections;
+using UnityEditor;
 using UnityEngine;
+using VInspector;
 
 public class Telekinesis : MonoBehaviour
 {
+    TelekinesisState state = TelekinesisState.Idle;
+    Coroutine objectManipulation;
+
+    [VInspector.Foldout("Debug")]
+    [SerializeField] bool showTelekinesisRange = false;
+    [SerializeField] bool showOrbitDistance = false;
+    [SerializeField] bool showLockOnRange = false;
+    [EndFoldout]
+
+    [HorizontalLine("Grabbing", 1, FixedColor.Gray)]
     [SerializeField] float telekinesisRange = 10f;
     [SerializeField] float timeToReachPlayer = 0.5f;
-    [SerializeField] float throwForce = 10f;
-    [SerializeField] Transform objectHoverPosition;
+    [SerializeField] AnimationCurve animationCurve;
+    [SerializeField] float curveModifier = 4.5f;
+
+    [HorizontalLine("Orbitting", 1, FixedColor.Gray)]
+    [SerializeField] Transform orbitPosition;
     [SerializeField] float orbitDistance = 1f;
     [SerializeField] float orbitSpeed = 50f;
-    [SerializeField] AnimationCurve animationCurve;
-    TelekinesisState state = TelekinesisState.Idle;
+    [SerializeField] float axisChangeSpeed = 0.5f;
+    [SerializeField] float axisChangeInterval = 5f;
+    Vector3 nextTargetDirection;
+    float axisChangeTimer = 0f;
+    Vector3 orbitAxis = Vector3.up;
+    Vector3 currentSteeringDirection;
+
+    [HorizontalLine("Throwing", 1, FixedColor.Gray)]
+    [SerializeField] float throwForce = 10f;
+    [SerializeField] float lockOnRange = 30f;
+
     TelekineticObject[] telekineticObjects;
     TelekineticObject currentObject;
-    private Vector3 orbitAxis = Vector3.up;
-    [SerializeField] float steeringSpeed = 1f;
-    private Vector3 currentSteeringDirection;
 
     private void Start()
     {
-        currentSteeringDirection = Random.onUnitSphere;
+        currentSteeringDirection = Random.onUnitSphere * orbitDistance;
+        nextTargetDirection = Random.onUnitSphere * orbitDistance;
         telekineticObjects = FindObjectsOfType<TelekineticObject>();
     }
 
@@ -33,7 +56,7 @@ public class Telekinesis : MonoBehaviour
                 if (nearestObject != null)
                 {
                     currentObject = nearestObject;
-                    currentObject.rb.useGravity = false;
+                    currentObject.Rb.useGravity = false;
                 }
             }
             else
@@ -47,8 +70,10 @@ public class Telekinesis : MonoBehaviour
             switch(state)
             {
                 case TelekinesisState.Idle:
-                    StartCoroutine(GrabObject());
+                    Vector3 start = currentObject.transform.position;
+                    Vector3 end = orbitPosition.position;
                     state = TelekinesisState.Grabbing;
+                    objectManipulation = StartCoroutine(ManipulateObject(start, end, TelekinesisState.Holding));
                     break;
                 case TelekinesisState.Holding:
                     OrbitHoverPosition();
@@ -73,26 +98,24 @@ public class Telekinesis : MonoBehaviour
         return nearestObject;
     }
 
-    IEnumerator GrabObject()
+    private IEnumerator ManipulateObject(Vector3 startPosition, Vector3 endPosition, TelekinesisState state)
     {
         if (currentObject != null)
         {
-            Vector3 startPosition = currentObject.transform.position;
-            Vector3 endPosition = objectHoverPosition.position - (objectHoverPosition.position - startPosition).normalized * orbitDistance;
-
-            // Define control points for the Bezier curve
-            Vector3 controlPoint1 = startPosition + Random.onUnitSphere;
-            Vector3 controlPoint2 = endPosition - Random.onUnitSphere;
-
+            Vector3 controlPoint1 = startPosition + Random.onUnitSphere * curveModifier;
+            Vector3 controlPoint2 = endPosition - Random.onUnitSphere * curveModifier;
             float time = 0;
             while (time < timeToReachPlayer)
             {
                 time += Time.deltaTime;
                 float t = animationCurve.Evaluate(time / timeToReachPlayer);
-                currentObject.transform.position = CalculateBezierPoint(t, startPosition, controlPoint1, controlPoint2, endPosition);
+                Vector3 targetPosition = CalculateBezierPoint(t, startPosition, controlPoint1, controlPoint2, endPosition);
+                currentObject.transform.position = targetPosition;
                 yield return null;
             }
-            state = TelekinesisState.Holding;
+            currentObject.Rb.useGravity = true;
+            currentObject.Rb.AddForce(currentObject.transform.position - endPosition);
+            this.state = state;
         }
     }
 
@@ -116,8 +139,8 @@ public class Telekinesis : MonoBehaviour
     {
         if (currentObject != null)
         {
-            Vector3 toHoverPosition = objectHoverPosition.position - currentObject.transform.position;
-            Vector3 desiredPosition = objectHoverPosition.position - toHoverPosition.normalized * orbitDistance;
+            Vector3 toHoverPosition = orbitPosition.position - currentObject.transform.position;
+            Vector3 desiredPosition = orbitPosition.position - toHoverPosition.normalized * orbitDistance;
             Vector3 orbitDirection = Vector3.Cross(toHoverPosition, orbitAxis).normalized;
             float circumference = 2 * Mathf.PI * orbitDistance;
             float orbitTime = circumference / orbitSpeed;
@@ -125,12 +148,16 @@ public class Telekinesis : MonoBehaviour
             float distanceFromDesired = (desiredPosition - currentObject.transform.position).magnitude;
             Vector3 centeringForceDirection = (desiredPosition - currentObject.transform.position).normalized;
             Vector3 centeringVelocity = distanceFromDesired * orbitSpeed * centeringForceDirection;
-            currentObject.rb.velocity = centeringVelocity + tangentialVelocity;
-            orbitAxis = Vector3.Lerp(orbitAxis, currentSteeringDirection, Time.deltaTime * steeringSpeed).normalized;
-            if (orbitAxis == currentSteeringDirection)
+            currentObject.Rb.velocity = centeringVelocity + tangentialVelocity;
+            orbitAxis = Vector3.Lerp(orbitAxis, currentSteeringDirection, axisChangeSpeed * Time.fixedDeltaTime);
+
+            if (axisChangeTimer >= axisChangeInterval)
             {
-                currentSteeringDirection = Random.onUnitSphere;
+                nextTargetDirection = Random.onUnitSphere * orbitDistance;
+                axisChangeTimer = 0; // Reset timer
             }
+            currentSteeringDirection = Vector3.Lerp(currentSteeringDirection, nextTargetDirection.normalized, axisChangeSpeed * Time.fixedDeltaTime);
+            axisChangeTimer += Time.fixedDeltaTime;
         }
     }
 
@@ -138,13 +165,37 @@ public class Telekinesis : MonoBehaviour
     {
         if (currentObject != null)
         {
-            currentObject.rb.useGravity = true;
+            currentObject.Rb.useGravity = true;
             Vector3 throwDirection = Camera.main.transform.forward;
-            currentObject.rb.AddForce(throwDirection * throwForce, ForceMode.Impulse);
+            currentObject.Rb.AddForce(throwDirection * throwForce, ForceMode.Impulse);
             state = TelekinesisState.Idle;
+            StopCoroutine(objectManipulation);
             currentObject = null;
         }
     }
+
+#if UNITY_EDITOR
+    private void OnDrawGizmos()
+    {
+        if (showTelekinesisRange)
+        {
+            Handles.color = new(0, 0, 1, 0.2f);
+            Handles.DrawSolidDisc(transform.position, transform.up, telekinesisRange);
+        }
+
+        if (showOrbitDistance)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(orbitPosition.position, orbitDistance);
+        }
+
+        if (showLockOnRange)
+        {
+            Handles.color = new(0, 1, 0, 0.2f);
+            Handles.DrawSolidDisc(transform.position, transform.up, lockOnRange);
+        }
+    }
+#endif
 }
 
 public enum TelekinesisState

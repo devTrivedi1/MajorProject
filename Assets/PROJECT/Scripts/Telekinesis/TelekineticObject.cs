@@ -3,7 +3,8 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class TelekineticObject : MonoBehaviour
 {
-    public Rigidbody rb { get; private set; }
+    Rigidbody rb;
+    public Rigidbody Rb => rb;
 
     private void Start()
     {

@@ -98,7 +98,7 @@ public class Telekinesis : MonoBehaviour
         return nearestObject;
     }
 
-    private IEnumerator ManipulateObject(Vector3 startPosition, Vector3 endPosition, TelekinesisState state)
+    private IEnumerator ManipulateObject(Vector3 startPosition, Vector3 endPosition, TelekinesisState state = TelekinesisState.Idle)
     {
         if (currentObject != null)
         {
@@ -115,7 +115,10 @@ public class Telekinesis : MonoBehaviour
             }
             currentObject.Rb.useGravity = true;
             currentObject.Rb.AddForce(currentObject.transform.position - endPosition);
-            this.state = state;
+            if (state != TelekinesisState.Idle)
+            {
+                this.state = state;
+            }
         }
     }
 
@@ -163,7 +166,8 @@ public class Telekinesis : MonoBehaviour
 
     void ThrowObject()
     {
-        if (currentObject != null)
+        Targetable targetable = Targeting.GetClosestTargetOnScreen(Camera.main, transform.position, lockOnRange);
+        if (targetable == null)
         {
             currentObject.Rb.useGravity = true;
             Vector3 throwDirection = Camera.main.transform.forward;
@@ -171,6 +175,11 @@ public class Telekinesis : MonoBehaviour
             state = TelekinesisState.Idle;
             StopCoroutine(objectManipulation);
             currentObject = null;
+        }
+        else
+        {
+            StartCoroutine(ManipulateObject(currentObject.transform.position, targetable.transform.position));
+            state = TelekinesisState.Idle;
         }
     }
 

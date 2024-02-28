@@ -7,13 +7,14 @@ using UnityEditor;
 using UnityEngine;
 using UnityRandom = UnityEngine.Random;
 using Color = UnityEngine.Color;
+using UnityEditorInternal;
 
 
 public static class FlatColorMaterialGenerator
 {
-    public static Material GenerateMaterialWithHexCode(string hexInput, string materialName,string filePath)
+    public static Material GenerateMaterialWithHexCode(string hexInput, string materialName, string filePath)
     {
-        Material newMaterial = GenerateURPMaterial(materialName,filePath);
+        Material newMaterial = GenerateURPMaterial(materialName, filePath);
         ColorUtility.TryParseHtmlString(hexInput, out Color generatedHexColor);
 
         newMaterial.color = generatedHexColor;
@@ -22,7 +23,7 @@ public static class FlatColorMaterialGenerator
 
     public static Material GenerateMaterialWithColor(Color color, string materialName, string filePath)
     {
-        Material newMaterial = GenerateURPMaterial(materialName,filePath);
+        Material newMaterial = GenerateURPMaterial(materialName, filePath);
         newMaterial.color = color;
         return newMaterial;
     }
@@ -47,19 +48,12 @@ public static class FlatColorMaterialGenerator
 public class MaterialGeneratorWindow : EditorWindow
 {
 
-    private Vector2 windowSize = new Vector2(340, 200);
+    private Vector2 minWindowSize = new Vector2(340, 500);
+    private Vector2 maxWindowSize = new Vector2(340, 500);
+    private Vector2 scrollPosition = Vector2.zero;
 
-    //Common Material Properties
-    private string hexInput = "#FFFFFF"; // Default value
-    private string materialName = "NewMaterial";
-    private Color albedoColor = Color.white;
-    bool useHexInput = true;
-
-    //Material Emission Properties
-    private bool enableEmission = false;
-    private Color emissionColor = Color.black;
-    private float emissionIntensity = 3.0f;
-
+    [SerializeField] List<URPFlatColorMaterialProperties> materialPropertiesList = new List<URPFlatColorMaterialProperties>();
+    private ReorderableList reorderableList;
     Dictionary<FilePathType, string> filePathTypes = new Dictionary<FilePathType, string>();
     FilePathType selectedFilePathType = 0;
 
@@ -78,83 +72,124 @@ public class MaterialGeneratorWindow : EditorWindow
         UIMaterials
     }
 
+    enum MaterialType
+    {
+        Custom,
+        FlatColor,
+        FlatColorEmissive,
+        Particle,
+        UI
+    }
+
     [MenuItem("Tools/Material Generator")]
     [MenuItem("Assets/Material Generator")]
     static void OpenMaterialGeneratorWindow()
     {
         MaterialGeneratorWindow window = GetWindow<MaterialGeneratorWindow>("Material Generator");
-        window.minSize = window.windowSize;
-        window.maxSize = window.windowSize;
+        window.minSize = window.minWindowSize;
+        window.maxSize = window.maxWindowSize;
 
         window.filePathTypes.Add(FilePathType.CustomMaterials, window.customMaterialsPath);
         window.filePathTypes.Add(FilePathType.FlatColorMaterials, window.flatColorMaterialsPath);
         window.filePathTypes.Add(FilePathType.FlatColorEmissiveMaterials, window.flatColorEmissiveMaterialsPath);
         window.filePathTypes.Add(FilePathType.ParticleMaterials, window.particleMaterialsPath);
         window.filePathTypes.Add(FilePathType.UIMaterials, window.UIMaterialsPath);
-
         window.Show();
     }
 
+    private void OnEnable()
+    {
+        materialPropertiesList = new List<URPFlatColorMaterialProperties>();
+        reorderableList = new ReorderableList(materialPropertiesList, typeof(URPFlatColorMaterialProperties), true, true, true, true);
+
+    }
     void OnGUI()
     {
-        DrawingColorInput();
+        scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
 
-        materialName = EditorGUILayout.TextField("Material Name:", materialName);
-        enableEmission = EditorGUILayout.Toggle("Enable Emission", enableEmission);
-
-        if (enableEmission)
+        reorderableList.drawHeaderCallback = (rect) =>
         {
-            emissionColor = EditorGUILayout.ColorField("Emission Color", emissionColor);
-            emissionIntensity = EditorGUILayout.Slider("Emission Intensity", emissionIntensity, 0.0f, 10f);
-        }
+            EditorGUI.LabelField(rect, "Material Properties");
+        };
 
-        selectedFilePathType = (FilePathType)EditorGUILayout.EnumPopup("Material File Path", selectedFilePathType);
+        DrawingMaterialListAndProperties();
 
-        SetupGenerateMaterialButton();
+        EditorGUILayout.LabelField("File Path Type", EditorStyles.boldLabel);
+        EditorStyles.popup.fixedHeight = 25;
+        selectedFilePathType = (FilePathType)EditorGUILayout.EnumPopup(selectedFilePathType);
 
-        if (GUILayout.Button("Cancel"))
+        EditorGUILayout.Space(20);
+
+        if (GUILayout.Button("Generate Materials", GUILayout.Height(30)))
         {
-            Close();
+            Debug.Log("Generating Materials");
+            foreach (URPFlatColorMaterialProperties materialProperties in materialPropertiesList)
+            {
+
+                if (materialProperties.useHexInput)
+                {
+
+                    FlatColorMaterialGenerator.GenerateMaterialWithHexCode(materialProperties.hexInput, materialProperties.materialName, filePathTypes[selectedFilePathType]);
+                }
+                else
+                {
+                    FlatColorMaterialGenerator.GenerateMaterialWithColor(materialProperties.albedoColor, materialProperties.materialName, filePathTypes[selectedFilePathType]);
+                }
+            }
         }
+        EditorGUILayout.Space(20);
+        EditorGUILayout.EndScrollView();
     }
 
-    private void SetupGenerateMaterialButton()
+    private void DrawingMaterialListAndProperties()
     {
-        if (GUILayout.Button("Make Material"))
+        reorderableList.drawElementCallback = (rect, index, isActive, isFocused) =>
         {
+            var element = materialPropertiesList[index];
+            element.foldOut = EditorGUI.Foldout(new Rect(rect.x, rect.y, 100, EditorGUIUtility.singleLineHeight), element.foldOut, "Material " + index + " Properties");
+           
+            if (element.foldOut)
+            {
+                reorderableList.elementHeightCallback = (i) => materialPropertiesList[i].foldOut == element.foldOut ? 200 : reorderableList.elementHeight;
+                element.hexInput = EditorGUI.TextField(new Rect(rect.x + 10, rect.y += 20, 250, EditorGUIUtility.singleLineHeight), "HexCode", element.hexInput);
+                element.useHexInput = EditorGUI.Toggle(new Rect(rect.x + 10, rect.y += 20, 250, EditorGUIUtility.singleLineHeight), "Use Hex Input", element.useHexInput);
+                element.materialName = EditorGUI.TextField(new Rect(rect.x + 10, rect.y += 20, 250, EditorGUIUtility.singleLineHeight), "Material Name", element.materialName);
+                element.albedoColor = EditorGUI.ColorField(new Rect(rect.x + 10, rect.y += 20, 250, EditorGUIUtility.singleLineHeight), "Albedo Color", element.albedoColor);
+                rect.y += 10;
+                element.enableEmission = EditorGUI.Toggle(new Rect(rect.x + 10, rect.y += 20, 250, EditorGUIUtility.singleLineHeight), "Enable Emission", element.enableEmission);
+                element.emissionColor = EditorGUI.ColorField(new Rect(rect.x + 10, rect.y += 20, 250, EditorGUIUtility.singleLineHeight), "Emission Color", element.emissionColor);
+                element.emissionIntensity = EditorGUI.FloatField(new Rect(rect.x + 10, rect.y += 20, 250, EditorGUIUtility.singleLineHeight), "Emission Intensity", element.emissionIntensity);
+            }
+          
 
-            Material generatedMaterial;
-            string selectedFilePath = filePathTypes[selectedFilePathType];
 
-            if (useHexInput)
-            {
-                generatedMaterial = FlatColorMaterialGenerator.GenerateMaterialWithHexCode(hexInput, materialName,selectedFilePath);
-            }
-            else
-            {
-                generatedMaterial = FlatColorMaterialGenerator.GenerateMaterialWithColor(albedoColor, materialName,selectedFilePath);
-            }
-            if (enableEmission)
-            {
-                FlatColorMaterialGenerator.SetEmissionForMaterial(generatedMaterial, emissionColor, emissionIntensity);
-            }
-        }
+        };
+        reorderableList.DoLayoutList();
     }
 
-    private void DrawingColorInput()
+    private void OnInspectorUpdate()
     {
-        GUILayout.Label("Color Input Type", EditorStyles.boldLabel);
-        int selection = GUILayout.SelectionGrid(useHexInput ? 0 : 1, new string[] { "HexCode", "ColorField" }, 2);
-        useHexInput = selection == 0;
-
-        if (useHexInput)
-        {
-            hexInput = EditorGUILayout.TextField("Hex Color:", hexInput);
-        }
-        else
-        {
-            albedoColor = EditorGUILayout.ColorField("Albedo Color", albedoColor);
-        }
+        Repaint();
     }
+
+
+}
+
+
+[Serializable]
+public class URPFlatColorMaterialProperties
+{
+    //Common Material Properties
+    public string hexInput = "#FFFFFF"; // Default value
+    public string materialName = "NewMaterial";
+    public Color albedoColor = Color.white;
+    public bool useHexInput = true;
+
+    //Material Emission Properties
+    public bool enableEmission = false;
+    public Color emissionColor = Color.black;
+    public float emissionIntensity = 3.0f;
+
+    public bool foldOut;
 }
 

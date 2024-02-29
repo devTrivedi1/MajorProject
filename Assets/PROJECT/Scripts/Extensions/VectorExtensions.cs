@@ -44,6 +44,7 @@ public static class VectorExtensions
         return v;
     }
 
+
     public static Vector3 Divide(this Vector3 v, Vector3 other)
     {
         v = new Vector3(v.x / other.x, v.y / other.y, v.z / other.z);

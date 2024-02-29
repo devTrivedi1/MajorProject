@@ -1145,7 +1145,8 @@ MonoBehaviour:
       noRichText: We are <color=green><b>not</b></color> sad.
     sceneAttributeExamples:
       gameScene: 0
-      startScene: Assets/Scenes/SampleScene.unity
+      startScene: Assets/EditorTools/EditorToolPackages/TransitionsPlus/Demos/Scene
+        Loading/Main Scene.unity
       _: 0
     selfFillAttributeExamples:
       cam: {fileID: 0}
@@ -1287,7 +1288,7 @@ MonoBehaviour:
       value2:
         value: 5
         min: 1
-        max: 10
+        max: 11.07
       value3:
         value: 5
         min: 1

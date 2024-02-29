@@ -3,10 +3,11 @@ using UnityEngine;
 
 public class Targeting : MonoBehaviour
 {
-    static List<Targetable> allTargetables;
+    static List<Targetable> allTargetables = new();
 
     public static void RegisterTarget(Targetable target)
     {
+        if (allTargetables == null) { allTargetables = new(); }
         if (!allTargetables.Contains(target))
         {
             allTargetables.Add(target);

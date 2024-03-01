@@ -19,6 +19,8 @@ GameObject:
   - component: {fileID: 5636443493818125225}
   - component: {fileID: 8064667989501216107}
   - component: {fileID: 3730760111805049122}
+  - component: {fileID: 8353172828336536649}
+  - component: {fileID: 5516171392720403955}
   m_Layer: 0
   m_Name: cubeBean
   m_TagString: Untagged
@@ -218,7 +220,7 @@ MonoBehaviour:
   _follow: 1
   _startPosition: 0
   preserveUniformSpeedWithOffset: 0
-  _followSpeed: 5
+  _followSpeed: 10
   _followDuration: 1
   _speedModifier:
     blend: 1
@@ -297,15 +299,15 @@ MonoBehaviour:
     _baseScale: {x: 1, y: 1, z: 1}
     _2dMode: 0
     velocityHandleMode: 0
-    applyPositionX: 1
-    applyPositionY: 1
-    applyPositionZ: 1
+    applyPositionX: 0
+    applyPositionY: 0
+    applyPositionZ: 0
     applyPosition2D: 1
     retainLocalPosition: 0
     direction: 1
-    applyRotationX: 1
-    applyRotationY: 1
-    applyRotationZ: 1
+    applyRotationX: 0
+    applyRotationY: 0
+    applyRotationZ: 0
     applyRotation2D: 1
     retainLocalRotation: 0
     applyScaleX: 0
@@ -363,7 +365,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &7779937306267040380
 MonoBehaviour:
@@ -434,6 +436,7 @@ MonoBehaviour:
   jumpState: 0
   layerMask: 6
   currentForce: 0
+  externalForce: {x: 0, y: 0, z: 0}
   currentFallGravity: 0
   timer: 0
 --- !u!114 &3730760111805049122
@@ -453,6 +456,48 @@ MonoBehaviour:
   gravityForceMode: 0
   targetGravityForce: 450
   UseCustomGravity: 0
+  CurrentGravityForce: 9.8
+--- !u!114 &8353172828336536649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7392479643716216627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 149b88543461e304394a47b4ad3b3ca7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 2118221051237194163}
+  customGravity: {fileID: 5516171392720403955}
+  targetJumpForce: 12
+  jumpHeightDuration: 0.5
+  groundDetectionLength: 1
+  jumpFallDuration: 0.25
+  jumpState: 0
+  layerMask: 6
+  currentForce: 0
+  externalForce: {x: 0, y: 0, z: 0}
+  currentFallGravity: 0
+  timer: 0
+--- !u!114 &5516171392720403955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7392479643716216627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 906e2caa115b5ee4abf85d4f4b6529d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 2118221051237194163}
+  gravityDirection: 1
+  gravityForceMode: 5
+  targetGravityForce: 9.8
+  UseCustomGravity: 1
   CurrentGravityForce: 9.8
 --- !u!1001 &8251777501913764716
 PrefabInstance:

@@ -11,12 +11,12 @@ public class Movement : MonoBehaviour
 
     private void OnEnable()
     {
-        GrindController.PlayerIsNowGrinding += SetIsPlayerGrinding;
+        GrindController.OnRailGrindStateChange += SetIsPlayerGrinding;
     }
 
     private void OnDisable()
     {
-        GrindController.PlayerIsNowGrinding -= SetIsPlayerGrinding;
+        GrindController.OnRailGrindStateChange -= SetIsPlayerGrinding;
     }
 
     private void Start()
@@ -30,7 +30,8 @@ public class Movement : MonoBehaviour
         float x = Input.GetAxisRaw("Horizontal");
         float z = Input.GetAxisRaw("Vertical");
 
-        Vector3 direction = new Vector3(x, 0, z).normalized;
+        Vector3 direction = transform.right * x + transform.forward * z;
+        direction = direction.normalized;
         rb.velocity = direction * speed;
     }
 

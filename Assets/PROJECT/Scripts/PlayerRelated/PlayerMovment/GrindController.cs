@@ -20,7 +20,7 @@ public class GrindController : MonoBehaviour
     [SerializeField] Node.Connection currentConnection;
     [SerializeField] Node closestNode;
 
-    public static Action<bool> PlayerIsNowGrinding;
+    public static Action<bool> OnRailGrindStateChange;
 
     public bool isGrinding = false;
     bool isInputPressed = false;
@@ -36,12 +36,15 @@ public class GrindController : MonoBehaviour
         AllNodes = nodeArray.ToList();
         SplineComputer[] splineArray = FindObjectsOfType<SplineComputer>();
         AllSplines = splineArray.ToList();
-        splineFollower.onNode += OnNode;
+        splineFollower.onNode += OnJunction;
+        Jump.OnJumpStateChanged+=GettingOffTheRails;
+
     }
 
     private void OnDisable()
     {
-        splineFollower.onNode -= OnNode;
+        splineFollower.onNode -= OnJunction;
+        Jump.OnJumpStateChanged -= GettingOffTheRails;
     }
 
     private void Update()
@@ -49,7 +52,6 @@ public class GrindController : MonoBehaviour
         // no spline reference, then no grinding
 
         if (splineFollower.spline == null) { splineFollower.follow = false; return; }
-
 
         // switching player direction 
         if (Input.GetKeyDown(KeyCode.W) && splineFollower.direction == Spline.Direction.Backward)
@@ -63,25 +65,7 @@ public class GrindController : MonoBehaviour
             splineFollower.followSpeed = value;
         }
 
-        // getting of the rail 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            splineFollower.follow = !splineFollower.follow;
-            splineFollower.spline = null;
-            splineProjector.spline = null;
-            isGrinding = false;
-            transform.position = !splineFollower.follow ? splineFollower.result.position + (Vector3.right * 8) : splineFollower.result.position + (Vector3)splineFollower.motion.offset;
-            PlayerIsNowGrinding?.Invoke(splineFollower.follow);
-
-        }
-
-        // Sprinting
-        bool isSpeedingUp = Input.GetKey(KeyCode.LeftShift);
-
-        float targetSpeed = isSpeedingUp ? startSpeed * speedMultiplier : startSpeed;
-        targetSpeed = splineFollower.direction == Spline.Direction.Forward ? targetSpeed : -targetSpeed;
-        splineFollower.followSpeed = Mathf.Lerp(splineFollower.followSpeed, targetSpeed, transitionSpeed * Time.deltaTime);
-
+        GrindRailSprinting();
 
         // finding the closest node
         AllNodes.ForEach(node =>
@@ -95,9 +79,24 @@ public class GrindController : MonoBehaviour
 
         });
 
+        RailSwitchingByInput();
+    }
+
+    private void GettingOffTheRails(JumpState _jumpStste)
+    {
+        if (_jumpStste == JumpState.Grounded || splineFollower.spline == null) return;
+        splineFollower.follow = !splineFollower.follow;
+        splineFollower.spline = null;
+        splineProjector.spline = null;
+        splineProjector.enabled = false;
+        isGrinding = false;
+        OnRailGrindStateChange?.Invoke(splineFollower.follow);
+    }
+
+    private void RailSwitchingByInput()
+    {
         if (closestNode != null)
         {
-
             float distance = Vector3.Distance(transform.position, closestNode.transform.position);
 
             // this is to choose a track when input is pressed
@@ -106,8 +105,6 @@ public class GrindController : MonoBehaviour
             {
 
                 if (Vector3.Distance(transform.position, closestNode.transform.position) > distanceToSwitchNode) return;
-
-
 
                 foreach (var connection in closestNode.GetConnections())
                 {
@@ -118,9 +115,8 @@ public class GrindController : MonoBehaviour
                     }
                 }
 
-                Node.Connection mostConvenientConnection = GetMostConvenientConnection(KeyCode.D);
+                Node.Connection mostConvenientConnection = WithInputGetMostConvenientConnection(KeyCode.D);
                 if (mostConvenientConnection == null) return;
-
 
                 if (mostConvenientConnection.spline != splineFollower.spline)
                 {
@@ -131,7 +127,6 @@ public class GrindController : MonoBehaviour
                     closestNode = null;
                     return;
                 }
-
             }
 
             if (Input.GetKeyDown(KeyCode.A))
@@ -150,9 +145,8 @@ public class GrindController : MonoBehaviour
                     }
                 }
 
-                Node.Connection mostConvenientConnection = GetMostConvenientConnection(KeyCode.A);
+                Node.Connection mostConvenientConnection = WithInputGetMostConvenientConnection(KeyCode.A);
                 if (mostConvenientConnection == null) return;
-
 
                 if (mostConvenientConnection.spline != splineFollower.spline)
                 {
@@ -163,37 +157,20 @@ public class GrindController : MonoBehaviour
                     closestNode = null;
                     return;
                 }
-
             }
         }
-
     }
 
-    public void GoGrindOnThoseRails(SplineComputer splineToGrindOn)
+    private void GrindRailSprinting()
     {
-        if (!isGrinding)
-        {
-            splineFollower.spline = splineToGrindOn;
-            splineFollower.RebuildImmediate();
+        bool isSpeedingUp = Input.GetKey(KeyCode.LeftShift);
 
-            splineProjector.spline = splineToGrindOn;
-            splineProjector.RebuildImmediate();
-            splineProjector.CalculateProjection();
-
-            double percent = splineProjector.GetPercent();
-            splineFollower.SetPercent(percent);
-
-            splineFollower.follow = true;
-            splineFollower.followSpeed = startSpeed;
-            isGrinding = true;
-            PlayerIsNowGrinding?.Invoke(isGrinding);
-            return;
-
-        }
+        float targetSpeed = isSpeedingUp ? startSpeed * speedMultiplier : startSpeed;
+        targetSpeed = splineFollower.direction == Spline.Direction.Forward ? targetSpeed : -targetSpeed;
+        splineFollower.followSpeed = Mathf.Lerp(splineFollower.followSpeed, targetSpeed, transitionSpeed * Time.deltaTime);
     }
 
-
-    Node.Connection GetMostConvenientConnection(KeyCode keyPress)
+    Node.Connection WithInputGetMostConvenientConnection(KeyCode keyPress)
     {
         if(keyPress == KeyCode.D)
         {
@@ -206,29 +183,21 @@ public class GrindController : MonoBehaviour
             return availableConnections[2];
         }
         return null;
-    
     }
 
     // this  will choose a default track if the current track is closed and no input is pressed
-    private void OnNode(List<SplineTracer.NodeConnection> passed)
+    private void OnJunction(List<SplineTracer.NodeConnection> passed)
     {
         if (isInputPressed || !isGrinding) return;
 
         if (closestNode == null) return;
 
-        bool ProceedSwitchingProccess = ShouldSwitchMovingForward();
+        bool ProceedSwitchingProccess = ShouldSwitchRailMovingForward();
         if (ProceedSwitchingProccess) { return; }
         Node.Connection[] availableConnections = new Node.Connection[closestNode.GetConnections().Length];
         closestNode.GetConnections().CopyTo(availableConnections, 0);
 
-        foreach (var connection in availableConnections)
-        {
-            if (connection.spline == splineFollower.spline)
-            {
-                currentConnection = connection;
-                break;
-            }
-        }
+        GetCurrentConnection(availableConnections);
 
         foreach (var connection in closestNode.GetConnections())
         {
@@ -245,8 +214,8 @@ public class GrindController : MonoBehaviour
         }
     }
 
-
-    bool ShouldSwitchMovingForward()
+  
+    bool ShouldSwitchRailMovingForward()
     {
         RaycastHit[] colliderHits = Physics.SphereCastAll(transform.position, 1f, transform.forward, 50);
 
@@ -276,9 +245,51 @@ public class GrindController : MonoBehaviour
             splineFollower.followSpeed = -startSpeed;
         }
         Invoke(nameof(DisableSwitchingTrack), 0.1f);
-
     }
 
+    public void GoGrindOnThoseRails(SplineComputer splineToGrindOn)
+    {
+        if (!isGrinding)
+        {
+            
+            splineFollower.spline = splineToGrindOn;
+            splineFollower.RebuildImmediate();
+
+            splineProjector.enabled = true;
+            splineProjector.spline = splineToGrindOn;
+            splineProjector.RebuildImmediate();
+            splineProjector.CalculateProjection();
+
+            double percent = splineProjector.GetPercent();
+            splineFollower.SetPercent(percent);
+
+            splineFollower.follow = true;
+            splineFollower.followSpeed = startSpeed;
+            isGrinding = true;
+            OnRailGrindStateChange?.Invoke(isGrinding);
+            return;
+
+        }
+    }
+
+    private void GetCurrentConnection(Node.Connection[] availableConnections)
+    {
+        foreach (var connection in availableConnections)
+        {
+            if (connection.spline == splineFollower.spline)
+            {
+                currentConnection = connection;
+                break;
+            }
+        }
+    }
+
+    Vector3 ExternalMomentum()
+    {
+        if(!isGrinding) { return Vector3.zero; }
+        Vector3 externalMomentum = splineFollower.EvaluatePosition(splineFollower.result.percent).normalized * splineFollower.followSpeed;
+        return externalMomentum;
+    }
 
     void disableInputEnabled()
     {

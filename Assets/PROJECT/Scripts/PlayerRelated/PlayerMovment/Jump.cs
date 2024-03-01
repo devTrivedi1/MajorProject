@@ -2,6 +2,7 @@ using CustomInspector;
 using MoreMountains.Tools;
 using UnityEngine;
 using UnityRandom = UnityEngine.Random;
+using System;
 
 
 public enum JumpState
@@ -31,9 +32,12 @@ public class Jump : MonoBehaviour
     [HorizontalLine("Debug Info", 2, FixedColor.Gray)]
     [Layer][SerializeField] int layerMask;
     [ReadOnly][SerializeField] float currentForce;
+    [ReadOnly][SerializeField] Vector3 externalForce = Vector3.zero;
     [ReadOnly][SerializeField] float currentFallGravity;
     [ReadOnly][SerializeField] float timer;
 
+    public static Action<JumpState> OnJumpStateChanged;
+    public static Func<Vector3> GetExternalForce = () => Vector3.zero;
     delegate void JumpStateFunction();
 
     private void Update()
@@ -70,9 +74,10 @@ public class Jump : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && jumpState == JumpState.Grounded)
         {
             jumpState = JumpState.inAir;
+            OnJumpStateChanged?.Invoke(jumpState);
             currentForce = 0;
             timer = 0;
-            customGravity.UseCustomGravity = false;
+            customGravity.UseCustomGravity = false;     
         }
     }
     private void JumpThenFall()
@@ -87,6 +92,7 @@ public class Jump : MonoBehaviour
         {
             jumpState = JumpState.Falling;
             timer = 0;
+            OnJumpStateChanged?.Invoke(jumpState);
         }
     }
 
@@ -97,23 +103,28 @@ public class Jump : MonoBehaviour
             customGravity.UseCustomGravity = true;
             currentFallGravity = Mathf.Lerp(0, customGravity.TargetGravityForce, timer / jumpFallDuration);
             customGravity.CurrentGravityForce = currentFallGravity;
+            
             timer += Time.deltaTime;
         }
-        else if (Physics.Raycast(transform.position, -transform.up, groundDetectionLength, 1<<layerMask))
+        else if (Physics.Raycast(transform.position, -transform.up, groundDetectionLength, 1 << layerMask))
         {
             customGravity.UseCustomGravity = false;
             jumpState = JumpState.Grounded;
+            OnJumpStateChanged?.Invoke(jumpState);
         }
     }
-
-
-
-
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.cyan;
         Gizmos.DrawRay(transform.position, -transform.up * groundDetectionLength);
+    }
+    public void SetJumpState(JumpState state)
+    {
+        jumpState = state;
+        currentForce = 0;
+        timer = 0;
+        currentFallGravity = 0;
     }
 
 }

@@ -36,6 +36,7 @@ public class Telekinesis : MonoBehaviour
     [HorizontalLine("Throwing", 1, FixedColor.Gray)]
     [SerializeField] float throwForce = 10f;
     [SerializeField] float lockOnRange = 30f;
+    [SerializeField] float screenCenterThreshold = 0.4f;
     [SerializeField] float timeToReachTarget = 0.5f;
     [SerializeField] AnimationCurve throwAnimationCurve;
     [SerializeField] float objectTelekinesisCooldown = 0.5f;
@@ -89,24 +90,21 @@ public class Telekinesis : MonoBehaviour
     TelekineticObject GetTelekineticObject()
     {
         TelekineticObject nearestObject = null;
-        List<TelekineticObject> objectsOnScreen = new();
+        List<TelekineticObject> availableObjects = new();
+        float closestToScreenCenter = float.MaxValue;
         foreach (var obj in telekineticObjects)
         {
+            if (Vector3.Distance(obj.transform.position, transform.position) > telekinesisRange || !obj.manipulable) { continue; }
             Vector3 screenPoint = Camera.main.WorldToViewportPoint(obj.transform.position);
             if (screenPoint.z > 0 && screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1)
             {
-                objectsOnScreen.Add(obj);
-            }
-        }
-        float closestDistance = telekinesisRange;
-        foreach (var obj in objectsOnScreen)
-        {
-            if (!obj.manipulable) { continue; }
-            float distance = Vector3.Distance(obj.transform.position, transform.position);
-            if (distance <= closestDistance)
-            {
-                closestDistance = distance;
-                nearestObject = obj;
+                availableObjects.Add(obj);
+                float distanceToScreenCenter = Vector2.Distance(new(0.5f, 0.5f), screenPoint);
+                if (closestToScreenCenter > distanceToScreenCenter)
+                {
+                    closestToScreenCenter = distanceToScreenCenter;
+                    nearestObject = obj;
+                }
             }
         }
         return nearestObject;
@@ -184,7 +182,7 @@ public class Telekinesis : MonoBehaviour
 
     void ThrowObject()
     {
-        Targetable targetable = Targeting.GetClosestTargetOnScreen(Camera.main, transform.position, lockOnRange);
+        Targetable targetable = Targeting.GetClosestTargetOnScreen(Camera.main, transform.position, lockOnRange, screenCenterThreshold);
         if (targetable == null)
         {
             currentObject.Rb.useGravity = true;

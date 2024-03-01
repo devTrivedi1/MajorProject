@@ -431,7 +431,7 @@ MonoBehaviour:
   customGravity: {fileID: 3730760111805049122}
   targetJumpForce: 15
   jumpHeightDuration: 0.3
-  groundDetectionLength: 0.8
+  groundDetectionLength: 0.5
   jumpFallDuration: 0.5
   jumpState: 0
   layerMask: 6

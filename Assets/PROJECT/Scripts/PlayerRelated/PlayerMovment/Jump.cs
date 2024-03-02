@@ -18,9 +18,9 @@ public class Jump : MonoBehaviour
     [SelfFill][SerializeField] Rigidbody rb;
 
     [HorizontalLine("Jump Settings", 2, FixedColor.Gray)]
-    [SerializeField] float jumpForce = 5;
+    [SerializeField] float verticalForce = 5;
     [SerializeField] float momentumMultiplier = 2;
-    [Layer][SerializeField] int layerMask;
+
 
     [HorizontalLine("Falling Settings", 2, FixedColor.Gray)]
     [SerializeField] float groundDetectionLength = 2f;
@@ -29,16 +29,21 @@ public class Jump : MonoBehaviour
     [HorizontalLine("jump State", 2, FixedColor.Gray)]
     [ReadOnly][SerializeField] JumpState jumpState = JumpState.Grounded;
 
+    [HorizontalLine("Included Jump Layer", 2, FixedColor.Gray)]
+    [Layer][SerializeField] int layerMask;
+
     public static Action<JumpState> OnJumpStateChanged;
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && OnGround())
+        GroundDetection();
+        if (Input.GetKeyDown(KeyCode.Space) && jumpState == JumpState.Grounded)
         {
             jumpState = JumpState.inAir;
             OnJumpStateChanged?.Invoke(jumpState);
         }
     }
+
     private void FixedUpdate()
     {
         DoAJump();
@@ -49,29 +54,30 @@ public class Jump : MonoBehaviour
     {
         if (jumpState == JumpState.inAir)
         {
-            rb.velocity += new Vector3(0, jumpForce,0);
+            rb.velocity += new Vector3(0, verticalForce, 0);
             jumpState = JumpState.Falling;
             OnJumpStateChanged?.Invoke(jumpState);
-        }    
-    }
-
-    private bool OnGround()
-    {
-        if (Physics.OverlapSphere(transform.position, groundDetectionLength, 1 << layerMask).Length > 0)
-        {
-            jumpState = JumpState.Grounded;
-            OnJumpStateChanged?.Invoke(jumpState);
-            return true;
         }
-        return false;
     }
 
     void FallingToGround()
     {
-        if(rb.velocity.y<0 &&jumpState == JumpState.Falling)
+        if (jumpState == JumpState.Grounded) return;
+
+        if (rb.velocity.y < 0)
         {
-            rb.velocity -=  Vector3.up * fallMultiplier;
+            rb.velocity -= Vector3.up * fallMultiplier;
         }
     }
 
+    private void GroundDetection()
+    {
+        if (jumpState == JumpState.Grounded || jumpState == JumpState.inAir) return;
+
+        if (Physics.OverlapSphere(transform.position, groundDetectionLength, 1 << layerMask).Length > 0)
+        {
+            jumpState = JumpState.Grounded;
+            OnJumpStateChanged?.Invoke(jumpState);
+        }
+    }
 }

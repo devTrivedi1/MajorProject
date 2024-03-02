@@ -53,16 +53,20 @@ public class GrindController : MonoBehaviour
 
         if (splineFollower.spline == null) { splineFollower.follow = false; return; }
 
-        // switching player direction 
-        if (Input.GetKeyDown(KeyCode.W) && splineFollower.direction == Spline.Direction.Backward)
+      
+        if (Input.GetKeyDown(KeyCode.S) )
         {
-            float value = Mathf.Abs(splineFollower.followSpeed);
-            splineFollower.followSpeed = value;
-        }
-        if (Input.GetKeyDown(KeyCode.S) && splineFollower.direction == Spline.Direction.Forward)
-        {
-            float value = -splineFollower.followSpeed;
-            splineFollower.followSpeed = value;
+            if(splineFollower.direction == Spline.Direction.Forward)
+            {
+                float value = -splineFollower.followSpeed;
+                splineFollower.followSpeed = value;
+            }
+            else
+            {
+                float value = Math.Abs(splineFollower.followSpeed);
+                splineFollower.followSpeed = value;              
+            }
+   
         }
 
         GrindRailSprinting();

@@ -19,6 +19,7 @@ public class Jump : MonoBehaviour
 
     [HorizontalLine("Jump Settings", 2, FixedColor.Gray)]
     [SerializeField] float jumpForce = 5;
+    [SerializeField] float momentumMultiplier = 2;
     [Layer][SerializeField] int layerMask;
 
     [HorizontalLine("Falling Settings", 2, FixedColor.Gray)]
@@ -35,6 +36,7 @@ public class Jump : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && OnGround())
         {
             jumpState = JumpState.inAir;
+            OnJumpStateChanged?.Invoke(jumpState);
         }
     }
     private void FixedUpdate()
@@ -47,8 +49,9 @@ public class Jump : MonoBehaviour
     {
         if (jumpState == JumpState.inAir)
         {
-            rb.velocity = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
+            rb.velocity += new Vector3(0, jumpForce,0);
             jumpState = JumpState.Falling;
+            OnJumpStateChanged?.Invoke(jumpState);
         }    
     }
 
@@ -67,7 +70,7 @@ public class Jump : MonoBehaviour
     {
         if(rb.velocity.y<0 &&jumpState == JumpState.Falling)
         {
-            rb.velocity -=  new Vector3(0,-Physics.gravity.y * fallMultiplier,0);
+            rb.velocity -=  Vector3.up * fallMultiplier;
         }
     }
 

@@ -548,7 +548,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: cubeBean
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8353172828336536649, guid: 6dfb40f44536e8a41b573727fcd48dee,
+        type: 3}
+      propertyPath: customGravity
+      value: 
+      objectReference: {fileID: 836370216}
+    m_RemovedComponents:
+    - {fileID: 5516171392720403955, guid: 6dfb40f44536e8a41b573727fcd48dee, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -3427,6 +3433,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &836370216 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3730760111805049122, guid: 6dfb40f44536e8a41b573727fcd48dee,
+    type: 3}
+  m_PrefabInstance: {fileID: 342671969}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 906e2caa115b5ee4abf85d4f4b6529d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &885694351
 GameObject:
   m_ObjectHideFlags: 0

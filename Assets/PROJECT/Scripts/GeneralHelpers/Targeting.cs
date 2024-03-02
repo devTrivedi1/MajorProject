@@ -4,10 +4,23 @@ using UnityEngine.UI;
 
 public class Targeting : MonoBehaviour
 {
-    static List<Targetable> allTargetables = new();
-
+    List<Targetable> allTargetables = new();
     public float screenCenterThreshold = 0.1f;
-    public static void RegisterTarget(Targetable target)
+    public static Targeting Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance == null) 
+        { 
+            Instance = this; 
+        }
+        else
+        {
+            Destroy(this);
+        }
+    }
+
+    public void RegisterTarget(Targetable target)
     {
         if (allTargetables == null) { allTargetables = new(); }
         if (!allTargetables.Contains(target))
@@ -16,7 +29,7 @@ public class Targeting : MonoBehaviour
         }
     }
 
-    public static void UnregisterTarget(Targetable target)
+    public void UnregisterTarget(Targetable target)
     {
         if (allTargetables.Contains(target))
         {
@@ -24,7 +37,7 @@ public class Targeting : MonoBehaviour
         }
     }
 
-    public static Targetable GetClosestTarget(List<Targetable> listOfAllObjects, Vector3 referencePosition, float maxDistance)
+    public Targetable GetClosestTarget(List<Targetable> listOfAllObjects, Vector3 referencePosition, float maxDistance)
     {
         Targetable nearestObject = default;
         float closestDistance = maxDistance;
@@ -40,30 +53,32 @@ public class Targeting : MonoBehaviour
         return nearestObject;
     }
 
-    public static List<Targetable> FindTargetsOnScreen(Camera camera)
+    public List<(Targetable target, Vector3 screenPoint)> FindTargetsOnScreen(Camera camera, Vector3 position, float maxDistance)
     {
-        List<Targetable> targetsOnScreen = new();
+        List<(Targetable target, Vector3 screenPoint)> targetsOnScreen = new();
         foreach (var target in allTargetables)
         {
+            if (Vector3.SqrMagnitude(position - target.transform.position) > (maxDistance * maxDistance)) { continue; }
             Vector3 screenPoint = camera.WorldToViewportPoint(target.transform.position);
             if (screenPoint.z > 0 && screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1)
             {
-                targetsOnScreen.Add(target);
+                targetsOnScreen.Add((target, screenPoint));
             }
         }
         return targetsOnScreen;
     }
 
-    public static Targetable GetClosestTargetOnScreen(Camera camera, Vector3 position, float maxDistance, float screenCenterThreshold)
+
+    // This is likely to end up being expensive to run every frame with large numbers of targets (100+)
+    public Targetable GetClosestTargetOnScreen(Camera camera, Vector3 position, float maxDistance, float screenCenterThreshold)
     {
-        List<Targetable> targetsOnScreen = FindTargetsOnScreen(camera);
+        this.screenCenterThreshold = screenCenterThreshold;
+        List<(Targetable target, Vector3 screenPoint)> targetsOnScreen = FindTargetsOnScreen(camera, position, maxDistance);
         Targetable closestTarget = null;
         float closestScreenDistance = screenCenterThreshold;
-        foreach (var target in targetsOnScreen)
+        float aspectRatio = Screen.width / (float)Screen.height;
+        foreach (var (target, screenPoint) in targetsOnScreen)
         {
-            if (Vector3.Distance(position, target.transform.position) > maxDistance) { continue; }
-            Vector3 screenPoint = camera.WorldToViewportPoint(target.transform.position);
-            float aspectRatio = Screen.width / (float)Screen.height;
             float screenDistance = Vector2.Distance(new Vector2(screenPoint.x * aspectRatio, screenPoint.y), new Vector2(0.5f * aspectRatio, 0.5f));
             if (closestScreenDistance > screenDistance)
             {

@@ -63,7 +63,8 @@ public class Targeting : MonoBehaviour
         {
             if (Vector3.Distance(position, target.transform.position) > maxDistance) { continue; }
             Vector3 screenPoint = camera.WorldToViewportPoint(target.transform.position);
-            float screenDistance = Vector2.Distance(screenPoint, new Vector2(0.5f, 0.5f));
+            float aspectRatio = Screen.width / (float)Screen.height;
+            float screenDistance = Vector2.Distance(new Vector2(screenPoint.x * aspectRatio, screenPoint.y), new Vector2(0.5f * aspectRatio, 0.5f));
             if (closestScreenDistance > screenDistance)
             {
                 closestTarget = target;
@@ -73,16 +74,14 @@ public class Targeting : MonoBehaviour
         return closestTarget;
     }
 
-
     void OnDrawGizmos()
     {
         float adjustedScale = screenCenterThreshold / 0.5f;
         CanvasScaler canvas = GetComponentInParent<CanvasScaler>();
-        float screenWidth = canvas.referenceResolution.x * canvas.scaleFactor;
         float screenHeight = canvas.referenceResolution.y * canvas.scaleFactor;
         if (TryGetComponent<Image>(out var circularImage))
         {
-            circularImage.rectTransform.sizeDelta = new Vector2(screenWidth * adjustedScale, screenHeight * adjustedScale);
+            circularImage.rectTransform.sizeDelta = new Vector2(screenHeight * adjustedScale, screenHeight * adjustedScale);
         }
     }
 }

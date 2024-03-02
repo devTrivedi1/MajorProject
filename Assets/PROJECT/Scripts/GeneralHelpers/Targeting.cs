@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Targeting : MonoBehaviour
 {
@@ -75,10 +76,13 @@ public class Targeting : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        Camera camera = Camera.main;
-        RectTransform rectTransform = GetComponent<RectTransform>();
-        if (camera == null || rectTransform == null) return;
-        Vector2 screenThresholdSize = new(screenCenterThreshold * Screen.width, screenCenterThreshold * Screen.height);
-        rectTransform.sizeDelta = screenThresholdSize;
+        float adjustedScale = screenCenterThreshold / 0.5f;
+        CanvasScaler canvas = GetComponentInParent<CanvasScaler>();
+        float screenWidth = canvas.referenceResolution.x * canvas.scaleFactor;
+        float screenHeight = canvas.referenceResolution.y * canvas.scaleFactor;
+        if (TryGetComponent<Image>(out var circularImage))
+        {
+            circularImage.rectTransform.sizeDelta = new Vector2(screenWidth * adjustedScale, screenHeight * adjustedScale);
+        }
     }
 }

@@ -32,7 +32,7 @@ public class Movement : MonoBehaviour
 
         Vector3 direction = transform.right * x + transform.forward * z;
         direction = direction.normalized;
-        rb.velocity = direction * speed;
+       // rb.velocity = direction * speed;
     }
 
     public void SetIsPlayerGrinding(bool value)

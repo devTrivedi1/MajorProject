@@ -20,7 +20,6 @@ public class PlayerDetector : MonoBehaviour
         Jump jumpController = collision.gameObject.GetComponent<Jump>();
         if(grindController == null) { return; }
         grindController.GoGrindOnThoseRails(spline);
-        jumpController.SetJumpState(JumpState.Grounded);
 
     }
 }

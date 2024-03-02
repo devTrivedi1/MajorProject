@@ -185,11 +185,11 @@ MonoBehaviour:
     applyPosition2D: 1
     retainLocalPosition: 0
     direction: 1
-    applyRotationX: 0
-    applyRotationY: 0
-    applyRotationZ: 0
+    applyRotationX: 1
+    applyRotationY: 1
+    applyRotationZ: 1
     applyRotation2D: 1
-    retainLocalRotation: 1
+    retainLocalRotation: 0
     applyScaleX: 0
     applyScaleY: 0
     applyScaleZ: 0
@@ -302,9 +302,9 @@ MonoBehaviour:
     applyPosition2D: 1
     retainLocalPosition: 0
     direction: 1
-    applyRotationX: 1
-    applyRotationY: 1
-    applyRotationZ: 1
+    applyRotationX: 0
+    applyRotationY: 0
+    applyRotationZ: 0
     applyRotation2D: 1
     retainLocalRotation: 0
     applyScaleX: 0

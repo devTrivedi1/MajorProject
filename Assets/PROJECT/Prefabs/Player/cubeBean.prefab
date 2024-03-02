@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 7779937306267040380}
   - component: {fileID: 5636443493818125225}
   - component: {fileID: 8353172828336536649}
+  - component: {fileID: 1469407885141926609}
   m_Layer: 0
   m_Name: cubeBean
   m_TagString: Untagged
@@ -425,12 +426,58 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 2118221051237194163}
-  jumpForce: 30
+  jumpGizmo: {fileID: 1469407885141926609}
+  verticalForce: 30
   momentumMultiplier: 0.5
-  layerMask: 6
-  groundDetectionLength: 1
-  fallMultiplier: 2.5
+  groundDetectionOffset: -0.3
+  groundDetectionRadius: 0.5
+  fallMultiplier: 1.25
   jumpState: 0
+  layerMask: 6
+--- !u!114 &1469407885141926609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7392479643716216627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99ca21bfff9408f44bf12916ef8f4363, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DisplayGizmo: 1
+  GizmoType: 2
+  DisplayMode: 0
+  GizmoColor: {r: 1, g: 0.76862746, b: 0, a: 1}
+  PositionMode: 3
+  PositionTexture: {fileID: 0}
+  TextureSize: {x: 50, y: 50}
+  PositionSize: 0.5
+  ColliderRenderType: 0
+  ViewDistance: 20
+  GizmoOffset: {x: 0, y: -0.3, z: 0}
+  LockX: 0
+  LockedX: 0
+  LockY: 0
+  LockedY: 0
+  LockZ: 0
+  LockedZ: 0
+  DisplayText: 1
+  TextMode: 1
+  TextToDisplay: Ground Detection
+  TextOffset: {x: -0.19, y: -0.79, z: 0}
+  TextFontStyle: 1
+  TextSize: 12
+  TextColor: {r: 1, g: 0.76862746, b: 0, a: 1}
+  TextBackgroundColor: {r: 0, g: 0, b: 0, a: 0.3}
+  TextPadding: {x: 5, y: 0, z: 5, w: 0}
+  TextMaxDistance: 14
+  TargetProperty:
+    TargetObject: {fileID: 0}
+    TargetComponent: {fileID: 0}
+    TargetScriptableObject: {fileID: 0}
+    TargetPropertyName: 
 --- !u!1001 &8251777501913764716
 PrefabInstance:
   m_ObjectHideFlags: 0

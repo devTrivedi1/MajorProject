@@ -2,13 +2,13 @@ using UnityEngine;
 
 public abstract class Targetable : MonoBehaviour
 {
-    private void Awake()
+    private void Start()
     {
-        Targeting.RegisterTarget(this);
+        Targeting.Instance.RegisterTarget(this);
     }
 
     private void OnDisable()
     {
-        Targeting.UnregisterTarget(this);
+        Targeting.Instance.UnregisterTarget(this);
     }
 }

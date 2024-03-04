@@ -44,11 +44,6 @@ public class Turret : MonoBehaviour
     {
         isFiring = true;
 
-        while (!PlayerInRange()) 
-        {
-            yield return null;
-        }
-
         while (PlayerInRange())
         {
             Fire();

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Turret : MonoBehaviour
 {
-    Movement[] player;
+    Movement player;
     [SerializeField] float rotationSpeed = 5f;
     [SerializeField] float fireRate = 1f;
     [SerializeField] GameObject bulletPrefab;
@@ -15,7 +15,7 @@ public class Turret : MonoBehaviour
 
     void Start()
     {
-        player = FindObjectsOfType<Movement>();
+        player = FindObjectOfType<Movement>();
     }
 
     void Update()
@@ -32,14 +32,8 @@ public class Turret : MonoBehaviour
 
     void RotateTurret()
     {
-        Transform closestPlayer = player[0].transform;
-        foreach (var player in player)
-        {
-            if (Vector3.Distance(transform.position, player.transform.position) < Vector3.Distance(transform.position, closestPlayer.position))
-            {
-                closestPlayer = player.transform;
-            }
-        }
+        Transform closestPlayer = player.transform;
+        firePoint.transform.LookAt(closestPlayer);
         Vector3 targetDir = closestPlayer.position - transform.position;
         Quaternion lookRotation = Quaternion.LookRotation(targetDir);
         Vector3 rotation = Quaternion.Lerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed).eulerAngles;
@@ -71,12 +65,9 @@ public class Turret : MonoBehaviour
 
     bool PlayerInRange()
     {
-        foreach (var player in player)
+        if (Vector3.Distance(transform.position, player.transform.position) < playerRange)
         {
-            if (Vector3.Distance(transform.position, player.transform.position) < playerRange)
-            {
-                return true;
-            }
+          return true;
         }
         return false;
     }

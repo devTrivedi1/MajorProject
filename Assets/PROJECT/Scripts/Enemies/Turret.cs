@@ -10,7 +10,7 @@ public class Turret : MonoBehaviour
     [SerializeField] GameObject bulletPrefab;
     [SerializeField] Transform firePoint;
     [SerializeField] float playerRange = 10f; // Range within which players are detected
-    [SerializeField] float nextFireTime;
+    [SerializeField] float timeBetweenBullets;
     private bool isFiring = false;
 
     void Start()

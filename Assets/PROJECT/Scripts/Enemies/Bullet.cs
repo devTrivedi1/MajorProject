@@ -16,6 +16,6 @@ public class Bullet : MonoBehaviour
 
     void Update()
     {
-        rb.AddForce(transform.forward * speed);
+        rb.velocity = transform.forward * speed;
     }
 }

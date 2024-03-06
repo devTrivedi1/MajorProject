@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7392479643716216627
+--- !u!1 &7348818735262430147
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,55 +8,46 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3350002201789822737}
-  - component: {fileID: 8493530101297775240}
-  - component: {fileID: 332468974585809453}
-  - component: {fileID: 7907424181908237591}
-  - component: {fileID: 6537065598986673320}
-  - component: {fileID: 7009623460213858387}
-  - component: {fileID: 2118221051237194163}
-  - component: {fileID: 7779937306267040380}
-  - component: {fileID: 5636443493818125225}
-  - component: {fileID: 8353172828336536649}
-  - component: {fileID: 1469407885141926609}
+  - component: {fileID: 6809477269363675566}
+  - component: {fileID: 1585651714424547261}
+  - component: {fileID: 1830207323622836478}
   m_Layer: 0
-  m_Name: cubeBean
+  m_Name: PlayerMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3350002201789822737
+--- !u!4 &6809477269363675566
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7392479643716216627}
+  m_GameObject: {fileID: 7348818735262430147}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.0000683107, y: 0.9998507, z: -0.0040659998, w: 0.01679796}
-  m_LocalPosition: {x: 9.21, y: 0, z: 5.45}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 417987877497618387}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0.466, y: 178.075, z: 0}
---- !u!33 &8493530101297775240
+  m_Children: []
+  m_Father: {fileID: 3350002201789822737}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &1585651714424547261
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7392479643716216627}
+  m_GameObject: {fileID: 7348818735262430147}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &332468974585809453
+--- !u!23 &1830207323622836478
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7392479643716216627}
+  m_GameObject: {fileID: 7348818735262430147}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -92,6 +83,47 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &7392479643716216627
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3350002201789822737}
+  - component: {fileID: 7907424181908237591}
+  - component: {fileID: 6537065598986673320}
+  - component: {fileID: 7009623460213858387}
+  - component: {fileID: 2118221051237194163}
+  - component: {fileID: 7779937306267040380}
+  - component: {fileID: 5636443493818125225}
+  - component: {fileID: 8353172828336536649}
+  - component: {fileID: 1469407885141926609}
+  m_Layer: 0
+  m_Name: cubeBean
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3350002201789822737
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7392479643716216627}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.0000683107, y: 0.9998507, z: -0.0040659998, w: 0.01679796}
+  m_LocalPosition: {x: 9.21, y: 0, z: 5.45}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6809477269363675566}
+  - {fileID: 417987877497618387}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0.466, y: 178.075, z: 0}
 --- !u!65 &7907424181908237591
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -190,7 +222,7 @@ MonoBehaviour:
     applyRotationY: 1
     applyRotationZ: 1
     applyRotation2D: 1
-    retainLocalRotation: 0
+    retainLocalRotation: 1
     applyScaleX: 0
     applyScaleY: 0
     applyScaleZ: 0

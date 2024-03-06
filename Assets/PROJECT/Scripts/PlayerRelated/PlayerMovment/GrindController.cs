@@ -37,7 +37,7 @@ public class GrindController : MonoBehaviour
         SplineComputer[] splineArray = FindObjectsOfType<SplineComputer>();
         AllSplines = splineArray.ToList();
         splineFollower.onNode += OnJunction;
-        Jump.OnJumpStateChanged+=GettingOffTheRails;
+        Jump.OnJumpStateChanged += GettingOffTheRails;
 
     }
 
@@ -53,10 +53,11 @@ public class GrindController : MonoBehaviour
 
         if (splineFollower.spline == null) { splineFollower.follow = false; return; }
 
-      
-        if (Input.GetKeyDown(KeyCode.S) )
+        transform.GetChild(0).gameObject.transform.rotation = transform.rotation;
+
+        if (Input.GetKeyDown(KeyCode.S))
         {
-            if(splineFollower.direction == Spline.Direction.Forward)
+            if (splineFollower.direction == Spline.Direction.Forward)
             {
                 float value = -splineFollower.followSpeed;
                 splineFollower.followSpeed = value;
@@ -64,9 +65,9 @@ public class GrindController : MonoBehaviour
             else
             {
                 float value = Math.Abs(splineFollower.followSpeed);
-                splineFollower.followSpeed = value;              
+                splineFollower.followSpeed = value;
             }
-   
+
         }
 
         GrindRailSprinting();
@@ -94,6 +95,7 @@ public class GrindController : MonoBehaviour
         splineProjector.spline = null;
         splineProjector.enabled = false;
         isGrinding = false;
+        transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
         OnRailGrindStateChange?.Invoke(splineFollower.follow);
     }
 
@@ -102,7 +104,6 @@ public class GrindController : MonoBehaviour
         if (closestNode != null)
         {
             float distance = Vector3.Distance(transform.position, closestNode.transform.position);
-
             // this is to choose a track when input is pressed
 
             if (Input.GetKeyDown(KeyCode.D))
@@ -176,12 +177,12 @@ public class GrindController : MonoBehaviour
 
     Node.Connection WithInputGetMostConvenientConnection(KeyCode keyPress)
     {
-        if(keyPress == KeyCode.D)
+        if (keyPress == KeyCode.D)
         {
             Node.Connection[] availableConnections = closestNode.GetConnections();
             return availableConnections[0];
         }
-        else if(keyPress == KeyCode.A)
+        else if (keyPress == KeyCode.A)
         {
             Node.Connection[] availableConnections = closestNode.GetConnections();
             return availableConnections[2];
@@ -218,7 +219,7 @@ public class GrindController : MonoBehaviour
         }
     }
 
-  
+
     bool ShouldSwitchRailMovingForward()
     {
         RaycastHit[] colliderHits = Physics.SphereCastAll(transform.position, 1f, transform.forward, 50);
@@ -255,7 +256,7 @@ public class GrindController : MonoBehaviour
     {
         if (!isGrinding)
         {
-            
+
             splineFollower.spline = splineToGrindOn;
             splineFollower.RebuildImmediate();
 
@@ -268,7 +269,14 @@ public class GrindController : MonoBehaviour
             splineFollower.SetPercent(percent);
 
             splineFollower.follow = true;
-            splineFollower.followSpeed = startSpeed;
+            if (splineFollower.result.percent < 0.5)
+            {
+                splineFollower.followSpeed = startSpeed;
+            }
+            else
+            {
+                splineFollower.followSpeed = -startSpeed;
+            }
             isGrinding = true;
             OnRailGrindStateChange?.Invoke(isGrinding);
             return;
@@ -290,7 +298,7 @@ public class GrindController : MonoBehaviour
 
     Vector3 ExternalMomentum()
     {
-        if(!isGrinding) { return Vector3.zero; }
+        if (!isGrinding) { return Vector3.zero; }
         Vector3 externalMomentum = splineFollower.EvaluatePosition(splineFollower.result.percent).normalized * splineFollower.followSpeed;
         return externalMomentum;
     }

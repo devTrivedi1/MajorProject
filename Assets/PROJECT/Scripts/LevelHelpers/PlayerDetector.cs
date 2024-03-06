@@ -17,7 +17,9 @@ public class PlayerDetector : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         GrindController grindController = collision.gameObject.GetComponent<GrindController>();
+        Jump jumpController = collision.gameObject.GetComponent<Jump>();
         if(grindController == null) { return; }
         grindController.GoGrindOnThoseRails(spline);
+
     }
 }

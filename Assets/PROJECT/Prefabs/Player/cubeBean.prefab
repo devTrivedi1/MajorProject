@@ -13,10 +13,12 @@ GameObject:
   - component: {fileID: 332468974585809453}
   - component: {fileID: 7907424181908237591}
   - component: {fileID: 6537065598986673320}
-  - component: {fileID: 7779937306267040380}
   - component: {fileID: 7009623460213858387}
   - component: {fileID: 2118221051237194163}
+  - component: {fileID: 7779937306267040380}
   - component: {fileID: 5636443493818125225}
+  - component: {fileID: 8353172828336536649}
+  - component: {fileID: 1469407885141926609}
   m_Layer: 0
   m_Name: cubeBean
   m_TagString: Untagged
@@ -97,7 +99,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7392479643716216627}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 8199412916ea2394db9c8a319e780576, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -173,11 +175,11 @@ MonoBehaviour:
   _motion:
     _hasOffset: 1
     _hasRotationOffset: 0
-    _offset: {x: 0, y: 1.2}
+    _offset: {x: 0, y: 0.79}
     _rotationOffset: {x: 0, y: 0, z: 0}
     _baseScale: {x: 1, y: 1, z: 1}
     _2dMode: 0
-    velocityHandleMode: 2
+    velocityHandleMode: 3
     applyPositionX: 1
     applyPositionY: 1
     applyPositionZ: 1
@@ -210,13 +212,13 @@ MonoBehaviour:
     color: {r: 1, g: 1, b: 1, a: 1}
     size: 1
     percent: 0
-  wrapMode: 1
+  wrapMode: 2
   followMode: 0
   autoStartPosition: 0
   _follow: 1
   _startPosition: 0
   preserveUniformSpeedWithOffset: 0
-  _followSpeed: 15
+  _followSpeed: 5
   _followDuration: 1
   _speedModifier:
     blend: 1
@@ -228,38 +230,6 @@ MonoBehaviour:
   _unityOnBeginningReached:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &7779937306267040380
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7392479643716216627}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab066f18e527dd848a246f22a7881410, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speedMultiplier: 4
-  transitionSpeed: 20
-  distanceToSwitchNode: 10
-  distanceToGoOnRail: 2
-  AllNodes: []
-  AllSplines: []
-  currentConnection:
-    invertTangents: 0
-    _pointIndex: 0
-    _computer: {fileID: 0}
-    point:
-      _type: 0
-      position: {x: 0, y: 0, z: 0}
-      color: {r: 0, g: 0, b: 0, a: 0}
-      normal: {x: 0, y: 0, z: 0}
-      size: 0
-      tangent: {x: 0, y: 0, z: 0}
-      tangent2: {x: 0, y: 0, z: 0}
-  closestNode: {fileID: 0}
-  isGrinding: 0
 --- !u!114 &7009623460213858387
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -272,7 +242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 453ef2bcc92003342b9fe6a327abc98c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  updateMethod: 0
+  updateMethod: 1
   _spline: {fileID: 0}
   _autoUpdate: 1
   _rotationModifier:
@@ -318,7 +288,7 @@ MonoBehaviour:
   triggerGroup: 0
   _direction: 1
   _dontLerpDirection: 0
-  _physicsMode: 0
+  _physicsMode: 1
   _motion:
     _hasOffset: 0
     _hasRotationOffset: 0
@@ -326,23 +296,23 @@ MonoBehaviour:
     _rotationOffset: {x: 0, y: 0, z: 0}
     _baseScale: {x: 1, y: 1, z: 1}
     _2dMode: 0
-    velocityHandleMode: 0
-    applyPositionX: 1
-    applyPositionY: 1
-    applyPositionZ: 1
+    velocityHandleMode: 2
+    applyPositionX: 0
+    applyPositionY: 0
+    applyPositionZ: 0
     applyPosition2D: 1
     retainLocalPosition: 0
     direction: 1
-    applyRotationX: 1
-    applyRotationY: 1
-    applyRotationZ: 1
+    applyRotationX: 0
+    applyRotationY: 0
+    applyRotationZ: 0
     applyRotation2D: 1
     retainLocalRotation: 0
     applyScaleX: 0
     applyScaleY: 0
     applyScaleZ: 0
     targetUser: {fileID: 0}
-  targetRigidbody: {fileID: 0}
+  targetRigidbody: {fileID: 2118221051237194163}
   targetRigidbody2D: {fileID: 0}
   targetTransform: {fileID: 0}
   _result:
@@ -364,10 +334,10 @@ MonoBehaviour:
   _subdivide: 4
   _projectTarget: {fileID: 3350002201789822737}
   applyTarget: {fileID: 0}
-  _targetObject: {fileID: 0}
+  _targetObject: {fileID: 7392479643716216627}
   _offset: {x: 0, y: 0}
   _rotationOffset: {x: 0, y: 0, z: 0}
-  lastPosition: {x: -3.8844318, y: 0.5, z: 2.6683316}
+  lastPosition: {x: -3.88, y: 0.99, z: 2.66}
 --- !u!54 &2118221051237194163
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -377,7 +347,7 @@ Rigidbody:
   m_GameObject: {fileID: 7392479643716216627}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0
+  m_Drag: 7
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -393,8 +363,41 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &7779937306267040380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7392479643716216627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab066f18e527dd848a246f22a7881410, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speedMultiplier: 0.25
+  transitionSpeed: 20
+  distanceToSwitchNode: 10
+  distanceToGoOnRail: 2
+  AllNodes: []
+  AllSplines: []
+  currentConnection:
+    invertTangents: 0
+    _pointIndex: 0
+    _computer: {fileID: 0}
+    point:
+      _type: 0
+      position: {x: 0, y: 0, z: 0}
+      color: {r: 0, g: 0, b: 0, a: 0}
+      normal: {x: 0, y: 0, z: 0}
+      size: 0
+      tangent: {x: 0, y: 0, z: 0}
+      tangent2: {x: 0, y: 0, z: 0}
+  closestNode: {fileID: 0}
+  isGrinding: 0
+  isSwitchingTrack: 0
 --- !u!114 &5636443493818125225
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -407,9 +410,74 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b08d7a0f22a38245a3ce8ad5a604d79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
+  speed: 12
   isPlayerGrinding: 0
   rb: {fileID: 0}
+--- !u!114 &8353172828336536649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7392479643716216627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 149b88543461e304394a47b4ad3b3ca7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 2118221051237194163}
+  jumpGizmo: {fileID: 1469407885141926609}
+  verticalForce: 30
+  momentumMultiplier: 0.5
+  groundDetectionOffset: -0.3
+  groundDetectionRadius: 0.5
+  fallMultiplier: 1.25
+  jumpState: 0
+  layerMask: 6
+--- !u!114 &1469407885141926609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7392479643716216627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99ca21bfff9408f44bf12916ef8f4363, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DisplayGizmo: 1
+  GizmoType: 2
+  DisplayMode: 0
+  GizmoColor: {r: 1, g: 0.76862746, b: 0, a: 1}
+  PositionMode: 3
+  PositionTexture: {fileID: 0}
+  TextureSize: {x: 50, y: 50}
+  PositionSize: 0.5
+  ColliderRenderType: 0
+  ViewDistance: 20
+  GizmoOffset: {x: 0, y: -0.3, z: 0}
+  LockX: 0
+  LockedX: 0
+  LockY: 0
+  LockedY: 0
+  LockZ: 0
+  LockedZ: 0
+  DisplayText: 1
+  TextMode: 1
+  TextToDisplay: Ground Detection
+  TextOffset: {x: -0.19, y: -0.79, z: 0}
+  TextFontStyle: 1
+  TextSize: 12
+  TextColor: {r: 1, g: 0.76862746, b: 0, a: 1}
+  TextBackgroundColor: {r: 0, g: 0, b: 0, a: 0.3}
+  TextPadding: {x: 5, y: 0, z: 5, w: 0}
+  TextMaxDistance: 14
+  TargetProperty:
+    TargetObject: {fileID: 0}
+    TargetComponent: {fileID: 0}
+    TargetScriptableObject: {fileID: 0}
+    TargetPropertyName: 
 --- !u!1001 &8251777501913764716
 PrefabInstance:
   m_ObjectHideFlags: 0

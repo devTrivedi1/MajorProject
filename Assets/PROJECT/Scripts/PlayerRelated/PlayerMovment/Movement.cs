@@ -9,6 +9,9 @@ public class Movement : MonoBehaviour
     [SerializeField] bool isPlayerGrinding = false;
     [SerializeField] Rigidbody rb;
 
+    float xInput;
+    float zInput;
+
     private void OnEnable()
     {
         GrindController.OnRailGrindStateChange += SetIsPlayerGrinding;
@@ -24,31 +27,40 @@ public class Movement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (isPlayerGrinding) return;
-        float x = Input.GetAxisRaw("Horizontal");
-        float z = Input.GetAxisRaw("Vertical");
+        float xInput = Input.GetAxisRaw("Horizontal");
+        float zInput = Input.GetAxisRaw("Vertical");
 
         Vector3 cameraForwardDirection = Camera.main.transform.forward;
         cameraForwardDirection.y = 0;
         Vector3 cameraRightDirection = Camera.main.transform.right;
 
-        Vector3 moveDirection = cameraForwardDirection * z + cameraRightDirection * x;
+        Vector3 moveDirection = cameraForwardDirection * zInput + cameraRightDirection * xInput;
         moveDirection = moveDirection.normalized;
 
         Vector3 moveForce = new Vector3(moveDirection.x * speed, rb.velocity.y, moveDirection.z * speed);
         rb.velocity = moveForce;
 
-        if(moveDirection != Vector3.zero)
+        if (moveDirection != Vector3.zero)
         {
-           transform.GetChild(0).forward = Vector3.Lerp(transform.GetChild(0).forward, moveDirection,Time.deltaTime*20f);
+            transform.GetChild(0).forward = Vector3.Lerp(transform.GetChild(0).forward, moveDirection, Time.fixedDeltaTime * 20f);
         }
-        
     }
 
     public void SetIsPlayerGrinding(bool value)
     {
         isPlayerGrinding = value;
+        OnPlayerOnRails();
+    }
+
+    void OnPlayerOnRails()
+    {
+        if (isPlayerGrinding)
+        {
+            rb.interpolation = RigidbodyInterpolation.None;
+        }
+        else { rb.interpolation = RigidbodyInterpolation.Extrapolate; }
     }
 }

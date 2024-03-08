@@ -9,6 +9,7 @@ public class GrindController : MonoBehaviour
 {
     SplineFollower splineFollower;
     SplineProjector splineProjector;
+
     [SerializeField] float speedMultiplier;
     [SerializeField] float transitionSpeed;
     float startSpeed;

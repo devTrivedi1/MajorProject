@@ -5020,7 +5020,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ddc1a2536715a24095c464a2c394d5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  updateMethod: 1
+  updateMethod: 0
   _spline: {fileID: 0}
   _autoUpdate: 1
   _rotationModifier:
@@ -5058,7 +5058,7 @@ MonoBehaviour:
   _clipTo: 1
   animClipFrom: 0
   animClipTo: 1
-  multithreaded: 0
+  multithreaded: 1
   buildOnAwake: 1
   buildOnEnable: 0
   applyDirectionRotation: 1
@@ -5066,7 +5066,7 @@ MonoBehaviour:
   triggerGroup: 0
   _direction: 1
   _dontLerpDirection: 0
-  _physicsMode: 1
+  _physicsMode: 0
   _motion:
     _hasOffset: 1
     _hasRotationOffset: 0
@@ -5113,7 +5113,7 @@ MonoBehaviour:
   _follow: 1
   _startPosition: 0
   preserveUniformSpeedWithOffset: 0
-  _followSpeed: 5
+  _followSpeed: 8
   _followDuration: 1
   _speedModifier:
     blend: 1
@@ -5513,6 +5513,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2251524985836375433, guid: 6a7d5a24a43df044ea535e5f5b7e1821,
         type: 3}
+      propertyPath: m_XDamping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2251524985836375433, guid: 6a7d5a24a43df044ea535e5f5b7e1821,
+        type: 3}
+      propertyPath: m_YDamping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2251524985836375433, guid: 6a7d5a24a43df044ea535e5f5b7e1821,
+        type: 3}
+      propertyPath: m_ZDamping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2251524985836375433, guid: 6a7d5a24a43df044ea535e5f5b7e1821,
+        type: 3}
       propertyPath: m_FollowOffset.y
       value: 1
       objectReference: {fileID: 0}
@@ -5524,17 +5539,47 @@ PrefabInstance:
     - target: {fileID: 2293991982509210167, guid: 6a7d5a24a43df044ea535e5f5b7e1821,
         type: 3}
       propertyPath: field of view
-      value: 60
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 2559329450179738508, guid: 6a7d5a24a43df044ea535e5f5b7e1821,
+        type: 3}
+      propertyPath: m_VerticalDamping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2559329450179738508, guid: 6a7d5a24a43df044ea535e5f5b7e1821,
+        type: 3}
+      propertyPath: m_HorizontalDamping
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2610113421879465197, guid: 6a7d5a24a43df044ea535e5f5b7e1821,
         type: 3}
       propertyPath: m_StandbyUpdate
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2610113421879465197, guid: 6a7d5a24a43df044ea535e5f5b7e1821,
+        type: 3}
+      propertyPath: m_Lens.FieldOfView
+      value: 80
+      objectReference: {fileID: 0}
     - target: {fileID: 2778705055128101633, guid: 6a7d5a24a43df044ea535e5f5b7e1821,
         type: 3}
       propertyPath: m_StandbyUpdate
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2778705055128101633, guid: 6a7d5a24a43df044ea535e5f5b7e1821,
+        type: 3}
+      propertyPath: m_Lens.FieldOfView
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 2806180398808576673, guid: 6a7d5a24a43df044ea535e5f5b7e1821,
+        type: 3}
+      propertyPath: m_VerticalDamping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2806180398808576673, guid: 6a7d5a24a43df044ea535e5f5b7e1821,
+        type: 3}
+      propertyPath: m_HorizontalDamping
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3117511597541216537, guid: 6a7d5a24a43df044ea535e5f5b7e1821,
         type: 3}
@@ -5575,6 +5620,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalRotation.z
       value: -0.05815946
+      objectReference: {fileID: 0}
+    - target: {fileID: 4384459268782688404, guid: 6a7d5a24a43df044ea535e5f5b7e1821,
+        type: 3}
+      propertyPath: m_XDamping
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4384459268782688404, guid: 6a7d5a24a43df044ea535e5f5b7e1821,
+        type: 3}
+      propertyPath: m_YDamping
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4384459268782688404, guid: 6a7d5a24a43df044ea535e5f5b7e1821,
+        type: 3}
+      propertyPath: m_ZDamping
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 4384459268782688404, guid: 6a7d5a24a43df044ea535e5f5b7e1821,
         type: 3}
@@ -5623,6 +5683,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6009382667004744304, guid: 6a7d5a24a43df044ea535e5f5b7e1821,
         type: 3}
+      propertyPath: m_Lens.FieldOfView
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 6009382667004744304, guid: 6a7d5a24a43df044ea535e5f5b7e1821,
+        type: 3}
       propertyPath: m_XAxis.m_MaxSpeed
       value: 250
       objectReference: {fileID: 0}
@@ -5665,6 +5730,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_StandbyUpdate
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6630575043776139162, guid: 6a7d5a24a43df044ea535e5f5b7e1821,
+        type: 3}
+      propertyPath: m_Lens.FieldOfView
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 6772510670783428074, guid: 6a7d5a24a43df044ea535e5f5b7e1821,
         type: 3}
@@ -5716,6 +5786,31 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: -0.05815946
       objectReference: {fileID: 0}
+    - target: {fileID: 8696741940301330907, guid: 6a7d5a24a43df044ea535e5f5b7e1821,
+        type: 3}
+      propertyPath: m_VerticalDamping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8696741940301330907, guid: 6a7d5a24a43df044ea535e5f5b7e1821,
+        type: 3}
+      propertyPath: m_HorizontalDamping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8991415401155260456, guid: 6a7d5a24a43df044ea535e5f5b7e1821,
+        type: 3}
+      propertyPath: m_XDamping
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8991415401155260456, guid: 6a7d5a24a43df044ea535e5f5b7e1821,
+        type: 3}
+      propertyPath: m_YDamping
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8991415401155260456, guid: 6a7d5a24a43df044ea535e5f5b7e1821,
+        type: 3}
+      propertyPath: m_ZDamping
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 8991415401155260456, guid: 6a7d5a24a43df044ea535e5f5b7e1821,
         type: 3}
       propertyPath: m_FollowOffset.y
@@ -5729,8 +5824,37 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 769840483109573866, guid: 6a7d5a24a43df044ea535e5f5b7e1821,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3145015649318659722}
   m_SourcePrefab: {fileID: 100100000, guid: 6a7d5a24a43df044ea535e5f5b7e1821, type: 3}
+--- !u!1 &193529582533594310 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 769840483109573866, guid: 6a7d5a24a43df044ea535e5f5b7e1821,
+    type: 3}
+  m_PrefabInstance: {fileID: 576614642945087532}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3145015649318659722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 193529582533594310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0544e7b14d134a1449e61175446cfb95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ApplyAfter: 3
+  m_Tilt: 0
+  m_Pan: 0
+  m_Dutch: 0
+  m_ZoomScale: 1
+  m_FollowAttachment: 0.65
+  m_LookAtAttachment: 0.65
 --- !u!4 &1365485469976338358 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1942078635232085914, guid: 6a7d5a24a43df044ea535e5f5b7e1821,

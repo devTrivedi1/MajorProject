@@ -25,4 +25,14 @@ public class TelekineticObject : MonoBehaviour
         }
         manipulable = true;
     }
+
+    public virtual IEnumerator ApplyEffect(Targetable targetable, float throwForce) 
+    {
+        if (targetable.TryGetComponent(out Rigidbody rb))
+        {
+            rb.AddForce((targetable.transform.position - transform.position).normalized * throwForce, ForceMode.VelocityChange);
+        }
+        yield return new WaitUntil(() => manipulable);
+        gameObject.SetActive(false);
+    }
 }

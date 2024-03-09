@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class Targeting : MonoBehaviour
 {
-    List<Targetable> allTargetables = new();
+    Targetable[] allTargetables;
     public float screenCenterThreshold = 0.1f;
     public static Targeting Instance { get; private set; }
 
@@ -12,28 +12,12 @@ public class Targeting : MonoBehaviour
     {
         if (Instance == null) 
         { 
-            Instance = this; 
+            Instance = this;
+            allTargetables = FindObjectsOfType<Targetable>();
         }
         else
         {
             Destroy(this);
-        }
-    }
-
-    public void RegisterTarget(Targetable target)
-    {
-        if (allTargetables == null) { allTargetables = new(); }
-        if (!allTargetables.Contains(target))
-        {
-            allTargetables.Add(target);
-        }
-    }
-
-    public void UnregisterTarget(Targetable target)
-    {
-        if (allTargetables.Contains(target))
-        {
-            allTargetables.Remove(target);
         }
     }
 

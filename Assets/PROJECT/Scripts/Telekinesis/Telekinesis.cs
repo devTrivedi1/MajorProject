@@ -56,7 +56,7 @@ public class Telekinesis : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.E))
         {
             if (currentObject == null)
             {
@@ -147,10 +147,11 @@ public class Telekinesis : MonoBehaviour
             if (state != TelekinesisState.Idle)
             {
                 this.state = state;
+                obj.transform.parent = orbitPosition;
             }
             else
             {
-                obj.Rb.AddForce((obj.transform.position - endPosition).normalized * throwForce, ForceMode.VelocityChange);
+                obj.Rb.AddForce((endPosition - obj.transform.position).normalized * throwForce, ForceMode.VelocityChange);
                 StartCoroutine(obj.ApplyEffect(currentTarget.target, throwForce));
             }
         }
@@ -201,6 +202,7 @@ public class Telekinesis : MonoBehaviour
     void ThrowObject()
     {
         Targetable targetable = currentTarget.target;
+        currentObject.transform.parent = null;
         if (targetable == null)
         {
             currentObject.Rb.useGravity = true;

@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public interface IDamagable
+public interface IDamageable
 {
     public GameObject gameObject {  get; }
     public Transform transform { get; }
 
-    public void TakeDamage();
+    public void TakeDamage(int damage);
 }

@@ -4,12 +4,10 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class TelekineticObject : MonoBehaviour
 {
+    [SerializeField] int damage = 1;
     Rigidbody rb;
     public Rigidbody Rb => rb;
     public bool manipulable { get; private set; } = true;
-
-    Vector3 lastExplosionPosition;
-    float radius;
 
     private void Start()
     {
@@ -33,20 +31,17 @@ public class TelekineticObject : MonoBehaviour
     {
         if (targetable.TryGetComponent(out Rigidbody rb))
         {
-            //rb.AddForce((targetable.transform.position - transform.position).normalized * throwForce, ForceMode.VelocityChange);
-            Utilities.KnockbackObjects(transform, 10f, throwForce, LayerMask.GetMask("Default"));
-            lastExplosionPosition = transform.position;
-            radius = 10f;
+            rb.AddForce((targetable.transform.position - transform.position).normalized * throwForce, ForceMode.VelocityChange);
         }
         yield return new WaitUntil(() => manipulable);
-        //gameObject.SetActive(false);
+        gameObject.SetActive(false);
     }
 
-#if UNITY_EDITOR
-    private void OnDrawGizmos()
+    private void OnCollisionEnter(Collision collision)
     {
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawSphere(lastExplosionPosition, radius);
+        if (!manipulable && collision.transform.TryGetComponent(out IDamageable damageable))
+        {
+            damageable.TakeDamage(damage);
+        }
     }
-#endif
 }

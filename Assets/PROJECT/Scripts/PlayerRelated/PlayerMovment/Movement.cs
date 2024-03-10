@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using System;
 
 public class Movement : MonoBehaviour
 {
@@ -13,6 +13,8 @@ public class Movement : MonoBehaviour
     float xInput;
     float zInput;
     Vector3 moveDirection;
+
+    public static Action<Vector3> OnMoveDirectionChanged;
 
     private void OnEnable()
     {
@@ -43,8 +45,10 @@ public class Movement : MonoBehaviour
 
         moveDirection = cameraForwardDirection * zInput + cameraRightDirection * xInput;
         moveDirection = moveDirection.normalized;
+        OnMoveDirectionChanged?.Invoke(moveDirection);
 
         Vector3 moveForce = new Vector3(moveDirection.x * speed, 0, moveDirection.z * speed);
+
 
         if (moveDirection != Vector3.zero)
         {

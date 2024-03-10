@@ -58,6 +58,7 @@ public class GrindController : MonoBehaviour
 
         if (splineFollower.spline == null) { splineFollower.follow = false; return; }
 
+
         transform.GetChild(0).gameObject.transform.rotation = transform.rotation;
 
         if (Input.GetKeyDown(KeyCode.S))
@@ -263,17 +264,40 @@ public class GrindController : MonoBehaviour
             splineProjector.CalculateProjection();
 
             double percent = splineProjector.GetPercent();
+
+
             splineFollower.SetPercent(percent);
 
-            splineFollower.follow = true;
-            if (splineFollower.result.percent < 0.5)
+            float dot = Vector3.Dot(splineFollower.result.position.normalized, transform.forward);
+
+            if(splineFollower.direction == Spline.Direction.Forward)
             {
-                splineFollower.followSpeed = startSpeed;
+                if(dot > -0.58f && dot <-0.39f )
+                {
+                    splineFollower.followSpeed = Mathf.Abs(startSpeed);
+                }
+                else
+                {
+                    splineFollower.followSpeed = -startSpeed;
+                }
             }
             else
             {
-                splineFollower.followSpeed = -startSpeed;
+                if (dot > -0.6f && dot < 0.19)
+                {
+                    splineFollower.followSpeed = Mathf.Abs(startSpeed);
+                }
+                else
+                {
+                    splineFollower.followSpeed = -startSpeed;
+                }
             }
+
+
+
+            splineFollower.follow = true;
+
+
             isGrinding = true;
             OnRailGrindStateChange?.Invoke(isGrinding);
             return;
@@ -285,14 +309,14 @@ public class GrindController : MonoBehaviour
     {
         if (splineFollower.direction == Spline.Direction.Forward)
         {
-            if (splineFollower.result.percent > 0.95f)
+            if (splineFollower.result.percent > 0.97f)
             {
                 TriggerJumpingOffRails?.Invoke(JumpState.inAir);
             }
         }
         else
         {
-            if (splineFollower.result.percent < 0.05f)
+            if (splineFollower.result.percent < 0.07f)
             {
                 TriggerJumpingOffRails?.Invoke(JumpState.inAir);
             }
@@ -309,7 +333,7 @@ public class GrindController : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
         OnRailGrindStateChange?.Invoke(splineFollower.follow);
     }
-    private void  GetOffRailsOnJump(JumpState _jumpStste)
+    private void GetOffRailsOnJump(JumpState _jumpStste)
     {
         if (_jumpStste == JumpState.Grounded || splineFollower.spline == null) return;
         ExitRails();
@@ -330,9 +354,9 @@ public class GrindController : MonoBehaviour
     Vector3 JumpMomentumAddon()
     {
         if (isGrinding && isSpeedingUp)
-        { return transform.forward *3f; }
+        { return transform.forward * 3f; }
 
-        else if(isGrinding && !isSpeedingUp)
+        else if (isGrinding && !isSpeedingUp)
         { return transform.forward * 2.5f; }
 
         return Vector3.zero;

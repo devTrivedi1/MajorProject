@@ -21,11 +21,13 @@ public class GrindController : MonoBehaviour
     [SerializeField] Node.Connection currentConnection;
     [SerializeField] Node closestNode;
 
-    public static Action<bool> OnRailGrindStateChange;
-
     public bool isGrinding = false;
+    bool isSpeedingUp;
     bool isInputPressed = false;
     [SerializeField] bool isSwitchingTrack = false;
+
+    public static Action<bool> OnRailGrindStateChange;
+    public static Action<JumpState> TriggerJumpingOffRails;
 
 
     private void OnEnable()
@@ -38,14 +40,16 @@ public class GrindController : MonoBehaviour
         SplineComputer[] splineArray = FindObjectsOfType<SplineComputer>();
         AllSplines = splineArray.ToList();
         splineFollower.onNode += OnJunction;
-        Jump.OnJumpStateChanged += GettingOffTheRails;
+        Jump.OnJumpStateChanged += GetOffRailsOnJump;
+        Jump.GetExternalMomentum += JumpMomentumAddon;
 
     }
 
     private void OnDisable()
     {
         splineFollower.onNode -= OnJunction;
-        Jump.OnJumpStateChanged -= GettingOffTheRails;
+        Jump.OnJumpStateChanged -= GetOffRailsOnJump;
+        Jump.GetExternalMomentum -= JumpMomentumAddon;
     }
 
     private void Update()
@@ -86,19 +90,11 @@ public class GrindController : MonoBehaviour
         });
 
         RailSwitchingByInput();
+
+        JumpOffAtTheEndOfRail();
     }
 
-    private void GettingOffTheRails(JumpState _jumpStste)
-    {
-        if (_jumpStste == JumpState.Grounded || splineFollower.spline == null) return;
-        splineFollower.follow = !splineFollower.follow;
-        splineFollower.spline = null;
-        splineProjector.spline = null;
-        splineProjector.enabled = false;
-        isGrinding = false;
-        transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
-        OnRailGrindStateChange?.Invoke(splineFollower.follow);
-    }
+
 
     private void RailSwitchingByInput()
     {
@@ -169,7 +165,7 @@ public class GrindController : MonoBehaviour
 
     private void GrindRailSprinting()
     {
-        bool isSpeedingUp = Input.GetKey(KeyCode.LeftShift);
+        isSpeedingUp = Input.GetKey(KeyCode.LeftShift);
 
         float targetSpeed = isSpeedingUp ? startSpeed * speedMultiplier : startSpeed;
         targetSpeed = splineFollower.direction == Spline.Direction.Forward ? targetSpeed : -targetSpeed;
@@ -285,6 +281,40 @@ public class GrindController : MonoBehaviour
         }
     }
 
+    public void JumpOffAtTheEndOfRail()
+    {
+        if (splineFollower.direction == Spline.Direction.Forward)
+        {
+            if (splineFollower.result.percent > 0.95f)
+            {
+                TriggerJumpingOffRails?.Invoke(JumpState.inAir);
+            }
+        }
+        else
+        {
+            if (splineFollower.result.percent < 0.05f)
+            {
+                TriggerJumpingOffRails?.Invoke(JumpState.inAir);
+            }
+        }
+    }
+
+    void ExitRails()
+    {
+        splineFollower.follow = !splineFollower.follow;
+        splineFollower.spline = null;
+        splineProjector.spline = null;
+        splineProjector.enabled = false;
+        isGrinding = false;
+        transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
+        OnRailGrindStateChange?.Invoke(splineFollower.follow);
+    }
+    private void  GetOffRailsOnJump(JumpState _jumpStste)
+    {
+        if (_jumpStste == JumpState.Grounded || splineFollower.spline == null) return;
+        ExitRails();
+    }
+
     private void GetCurrentConnection(Node.Connection[] availableConnections)
     {
         foreach (var connection in availableConnections)
@@ -297,11 +327,15 @@ public class GrindController : MonoBehaviour
         }
     }
 
-    Vector3 ExternalMomentum()
+    Vector3 JumpMomentumAddon()
     {
-        if (!isGrinding) { return Vector3.zero; }
-        Vector3 externalMomentum = splineFollower.EvaluatePosition(splineFollower.result.percent).normalized * splineFollower.followSpeed;
-        return externalMomentum;
+        if (isGrinding && isSpeedingUp)
+        { return transform.forward *3f; }
+
+        else if(isGrinding && !isSpeedingUp)
+        { return transform.forward * 2.5f; }
+
+        return Vector3.zero;
     }
 
     void disableInputEnabled()

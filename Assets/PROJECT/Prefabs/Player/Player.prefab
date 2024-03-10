@@ -5074,7 +5074,7 @@ MonoBehaviour:
     _rotationOffset: {x: 0, y: 0, z: 0}
     _baseScale: {x: 1, y: 1, z: 1}
     _2dMode: 0
-    velocityHandleMode: 3
+    velocityHandleMode: 2
     applyPositionX: 1
     applyPositionY: 1
     applyPositionZ: 1
@@ -5107,7 +5107,7 @@ MonoBehaviour:
     color: {r: 1, g: 1, b: 1, a: 1}
     size: 1
     percent: 0
-  wrapMode: 2
+  wrapMode: 0
   followMode: 0
   autoStartPosition: 0
   _follow: 1
@@ -5137,7 +5137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 453ef2bcc92003342b9fe6a327abc98c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  updateMethod: 1
+  updateMethod: 0
   _spline: {fileID: 0}
   _autoUpdate: 1
   _rotationModifier:
@@ -5183,7 +5183,7 @@ MonoBehaviour:
   triggerGroup: 0
   _direction: 1
   _dontLerpDirection: 0
-  _physicsMode: 1
+  _physicsMode: 0
   _motion:
     _hasOffset: 0
     _hasRotationOffset: 0
@@ -5209,7 +5209,7 @@ MonoBehaviour:
     targetUser: {fileID: 0}
   targetRigidbody: {fileID: 6436209759244527531}
   targetRigidbody2D: {fileID: 0}
-  targetTransform: {fileID: 0}
+  targetTransform: {fileID: 3138247005433631610}
   _result:
     position: {x: 0, y: 0, z: 0}
     up: {x: 0, y: 0, z: 0}
@@ -5305,7 +5305,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b08d7a0f22a38245a3ce8ad5a604d79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 12
+  speed: 100
   isPlayerGrinding: 0
   rb: {fileID: 0}
 --- !u!114 &9056971701887457742
@@ -5323,12 +5323,13 @@ MonoBehaviour:
   rb: {fileID: 6436209759244527531}
   jumpGizmo: {fileID: 7841587521512135242}
   verticalForce: 30
-  momentumMultiplier: 0.5
+  momentumMultiplier: 15
   groundDetectionOffset: -0.3
   groundDetectionRadius: 0.5
   fallMultiplier: 1.25
-  jumpState: 0
   layerMask: 6
+  ExternalMomentum: {x: 0, y: 0, z: 0}
+  jumpState: 0
 --- !u!114 &7841587521512135242
 MonoBehaviour:
   m_ObjectHideFlags: 0

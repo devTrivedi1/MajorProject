@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Movement : MonoBehaviour
 {
@@ -11,15 +12,18 @@ public class Movement : MonoBehaviour
 
     float xInput;
     float zInput;
+    Vector3 moveDirection;
 
     private void OnEnable()
     {
         GrindController.OnRailGrindStateChange += SetIsPlayerGrinding;
+        Jump.GetExternalMomentum += JumpMomentumAddon;
     }
 
     private void OnDisable()
     {
         GrindController.OnRailGrindStateChange -= SetIsPlayerGrinding;
+        Jump.GetExternalMomentum -= JumpMomentumAddon;
     }
 
     private void Start()
@@ -37,22 +41,37 @@ public class Movement : MonoBehaviour
         cameraForwardDirection.y = 0;
         Vector3 cameraRightDirection = Camera.main.transform.right;
 
-        Vector3 moveDirection = cameraForwardDirection * zInput + cameraRightDirection * xInput;
+        moveDirection = cameraForwardDirection * zInput + cameraRightDirection * xInput;
         moveDirection = moveDirection.normalized;
 
-        Vector3 moveForce = new Vector3(moveDirection.x * speed, rb.velocity.y, moveDirection.z * speed);
-        rb.velocity = moveForce;
+        Vector3 moveForce = new Vector3(moveDirection.x * speed, 0, moveDirection.z * speed);
 
         if (moveDirection != Vector3.zero)
         {
-            transform.GetChild(0).forward = Vector3.Lerp(transform.GetChild(0).forward, moveDirection, Time.fixedDeltaTime * 20f);
+            transform.forward = Vector3.Lerp(transform.forward, moveDirection, Time.fixedDeltaTime * 20f);
         }
+        rb.AddForce(moveForce, ForceMode.Acceleration);
+
+
     }
+
+
+
 
     public void SetIsPlayerGrinding(bool value)
     {
         isPlayerGrinding = value;
         OnPlayerOnRails();
+    }
+
+    Vector3 JumpMomentumAddon()
+    {
+       
+        if (!isPlayerGrinding && moveDirection.magnitude>0)
+        {
+            return transform.forward;
+        }
+        return Vector3.zero;
     }
 
     void OnPlayerOnRails()

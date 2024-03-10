@@ -27,14 +27,27 @@ public class Jump : MonoBehaviour
     Vector3 groundDetectionOffsetVector;
     [SerializeField] float groundDetectionRadius = 2f;
     [SerializeField] float fallMultiplier = 2.5f;
-
-    [HorizontalLine("Current Jump State", 2, FixedColor.Gray)]
-    [ReadOnly][SerializeField] JumpState jumpState = JumpState.Grounded;
-
+   
     [HorizontalLine("Layer To Trigger Jump", 2, FixedColor.Gray)]
     [Layer][SerializeField] int layerMask;
 
+    [HorizontalLine("Debug Stats", 2, FixedColor.Gray)]
+    [ReadOnly][SerializeField]Vector3 ExternalMomentum;
+    [ReadOnly][SerializeField] JumpState jumpState = JumpState.Grounded;
+
     public static Action<JumpState> OnJumpStateChanged;
+    public static Func<Vector3> GetExternalMomentum;
+
+    private void OnEnable()
+    {
+        GrindController.TriggerJumpingOffRails += SetJumpStateTo;
+
+    }
+
+    private void OnDisable()
+    {
+        GrindController.TriggerJumpingOffRails -= SetJumpStateTo;
+    }
 
 
     private void OnValidate()
@@ -59,8 +72,10 @@ public class Jump : MonoBehaviour
         GroundDetection();
         if (Input.GetKeyDown(KeyCode.Space) && jumpState == JumpState.Grounded)
         {
-            jumpState = JumpState.inAir;
+            SetJumpStateTo(JumpState.inAir);
+            ExternalMomentum += GetExternalMomentum();
             OnJumpStateChanged?.Invoke(jumpState);
+           
         }
     }
 
@@ -74,8 +89,12 @@ public class Jump : MonoBehaviour
     {
         if (jumpState == JumpState.inAir)
         {
-            rb.velocity += new Vector3(0, verticalForce, 0);
-            jumpState = JumpState.Falling;
+            if(ExternalMomentum == Vector3.zero)
+            {
+                ExternalMomentum = GetExternalMomentum();
+            }
+            rb.velocity +=  (Vector3.up * verticalForce) + (ExternalMomentum *momentumMultiplier);
+            SetJumpStateTo(JumpState.Falling);
             OnJumpStateChanged?.Invoke(jumpState);
         }
     }
@@ -96,8 +115,14 @@ public class Jump : MonoBehaviour
 
         if (Physics.OverlapSphere(transform.position + groundDetectionOffsetVector, groundDetectionRadius, 1 << layerMask).Length > 0)
         {
-            jumpState = JumpState.Grounded;
+            SetJumpStateTo(JumpState.Grounded);
             OnJumpStateChanged?.Invoke(jumpState);
+            ExternalMomentum = Vector3.zero;
         }
+    }
+
+    void SetJumpStateTo(JumpState state)
+    {
+        jumpState = state;
     }
 }

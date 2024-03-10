@@ -649,8 +649,6 @@ MonoBehaviour:
     - 2c9569919bffb1242817581236197b5e
     - 7433b31714341464184a785aed893e4c
     - 97afc2292a5dcbe489d576f6427bb409
-    - 23be02e73c30037489a56af8b5da027b
-    - efe8e1cc6e8b5314898db35f8e2c3250
     values:
     - colorIndex: 7
       iconNameOrGuid: ebd7d20882d5abb42abb240c354a0631
@@ -1922,7 +1920,3 @@ MonoBehaviour:
       iconNameOrGuid: 4a7e6c454e1d78e42af4ef68dbca9f07
     - colorIndex: 1
       iconNameOrGuid: PhysicMaterial Icon
-    - colorIndex: 2
-      iconNameOrGuid: 4a7e6c454e1d78e42af4ef68dbca9f07
-    - colorIndex: 2
-      iconNameOrGuid: ebd7d20882d5abb42abb240c354a0631

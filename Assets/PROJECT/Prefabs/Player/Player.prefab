@@ -5274,27 +5274,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab066f18e527dd848a246f22a7881410, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedMultiplier: 2
-  transitionSpeed: 20
-  distanceToSwitchNode: 10
-  distanceToGoOnRail: 2
-  AllNodes: []
-  AllSplines: []
-  currentConnection:
-    invertTangents: 0
-    _pointIndex: 0
-    _computer: {fileID: 0}
-    point:
-      _type: 0
-      position: {x: 0, y: 0, z: 0}
-      color: {r: 0, g: 0, b: 0, a: 0}
-      normal: {x: 0, y: 0, z: 0}
-      size: 0
-      tangent: {x: 0, y: 0, z: 0}
-      tangent2: {x: 0, y: 0, z: 0}
-  closestNode: {fileID: 0}
+  splineFollower: {fileID: 1090761193607278299}
+  splineProjector: {fileID: 4404320592076701126}
+  rb: {fileID: 6436209759244527531}
+  normalGrindSpeed: 10
+  sprintSpeedMultiplier: 2
+  SprintingTransitionSpeed: 10
   isGrinding: 0
-  isSwitchingTrack: 0
 --- !u!114 &8501354729004405118
 MonoBehaviour:
   m_ObjectHideFlags: 0

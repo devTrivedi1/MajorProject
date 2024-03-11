@@ -4,26 +4,29 @@ using UnityEngine;
 using System.Linq;
 using System;
 using Dreamteck;
+using CustomInspector;
 
 public class GrindController : MonoBehaviour
 {
-    SplineFollower splineFollower;
-    SplineProjector splineProjector;
+    [HorizontalLine("References", 2, FixedColor.BabyBlue)]
+    [SelfFill][SerializeField]SplineFollower splineFollower;
+    [SelfFill][SerializeField] SplineProjector splineProjector;
+    [SelfFill][SerializeField] Rigidbody rb;
 
+    [HorizontalLine("Grind Controller Settings",2,FixedColor.BabyBlue)]
     [SerializeField]float normalGrindSpeed;
     [SerializeField] float sprintSpeedMultiplier;
     [SerializeField] float SprintingTransitionSpeed;
   
     public bool isGrinding = false;
     bool isSpeedingUp;
+    bool isSwitchingRails;
 
     public static Action<bool> OnRailGrindStateChange;
     public static Action<JumpState> TriggerJumpingOffRails;
 
     private void OnEnable()
     {
-        splineFollower = GetComponent<SplineFollower>();
-        splineProjector = GetComponent<SplineProjector>();
         normalGrindSpeed = splineFollower.followSpeed;
 
         Jump.OnJumpStateChanged += GetOffRailsOnJump;
@@ -56,6 +59,21 @@ public class GrindController : MonoBehaviour
             }
         }
 
+        if(Input.GetKeyDown(KeyCode.D))
+        {
+            rb.AddForce((transform.right)*40,ForceMode.VelocityChange);
+            isSwitchingRails = true;
+            ExitRails();
+            rb.AddForce(-transform.up * 5, ForceMode.VelocityChange);
+        }
+        else if (Input.GetKeyDown(KeyCode.A))
+        {
+            rb.AddForce((-transform.right ) *40, ForceMode.VelocityChange);
+            isSwitchingRails = true;
+            ExitRails();
+            rb.AddForce(-transform.up * 5, ForceMode.VelocityChange);
+        }
+
         GrindRailSprinting();
         JumpOffAtTheEndOfRail();
     }
@@ -85,7 +103,16 @@ public class GrindController : MonoBehaviour
         splineFollower.SetPercent(percent);
 
         float dot = Vector3.Dot(splineFollower.result.position.normalized, transform.forward);
-        if (splineFollower.direction == Spline.Direction.Forward)
+        
+        splineFollower.follow = true;
+        isGrinding = true;
+        OnRailGrindStateChange?.Invoke(isGrinding);
+
+        if(isSwitchingRails)
+        {
+            isSwitchingRails = false;
+        }
+        else if (splineFollower.direction == Spline.Direction.Forward)
         {
             if (dot > -0.58f && dot < -0.39f)
             {
@@ -107,10 +134,6 @@ public class GrindController : MonoBehaviour
                 splineFollower.followSpeed = -normalGrindSpeed;
             }
         }
-
-        splineFollower.follow = true;
-        isGrinding = true;
-        OnRailGrindStateChange?.Invoke(isGrinding);
     }
 
     public void JumpOffAtTheEndOfRail()

@@ -4,8 +4,8 @@ using CustomInspector;
 
 public class ObjectHealth : MonoBehaviour, IDamageable
 {
-    [SerializeField] int MaxHealth;
-    [ReadOnly][SerializeField] int currentHealth;
+    [SerializeField] protected  int MaxHealth;
+    [ReadOnly][SerializeField] protected int currentHealth;
 
     protected virtual void OnEnable()
     {

@@ -19,6 +19,7 @@ MonoBehaviour:
     - bb1258b195c546d419d2409c9bc635ee
     - 2397c294400125b4e8a062759b31c8fb
     - c26e9b59370041e4484888788e174389
+    - 68180141ae8a0d340a2dd66aa93b91e9
     values:
     - goDatas_byGlobalId:
         keys: []
@@ -122,3 +123,18 @@ MonoBehaviour:
           iconNameOrGuid: TrailRenderer Icon
         - colorIndex: 0
           iconNameOrGuid: TrailRenderer Icon
+    - goDatas_byGlobalId:
+        keys:
+        - globalObjectIdString: GlobalObjectId_V1-2-68180141ae8a0d340a2dd66aa93b91e9-336962995-0
+        - globalObjectIdString: GlobalObjectId_V1-2-68180141ae8a0d340a2dd66aa93b91e9-689088165-0
+        - globalObjectIdString: GlobalObjectId_V1-2-68180141ae8a0d340a2dd66aa93b91e9-304604259-0
+        - globalObjectIdString: GlobalObjectId_V1-2-68180141ae8a0d340a2dd66aa93b91e9-1810383600-0
+        values:
+        - colorIndex: 7
+          iconNameOrGuid: TrailRenderer Icon
+        - colorIndex: 8
+          iconNameOrGuid: 
+        - colorIndex: 2
+          iconNameOrGuid: 
+        - colorIndex: 6
+          iconNameOrGuid: 

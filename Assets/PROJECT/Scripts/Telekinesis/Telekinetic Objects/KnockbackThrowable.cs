@@ -3,9 +3,10 @@ using UnityEngine;
 
 public class KnockbackThrowable : TelekineticObject
 {
-    [SerializeField] float forceStrengthModifier = 5f;
+    [SerializeField] float forceStrength = 5f;
     [SerializeField] float knockbackRadius = 10f;
     [SerializeField] LayerMask layerMask;
+    [SerializeField] int iterations = 3;
 
     Vector3 lastExplosionPosition;
 
@@ -13,11 +14,11 @@ public class KnockbackThrowable : TelekineticObject
     {
         if (targetable.TryGetComponent(out Rigidbody rb))
         {
-            Utilities.KnockbackObjects(transform, knockbackRadius, throwForce * forceStrengthModifier, layerMask);
+            Utilities.KnockbackObjects(transform, knockbackRadius, forceStrength, layerMask, iterations);
             lastExplosionPosition = transform.position;
         }
-        yield return new WaitUntil(() => manipulable);
         gameObject.SetActive(false);
+        yield return new WaitUntil(() => manipulable);
     }
 
 #if UNITY_EDITOR

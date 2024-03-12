@@ -3,8 +3,7 @@ using System.Collections.Generic;
 
 public interface IResettable
 {
-    List<Action> UnityResetActions { get; set; }
-    List<Action> MultithreadResetActions { get; set; }
+    List<Action> ResetActions { get; set; }
 
     public void ResetValue<T>(T initialValue, ref T reference);
 

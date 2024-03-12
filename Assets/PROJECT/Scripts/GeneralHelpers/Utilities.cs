@@ -3,9 +3,8 @@ using UnityEngine;
 
 public static class Utilities
 {
-    public static void KnockbackObjects(Transform origin, float radius, float knockbackStrength, LayerMask mask, int iterations)
+    public static void KnockbackObjects(Transform origin, float radius, float knockbackStrength, int iterations, Collider[] objects)
     {
-        Collider[] objects = Physics.OverlapSphere(origin.position, radius, mask);
         foreach (Collider obj in objects)
         {
             if (obj.transform == origin) {  continue; }
@@ -14,6 +13,12 @@ public static class Utilities
                 ApplyForces(rb, origin.position, radius, knockbackStrength, iterations);
             }
         }
+    }
+
+    public static void KnockbackWithinRadius(Transform origin, float radius, float knockbackStrength, LayerMask mask, int iterations)
+    {
+        Collider[] objects = Physics.OverlapSphere(origin.position, radius, mask);
+        KnockbackObjects(origin, radius, knockbackStrength, iterations, objects);
     }
 
     static IEnumerator ApplyForce(Rigidbody rb, Vector3 explosionOrigin, float explosionForce, float explosionRadius, int iterations)

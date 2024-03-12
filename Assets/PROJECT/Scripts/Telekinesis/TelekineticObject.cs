@@ -4,7 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class TelekineticObject : MonoBehaviour
 {
-    [SerializeField] int damage = 1;
+    [SerializeField] protected int damage = 1;
     Rigidbody rb;
     public Rigidbody Rb => rb;
     public bool manipulable { get; private set; } = true;

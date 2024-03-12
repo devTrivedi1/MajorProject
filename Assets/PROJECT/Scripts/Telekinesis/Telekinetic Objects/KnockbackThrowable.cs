@@ -14,7 +14,12 @@ public class KnockbackThrowable : TelekineticObject
     {
         if (targetable.TryGetComponent(out Rigidbody rb))
         {
-            Utilities.KnockbackObjects(transform, knockbackRadius, forceStrength, layerMask, iterations);
+            Collider[] objects = Physics.OverlapSphere(transform.position, knockbackRadius, layerMask);
+            Utilities.KnockbackObjects(transform, knockbackRadius, forceStrength, iterations, objects);
+            for (int i = 0; i < objects.Length; i++)
+            {
+                if (objects[i].TryGetComponent(out IDamageable damageable)) { damageable.TakeDamage(damage); }
+            }
             lastExplosionPosition = transform.position;
         }
         gameObject.SetActive(false);

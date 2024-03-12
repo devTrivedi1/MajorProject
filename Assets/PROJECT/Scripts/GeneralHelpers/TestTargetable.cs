@@ -13,19 +13,9 @@ public class TestTargetable : Targetable, IResettable
         var startingTarget = exampleTarget;
         var startingValue = exampleValue;
         var startingPosition = transform.position;
-        ResetActions.Add(() => ResetValue(startingValue, ref exampleValue));
-        ResetActions.Add(() => ResetValue(startingTarget, ref exampleTarget));
+        ResetActions.Add(() => exampleValue = startingValue);
+        ResetActions.Add(() => exampleTarget = startingTarget);
         ResetActions.Add(() => transform.position = startingPosition);
-        IResettable[] resettables = FindObjectsOfType<MonoBehaviour>().OfType<IResettable>().ToArray();
-        foreach (var resettable in resettables)
-        {
-            resettable.ResetObject();
-        }
-   }
-
-   public void ResetValue<T>(T initialValue, ref T reference)
-   {
-       reference = initialValue;
    }
 
    [VInspector.Button]

@@ -140,14 +140,14 @@ public class GrindController : MonoBehaviour
     {
         if (splineFollower.direction == Spline.Direction.Forward)
         {
-            if (splineFollower.result.percent > 0.97f)
+            if (splineFollower.result.percent > 0.99f)
             {
                 TriggerJumpingOffRails?.Invoke(JumpState.inAir);
             }
         }
         else
         {
-            if (splineFollower.result.percent < 0.05f)
+            if (splineFollower.result.percent < 0.025f)
             {
                 TriggerJumpingOffRails?.Invoke(JumpState.inAir);
             }
@@ -179,6 +179,6 @@ public class GrindController : MonoBehaviour
         else if (isGrinding && !isSpeedingUp)
         { return transform.forward * 2.5f; }
 
-        return Vector3.zero;
+        return transform.forward;
     }
 }

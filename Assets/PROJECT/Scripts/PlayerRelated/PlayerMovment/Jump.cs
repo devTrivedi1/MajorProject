@@ -101,23 +101,26 @@ public class Jump : MonoBehaviour
 
     void FallingToGround()
     {
-        if (jumpState == JumpState.Grounded) return;
-
+        if(jumpState == JumpState.Grounded) return;
         if (rb.velocity.y < 0)
         {
             rb.velocity -= Vector3.up * fallMultiplier;
-        }
+        } 
     }
 
     private void GroundDetection()
     {
-        if (jumpState == JumpState.Grounded || jumpState == JumpState.inAir) return;
+        if (jumpState == JumpState.inAir) return;
 
         if (Physics.OverlapSphere(transform.position + groundDetectionOffsetVector, groundDetectionRadius, 1 << layerMask).Length > 0)
         {
             SetJumpStateTo(JumpState.Grounded);
             OnJumpStateChanged?.Invoke(jumpState);
             ExternalMomentum = Vector3.zero;
+        }
+        else
+        {
+            SetJumpStateTo(JumpState.Falling);
         }
     }
 

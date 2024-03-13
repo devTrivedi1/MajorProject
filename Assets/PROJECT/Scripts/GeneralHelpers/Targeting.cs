@@ -73,7 +73,7 @@ public class Targeting : MonoBehaviour
         return closestTarget;
     }
 
-    void OnDrawGizmos()
+ /*   void OnDrawGizmos()
     {
         float adjustedScale = screenCenterThreshold / 0.5f;
         CanvasScaler canvas = GetComponentInParent<CanvasScaler>();
@@ -82,5 +82,5 @@ public class Targeting : MonoBehaviour
         {
             circularImage.rectTransform.sizeDelta = new Vector2(screenHeight * adjustedScale, screenHeight * adjustedScale);
         }
-    }
+    }*/
 }

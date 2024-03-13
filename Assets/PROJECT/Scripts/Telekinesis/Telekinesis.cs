@@ -40,7 +40,6 @@ public class Telekinesis : MonoBehaviour
     [SerializeField] float screenCenterThreshold = 0.4f;
     [SerializeField] float timeToReachTarget = 0.5f;
     [SerializeField] AnimationCurve throwAnimationCurve;
-    [SerializeField] float objectTelekinesisCooldown = 0.5f;
 
     TelekineticObject[] telekineticObjects;
     TelekineticObject currentObject;
@@ -54,56 +53,52 @@ public class Telekinesis : MonoBehaviour
         if (Targeting.Instance == null) { Instantiate(new GameObject("Targeting System")).AddComponent<Targeting>(); }
     }
 
-    private void Update()
+    void Update()
+    {
+        HandleInput();
+        if (currentObject) ManageTelekinesis();
+        else state = TelekinesisState.Idle;
+        DisplayTargetUI();
+    }
+
+    void HandleInput()
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            if (currentObject == null)
-            {
-                TelekineticObject nearestObject = GetTelekineticObject();
-                if (nearestObject != null)
-                {
-                    currentObject = nearestObject;
-                    currentObject.Rb.useGravity = false;
-                }
-            }
-            else
-            {
-                ThrowObject();
-            }
+            if (currentObject == null) TryGrabObject();
+            else ThrowObject();
         }
+    }
 
-        if (currentObject != null)
+    void TryGrabObject()
+    {
+        TelekineticObject nearestObject = GetTelekineticObject();
+        if (nearestObject != null)
         {
-            currentTarget = Targeting.Instance.GetClosestTargetOnScreen(Camera.main, transform.position, lockOnRange, screenCenterThreshold);
-            switch(state)
-            {
-                case TelekinesisState.Idle:
-                    Vector3 start = currentObject.transform.position;
-                    Vector3 end = orbitPosition.position;
-                    state = TelekinesisState.Grabbing;
-                    objectManipulation = StartCoroutine(ManipulateObject(start, end, currentObject, grabAnimationCurve, timeToReachPlayer, TelekinesisState.Holding));
-                    break;
-                case TelekinesisState.Holding:
-                    OrbitHoverPosition();
-                    break;
-            }
+            currentObject = nearestObject;
+            currentObject.Rb.useGravity = false;
+            objectManipulation = StartCoroutine(
+                ManipulateObject(currentObject.transform.position, orbitPosition.position, currentObject, grabAnimationCurve, timeToReachPlayer, TelekinesisState.Holding)
+                );
         }
-        DisplayTargetUI();
+    }
+
+    void ManageTelekinesis()
+    {
+        currentTarget = Targeting.Instance.GetClosestTargetOnScreen(Camera.main, transform.position, lockOnRange, screenCenterThreshold);
+        if (state == TelekinesisState.Holding) OrbitHoverPosition();
     }
 
     void DisplayTargetUI()
     {
-        if (state == TelekinesisState.Holding)
+        bool shouldDisplay = state == TelekinesisState.Holding && currentTarget.target != null;
+        targetUI.gameObject.SetActive(shouldDisplay);
+        if (shouldDisplay)
         {
-            if (currentTarget.target != null)
-            {
-                Vector3 worldPos = currentTarget.target.transform.position;
-                targetUI.rectTransform.position = Camera.main.ViewportToScreenPoint(currentTarget.viewportPoint);
-                targetUI.rectTransform.localScale = Vector3.Lerp(Vector3.one * 1.5f, Vector3.one * 0.25f, Vector3.Distance(worldPos, transform.position) / lockOnRange);
-            }
+            Vector3 worldPos = currentTarget.target.transform.position;
+            targetUI.rectTransform.position = Camera.main.ViewportToScreenPoint(currentTarget.viewportPoint);
+            targetUI.rectTransform.localScale = Vector3.Lerp(Vector3.one * 1.5f, Vector3.one * 0.25f, Vector3.Distance(worldPos, transform.position) / lockOnRange);
         }
-        targetUI.gameObject.SetActive(state == TelekinesisState.Holding && currentTarget.target != null);
     }
 
     TelekineticObject GetTelekineticObject()
@@ -112,11 +107,11 @@ public class Telekinesis : MonoBehaviour
         float closestToScreenCenter = float.MaxValue;
         foreach (var obj in telekineticObjects)
         {
-            if (!obj.gameObject.activeSelf || Vector3.Distance(obj.transform.position, transform.position) > telekinesisRange || !obj.manipulable) { continue; }
-            Vector3 screenPoint = Camera.main.WorldToViewportPoint(obj.transform.position);
-            if (screenPoint.z > 0 && screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1)
+            if (!obj.gameObject.activeSelf || Vector3.Distance(obj.transform.position, transform.position) > telekinesisRange || obj.Thrown) { continue; }
+            Vector3 viewportPoint = Camera.main.WorldToViewportPoint(obj.transform.position);
+            if (viewportPoint.z > 0 && viewportPoint.x > 0 && viewportPoint.x < 1 && viewportPoint.y > 0 && viewportPoint.y < 1)
             {
-                float distanceToScreenCenter = Vector2.Distance(new(0.5f, 0.5f), screenPoint);
+                float distanceToScreenCenter = Vector2.Distance(new(0.5f, 0.5f), viewportPoint);
                 if (closestToScreenCenter > distanceToScreenCenter)
                 {
                     closestToScreenCenter = distanceToScreenCenter;
@@ -206,7 +201,7 @@ public class Telekinesis : MonoBehaviour
         if (targetable == null)
         {
             currentObject.Rb.useGravity = true;
-            StartCoroutine(currentObject.StopManipulation(objectTelekinesisCooldown));
+            currentObject.StopManipulation();
             Vector3 throwDirection = Camera.main.transform.forward;
             currentObject.Rb.AddForce(throwDirection * throwForce, ForceMode.VelocityChange);
             state = TelekinesisState.Idle;
@@ -216,7 +211,7 @@ public class Telekinesis : MonoBehaviour
         else
         {
             StartCoroutine(ManipulateObject(currentObject.transform.position, targetable.transform.position, currentObject, throwAnimationCurve, timeToReachTarget));
-            StartCoroutine(currentObject.StopManipulation(objectTelekinesisCooldown + timeToReachTarget));
+            currentObject.StopManipulation();
             currentObject = null;
             state = TelekinesisState.Idle;
         }

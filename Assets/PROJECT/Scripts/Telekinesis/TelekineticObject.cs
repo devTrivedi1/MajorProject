@@ -4,27 +4,20 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class TelekineticObject : MonoBehaviour
 {
-    [SerializeField] int damage = 1;
+    [SerializeField] protected int damage = 1;
     Rigidbody rb;
     public Rigidbody Rb => rb;
-    public bool manipulable { get; private set; } = true;
+    public bool Thrown { get; private set; } = false;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        manipulable = true;
+        Thrown = false;
     }
 
-    public IEnumerator StopManipulation(float timer)
+    public void StopManipulation()
     {
-        manipulable = false;
-        float time = 0;
-        while (time < timer)
-        {
-            time += Time.deltaTime;
-            yield return null;
-        }
-        manipulable = true;
+        Thrown = true;
     }
 
     public virtual IEnumerator ApplyEffect(Targetable targetable, float throwForce) 
@@ -33,15 +26,18 @@ public class TelekineticObject : MonoBehaviour
         {
             rb.AddForce((targetable.transform.position - transform.position).normalized * throwForce, ForceMode.VelocityChange);
         }
-        yield return new WaitUntil(() => manipulable);
-        gameObject.SetActive(false);
+        yield return null;
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!manipulable && collision.transform.TryGetComponent(out IDamageable damageable))
+        if (Thrown)
         {
-            damageable.TakeDamage(damage);
+            if (collision.transform.TryGetComponent(out IDamageable damageable))
+            {
+                damageable.TakeDamage(damage);
+            }
+            gameObject.SetActive(false);
         }
     }
 }

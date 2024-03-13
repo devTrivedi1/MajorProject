@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class Targeting : MonoBehaviour
 {
-    List<Targetable> allTargetables = new();
+    Targetable[] allTargetables;
     public float screenCenterThreshold = 0.1f;
     public static Targeting Instance { get; private set; }
 
@@ -12,28 +12,12 @@ public class Targeting : MonoBehaviour
     {
         if (Instance == null) 
         { 
-            Instance = this; 
+            Instance = this;
+            allTargetables = FindObjectsOfType<Targetable>();
         }
         else
         {
             Destroy(this);
-        }
-    }
-
-    public void RegisterTarget(Targetable target)
-    {
-        if (allTargetables == null) { allTargetables = new(); }
-        if (!allTargetables.Contains(target))
-        {
-            allTargetables.Add(target);
-        }
-    }
-
-    public void UnregisterTarget(Targetable target)
-    {
-        if (allTargetables.Contains(target))
-        {
-            allTargetables.Remove(target);
         }
     }
 
@@ -53,16 +37,16 @@ public class Targeting : MonoBehaviour
         return nearestObject;
     }
 
-    public List<(Targetable target, Vector3 screenPoint)> FindTargetsOnScreen(Camera camera, Vector3 position, float maxDistance)
+    public List<(Targetable target, Vector3 viewportPoint)> FindTargetsOnScreen(Camera camera, Vector3 position, float maxDistance)
     {
-        List<(Targetable target, Vector3 screenPoint)> targetsOnScreen = new();
+        List<(Targetable target, Vector3 viewportPoint)> targetsOnScreen = new();
         foreach (var target in allTargetables)
         {
             if (Vector3.SqrMagnitude(position - target.transform.position) > (maxDistance * maxDistance)) { continue; }
-            Vector3 screenPoint = camera.WorldToViewportPoint(target.transform.position);
-            if (screenPoint.z > 0 && screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1)
+            Vector3 viewportPoint = camera.WorldToViewportPoint(target.transform.position);
+            if (viewportPoint.z > 0 && viewportPoint.x > 0 && viewportPoint.x < 1 && viewportPoint.y > 0 && viewportPoint.y < 1)
             {
-                targetsOnScreen.Add((target, screenPoint));
+                targetsOnScreen.Add((target, viewportPoint));
             }
         }
         return targetsOnScreen;
@@ -70,19 +54,19 @@ public class Targeting : MonoBehaviour
 
 
     // This is likely to end up being expensive to run every frame with large numbers of targets (100+)
-    public Targetable GetClosestTargetOnScreen(Camera camera, Vector3 position, float maxDistance, float screenCenterThreshold)
+    public (Targetable target, Vector3 viewportPoint) GetClosestTargetOnScreen(Camera camera, Vector3 position, float maxDistance, float screenCenterThreshold)
     {
         this.screenCenterThreshold = screenCenterThreshold;
-        List<(Targetable target, Vector3 screenPoint)> targetsOnScreen = FindTargetsOnScreen(camera, position, maxDistance);
-        Targetable closestTarget = null;
+        List<(Targetable target, Vector3 viewportPoint)> targetsOnScreen = FindTargetsOnScreen(camera, position, maxDistance);
+        (Targetable target, Vector3 viewportPoint) closestTarget = (null, Vector3.zero);
         float closestScreenDistance = screenCenterThreshold;
         float aspectRatio = Screen.width / (float)Screen.height;
-        foreach (var (target, screenPoint) in targetsOnScreen)
+        foreach (var (target, viewportPoint) in targetsOnScreen)
         {
-            float screenDistance = Vector2.Distance(new Vector2(screenPoint.x * aspectRatio, screenPoint.y), new Vector2(0.5f * aspectRatio, 0.5f));
+            float screenDistance = Vector2.Distance(new Vector2(viewportPoint.x * aspectRatio, viewportPoint.y), new Vector2(0.5f * aspectRatio, 0.5f));
             if (closestScreenDistance > screenDistance)
             {
-                closestTarget = target;
+                closestTarget = (target, viewportPoint);
                 closestScreenDistance = screenDistance;
             }
         }

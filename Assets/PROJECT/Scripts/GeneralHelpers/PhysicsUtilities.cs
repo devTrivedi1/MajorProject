@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public static class Utilities
+public static class PhysicsUtilities
 {
     public static void KnockbackObjects(Transform origin, float radius, float knockbackStrength, int iterations, Collider[] objects)
     {
@@ -39,26 +39,10 @@ public static class Utilities
 
     public static void ApplyForces(Rigidbody rb, Vector3 explosionOrigin, float explosionRadius, float explosionForce, int iterations)
     {
-        if (CoroutineWorkHorse.instance == null)
+        if (CoroutineWorkHorse.Instance == null)
         {
             (new GameObject("Coroutine WorkHorse")).AddComponent<CoroutineWorkHorse>();
         }
-        CoroutineWorkHorse.instance.StartWork(ApplyForce(rb, explosionOrigin, explosionRadius, explosionForce, iterations));
-    }
-}
-
-
-public class CoroutineWorkHorse : MonoBehaviour
-{
-    public static CoroutineWorkHorse instance;
-    private void Awake()
-    {
-        if (instance == null) instance = this;
-        else Destroy(gameObject);
-    }
-
-    public void StartWork(IEnumerator coroutine)
-    {
-        StartCoroutine(coroutine);
+        CoroutineWorkHorse.Instance.StartWork(ApplyForce(rb, explosionOrigin, explosionRadius, explosionForce, iterations));
     }
 }

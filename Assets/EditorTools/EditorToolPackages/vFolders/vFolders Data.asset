@@ -649,9 +649,9 @@ MonoBehaviour:
     - 2c9569919bffb1242817581236197b5e
     - 7433b31714341464184a785aed893e4c
     - 97afc2292a5dcbe489d576f6427bb409
-    - ec002150fd86a8f4c9c2eaa6a45185ea
     - 8b2e88c96fe39424c98bb95f9ed3ab3c
-    - f3789226630b95346bc13e0bedf502d9
+    - aed1f8fc5cd2c234a8755246a1b75c19
+    - ec002150fd86a8f4c9c2eaa6a45185ea
     values:
     - colorIndex: 7
       iconNameOrGuid: ebd7d20882d5abb42abb240c354a0631
@@ -1924,8 +1924,8 @@ MonoBehaviour:
     - colorIndex: 1
       iconNameOrGuid: PhysicMaterial Icon
     - colorIndex: 2
-      iconNameOrGuid: 4a7e6c454e1d78e42af4ef68dbca9f07
-    - colorIndex: 2
       iconNameOrGuid: cs Script Icon
+    - colorIndex: 2
+      iconNameOrGuid: Prefab Icon
     - colorIndex: 2
       iconNameOrGuid: cs Script Icon

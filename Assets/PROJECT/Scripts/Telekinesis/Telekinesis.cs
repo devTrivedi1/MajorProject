@@ -40,7 +40,6 @@ public class Telekinesis : MonoBehaviour
     [SerializeField] float screenCenterThreshold = 0.4f;
     [SerializeField] float timeToReachTarget = 0.5f;
     [SerializeField] AnimationCurve throwAnimationCurve;
-    [SerializeField] float objectTelekinesisCooldown = 0.5f;
 
     TelekineticObject[] telekineticObjects;
     TelekineticObject currentObject;
@@ -108,7 +107,7 @@ public class Telekinesis : MonoBehaviour
         float closestToScreenCenter = float.MaxValue;
         foreach (var obj in telekineticObjects)
         {
-            if (!obj.gameObject.activeSelf || Vector3.Distance(obj.transform.position, transform.position) > telekinesisRange || !obj.manipulable) { continue; }
+            if (!obj.gameObject.activeSelf || Vector3.Distance(obj.transform.position, transform.position) > telekinesisRange || obj.Thrown) { continue; }
             Vector3 viewportPoint = Camera.main.WorldToViewportPoint(obj.transform.position);
             if (viewportPoint.z > 0 && viewportPoint.x > 0 && viewportPoint.x < 1 && viewportPoint.y > 0 && viewportPoint.y < 1)
             {
@@ -202,7 +201,7 @@ public class Telekinesis : MonoBehaviour
         if (targetable == null)
         {
             currentObject.Rb.useGravity = true;
-            StartCoroutine(currentObject.StopManipulation(objectTelekinesisCooldown));
+            currentObject.StopManipulation();
             Vector3 throwDirection = Camera.main.transform.forward;
             currentObject.Rb.AddForce(throwDirection * throwForce, ForceMode.VelocityChange);
             state = TelekinesisState.Idle;
@@ -212,7 +211,7 @@ public class Telekinesis : MonoBehaviour
         else
         {
             StartCoroutine(ManipulateObject(currentObject.transform.position, targetable.transform.position, currentObject, throwAnimationCurve, timeToReachTarget));
-            StartCoroutine(currentObject.StopManipulation(objectTelekinesisCooldown + timeToReachTarget));
+            currentObject.StopManipulation();
             currentObject = null;
             state = TelekinesisState.Idle;
         }

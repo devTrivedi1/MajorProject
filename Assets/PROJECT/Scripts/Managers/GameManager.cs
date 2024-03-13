@@ -81,7 +81,14 @@ public class GameManager : MonoBehaviour
 
     private void ResumeGame()
     {
+        Time.timeScale = 1;
         onResume.Invoke();
+    }
+
+    public void Restart()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     private void EndGame()
@@ -89,4 +96,6 @@ public class GameManager : MonoBehaviour
         hasGameEnded = true;
         Time.timeScale = 0;
     }
+
+    public void QuitGame() => Application.Quit();
 }

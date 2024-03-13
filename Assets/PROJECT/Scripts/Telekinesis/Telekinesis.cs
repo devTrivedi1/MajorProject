@@ -1,6 +1,5 @@
 using CustomInspector;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -41,10 +40,10 @@ public class Telekinesis : MonoBehaviour
     [SerializeField] float screenCenterThreshold = 0.4f;
     [SerializeField] float timeToReachTarget = 0.5f;
     [SerializeField] AnimationCurve throwAnimationCurve;
-    [SerializeField] float objectTelekinesisCooldown = 0.5f;
 
     TelekineticObject[] telekineticObjects;
     TelekineticObject currentObject;
+    (Targetable target, Vector3 viewportPoint) currentTarget;
 
     private void Start()
     {
@@ -54,71 +53,65 @@ public class Telekinesis : MonoBehaviour
         if (Targeting.Instance == null) { Instantiate(new GameObject("Targeting System")).AddComponent<Targeting>(); }
     }
 
-    private void Update()
+    void Update()
     {
-        targetUI.gameObject.SetActive(state == TelekinesisState.Holding);
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (currentObject == null)
-            {
-                TelekineticObject nearestObject = GetTelekineticObject();
-                if (nearestObject != null)
-                {
-                    currentObject = nearestObject;
-                    currentObject.Rb.useGravity = false;
-                }
-            }
-            else
-            {
-                ThrowObject();
-            }
-        }
+        HandleInput();
+        if (currentObject) ManageTelekinesis();
+        else state = TelekinesisState.Idle;
+        DisplayTargetUI();
+    }
 
-        if (currentObject != null)
+    void HandleInput()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            switch(state)
-            {
-                case TelekinesisState.Idle:
-                    Vector3 start = currentObject.transform.position;
-                    Vector3 end = orbitPosition.position;
-                    state = TelekinesisState.Grabbing;
-                    objectManipulation = StartCoroutine(ManipulateObject(start, end, currentObject, grabAnimationCurve, timeToReachPlayer, TelekinesisState.Holding));
-                    break;
-                case TelekinesisState.Holding:
-                    OrbitHoverPosition();
-                    DisplayTargetUI();
-                    break;
-            }
+            if (currentObject == null) TryGrabObject();
+            else ThrowObject();
         }
+    }
+
+    void TryGrabObject()
+    {
+        TelekineticObject nearestObject = GetTelekineticObject();
+        if (nearestObject != null)
+        {
+            currentObject = nearestObject;
+            currentObject.Rb.useGravity = false;
+            objectManipulation = StartCoroutine(
+                ManipulateObject(currentObject.transform.position, orbitPosition.position, currentObject, grabAnimationCurve, timeToReachPlayer, TelekinesisState.Holding)
+                );
+        }
+    }
+
+    void ManageTelekinesis()
+    {
+        currentTarget = Targeting.Instance.GetClosestTargetOnScreen(Camera.main, transform.position, lockOnRange, screenCenterThreshold);
+        if (state == TelekinesisState.Holding) OrbitHoverPosition();
     }
 
     void DisplayTargetUI()
     {
-        Targetable target = Targeting.Instance.GetClosestTargetOnScreen(Camera.main, transform.position, lockOnRange, screenCenterThreshold);
-        if (target != null)
+        bool shouldDisplay = state == TelekinesisState.Holding && currentTarget.target != null;
+        targetUI.gameObject.SetActive(shouldDisplay);
+        if (shouldDisplay)
         {
-            targetUI.rectTransform.position = Camera.main.WorldToScreenPoint(target.transform.position);
-            targetUI.rectTransform.localScale = Vector3.Lerp(Vector3.one * 0.25f, Vector3.one * 1.5f, 1 - (Vector3.Distance(target.transform.position, transform.position) / lockOnRange));
-        }
-        else
-        {
-            targetUI.gameObject.SetActive(false);
+            Vector3 worldPos = currentTarget.target.transform.position;
+            targetUI.rectTransform.position = Camera.main.ViewportToScreenPoint(currentTarget.viewportPoint);
+            targetUI.rectTransform.localScale = Vector3.Lerp(Vector3.one * 1.5f, Vector3.one * 0.25f, Vector3.Distance(worldPos, transform.position) / lockOnRange);
         }
     }
 
     TelekineticObject GetTelekineticObject()
     {
         TelekineticObject nearestObject = null;
-        List<TelekineticObject> availableObjects = new();
         float closestToScreenCenter = float.MaxValue;
         foreach (var obj in telekineticObjects)
         {
-            if (Vector3.Distance(obj.transform.position, transform.position) > telekinesisRange || !obj.manipulable) { continue; }
-            Vector3 screenPoint = Camera.main.WorldToViewportPoint(obj.transform.position);
-            if (screenPoint.z > 0 && screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1)
+            if (!obj.gameObject.activeSelf || Vector3.Distance(obj.transform.position, transform.position) > telekinesisRange || obj.Thrown) { continue; }
+            Vector3 viewportPoint = Camera.main.WorldToViewportPoint(obj.transform.position);
+            if (viewportPoint.z > 0 && viewportPoint.x > 0 && viewportPoint.x < 1 && viewportPoint.y > 0 && viewportPoint.y < 1)
             {
-                availableObjects.Add(obj);
-                float distanceToScreenCenter = Vector2.Distance(new(0.5f, 0.5f), screenPoint);
+                float distanceToScreenCenter = Vector2.Distance(new(0.5f, 0.5f), viewportPoint);
                 if (closestToScreenCenter > distanceToScreenCenter)
                 {
                     closestToScreenCenter = distanceToScreenCenter;
@@ -149,10 +142,12 @@ public class Telekinesis : MonoBehaviour
             if (state != TelekinesisState.Idle)
             {
                 this.state = state;
+                obj.transform.parent = orbitPosition;
             }
             else
             {
-                obj.Rb.AddForce((obj.transform.position - endPosition).normalized * throwForce, ForceMode.VelocityChange);
+                obj.Rb.AddForce((endPosition - obj.transform.position).normalized * throwForce, ForceMode.VelocityChange);
+                StartCoroutine(obj.ApplyEffect(currentTarget.target, throwForce));
             }
         }
     }
@@ -201,11 +196,12 @@ public class Telekinesis : MonoBehaviour
 
     void ThrowObject()
     {
-        Targetable targetable = Targeting.Instance.GetClosestTargetOnScreen(Camera.main, transform.position, lockOnRange, screenCenterThreshold);
+        Targetable targetable = currentTarget.target;
+        currentObject.transform.parent = null;
         if (targetable == null)
         {
             currentObject.Rb.useGravity = true;
-            StartCoroutine(currentObject.StopManipulation(objectTelekinesisCooldown));
+            currentObject.StopManipulation();
             Vector3 throwDirection = Camera.main.transform.forward;
             currentObject.Rb.AddForce(throwDirection * throwForce, ForceMode.VelocityChange);
             state = TelekinesisState.Idle;
@@ -215,7 +211,7 @@ public class Telekinesis : MonoBehaviour
         else
         {
             StartCoroutine(ManipulateObject(currentObject.transform.position, targetable.transform.position, currentObject, throwAnimationCurve, timeToReachTarget));
-            StartCoroutine(currentObject.StopManipulation(objectTelekinesisCooldown + timeToReachTarget));
+            currentObject.StopManipulation();
             currentObject = null;
             state = TelekinesisState.Idle;
         }

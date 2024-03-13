@@ -4,25 +4,40 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class TelekineticObject : MonoBehaviour
 {
+    [SerializeField] protected int damage = 1;
     Rigidbody rb;
     public Rigidbody Rb => rb;
-    public bool manipulable { get; private set; } = true;
+    public bool Thrown { get; private set; } = false;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        manipulable = true;
+        Thrown = false;
     }
 
-    public IEnumerator StopManipulation(float timer)
+    public void StopManipulation()
     {
-        manipulable = false;
-        float time = 0;
-        while (time < timer)
+        Thrown = true;
+    }
+
+    public virtual IEnumerator ApplyEffect(Targetable targetable, float throwForce) 
+    {
+        if (targetable.TryGetComponent(out Rigidbody rb))
         {
-            time += Time.deltaTime;
-            yield return null;
+            rb.AddForce((targetable.transform.position - transform.position).normalized * throwForce, ForceMode.VelocityChange);
         }
-        manipulable = true;
+        yield return null;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (Thrown)
+        {
+            if (collision.transform.TryGetComponent(out IDamageable damageable))
+            {
+                damageable.TakeDamage(damage);
+            }
+            gameObject.SetActive(false);
+        }
     }
 }

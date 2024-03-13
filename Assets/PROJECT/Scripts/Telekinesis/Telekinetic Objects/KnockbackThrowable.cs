@@ -23,7 +23,7 @@ public class KnockbackThrowable : TelekineticObject
             lastExplosionPosition = transform.position;
         }
         gameObject.SetActive(false);
-        yield return new WaitUntil(() => manipulable);
+        yield return null;
     }
 
 #if UNITY_EDITOR

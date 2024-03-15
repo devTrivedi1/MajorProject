@@ -1,9 +1,7 @@
-using System;
-using System.Collections.Generic;
+using UnityEngine;
 
 public interface IResettable
 {
-    List<Action> ResetActions { get; set; }
-
-    public void ResetObject();
+    Transform transform {  get; }
+    GameObject gameObject { get; }
 }

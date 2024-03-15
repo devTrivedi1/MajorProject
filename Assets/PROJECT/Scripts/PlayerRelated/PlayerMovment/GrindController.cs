@@ -4,54 +4,43 @@ using UnityEngine;
 using System.Linq;
 using System;
 using Dreamteck;
+using CustomInspector;
 
 public class GrindController : MonoBehaviour
 {
-    SplineFollower splineFollower;
-    SplineProjector splineProjector;
+    [HorizontalLine("References", 2, FixedColor.BabyBlue)]
+    [SelfFill][SerializeField]SplineFollower splineFollower;
+    [SelfFill][SerializeField] SplineProjector splineProjector;
+    [SelfFill][SerializeField] Rigidbody rb;
 
-    [SerializeField] float speedMultiplier;
-    [SerializeField] float transitionSpeed;
-    float startSpeed;
-    [SerializeField] float distanceToSwitchNode;
-    [SerializeField] float distanceToGoOnRail;
-
-    [SerializeField] List<Node> AllNodes = new List<Node>();
-    [SerializeField] List<SplineComputer> AllSplines = new List<SplineComputer>();
-    [SerializeField] Node.Connection currentConnection;
-    [SerializeField] Node closestNode;
+    [HorizontalLine("Grind Controller Settings",2,FixedColor.BabyBlue)]
+    [SerializeField]float normalGrindSpeed;
+    [SerializeField] float sprintSpeedMultiplier;
+    [SerializeField] float SprintingTransitionSpeed;
+  
+    public bool isGrinding = false;
+    bool isSpeedingUp;
+    bool isSwitchingRails;
 
     public static Action<bool> OnRailGrindStateChange;
-
-    public bool isGrinding = false;
-    bool isInputPressed = false;
-    [SerializeField] bool isSwitchingTrack = false;
-
+    public static Action<JumpState> TriggerJumpingOffRails;
 
     private void OnEnable()
     {
-        splineFollower = GetComponent<SplineFollower>();
-        splineProjector = GetComponent<SplineProjector>();
-        startSpeed = splineFollower.followSpeed;
-        Node[] nodeArray = FindObjectsOfType<Node>();
-        AllNodes = nodeArray.ToList();
-        SplineComputer[] splineArray = FindObjectsOfType<SplineComputer>();
-        AllSplines = splineArray.ToList();
-        splineFollower.onNode += OnJunction;
-        Jump.OnJumpStateChanged += GettingOffTheRails;
+        normalGrindSpeed = splineFollower.followSpeed;
 
+        Jump.OnJumpStateChanged += GetOffRailsOnJump;
+        Jump.GetExternalMomentum += JumpMomentumAddon;
     }
 
     private void OnDisable()
     {
-        splineFollower.onNode -= OnJunction;
-        Jump.OnJumpStateChanged -= GettingOffTheRails;
+        Jump.OnJumpStateChanged -= GetOffRailsOnJump;
+        Jump.GetExternalMomentum -= JumpMomentumAddon;
     }
 
     private void Update()
     {
-        // no spline reference, then no grinding
-
         if (splineFollower.spline == null) { splineFollower.follow = false; return; }
 
         transform.GetChild(0).gameObject.transform.rotation = transform.rotation;
@@ -68,29 +57,105 @@ public class GrindController : MonoBehaviour
                 float value = Math.Abs(splineFollower.followSpeed);
                 splineFollower.followSpeed = value;
             }
+        }
 
+        if(Input.GetKeyDown(KeyCode.D))
+        {
+            rb.AddForce((transform.right)*40,ForceMode.VelocityChange);
+            isSwitchingRails = true;
+            ExitRails();
+            rb.AddForce(-transform.up * 5, ForceMode.VelocityChange);
+        }
+        else if (Input.GetKeyDown(KeyCode.A))
+        {
+            rb.AddForce((-transform.right ) *40, ForceMode.VelocityChange);
+            isSwitchingRails = true;
+            ExitRails();
+            rb.AddForce(-transform.up * 5, ForceMode.VelocityChange);
         }
 
         GrindRailSprinting();
-
-        // finding the closest node
-        AllNodes.ForEach(node =>
-        {
-            float distance = Vector3.Distance(transform.position, node.transform.position);
-            if (distance < distanceToSwitchNode)
-            {
-                closestNode = node;
-                return;
-            }
-
-        });
-
-        RailSwitchingByInput();
+        JumpOffAtTheEndOfRail();
     }
 
-    private void GettingOffTheRails(JumpState _jumpStste)
+    private void GrindRailSprinting()
     {
-        if (_jumpStste == JumpState.Grounded || splineFollower.spline == null) return;
+        isSpeedingUp = Input.GetKey(KeyCode.LeftShift);
+
+        float targetSpeed = isSpeedingUp ? normalGrindSpeed * sprintSpeedMultiplier : normalGrindSpeed;
+        targetSpeed = splineFollower.direction == Spline.Direction.Forward ? targetSpeed : -targetSpeed;
+        splineFollower.followSpeed = Mathf.Lerp(splineFollower.followSpeed, targetSpeed, SprintingTransitionSpeed * Time.deltaTime);
+    }
+
+    public void GoGrindOnThoseRails(SplineComputer splineToGrindOn)
+    {
+        if (isGrinding) return;
+
+        splineFollower.spline = splineToGrindOn;
+        splineFollower.RebuildImmediate();
+
+        splineProjector.enabled = true;
+        splineProjector.spline = splineToGrindOn;
+        splineProjector.RebuildImmediate();
+        splineProjector.CalculateProjection();
+
+        double percent = splineProjector.GetPercent();
+        splineFollower.SetPercent(percent);
+
+        float dot = Vector3.Dot(splineFollower.result.position.normalized, transform.forward);
+        
+        splineFollower.follow = true;
+        isGrinding = true;
+        OnRailGrindStateChange?.Invoke(isGrinding);
+
+        if(isSwitchingRails)
+        {
+            isSwitchingRails = false;
+        }
+        else if (splineFollower.direction == Spline.Direction.Forward)
+        {
+            if (dot > -0.58f && dot < -0.39f)
+            {
+                splineFollower.followSpeed = Mathf.Abs(normalGrindSpeed);
+            }
+            else
+            {
+                splineFollower.followSpeed = -normalGrindSpeed;
+            }
+        }
+        else
+        {
+            if (dot > -0.6f && dot < 0.19)
+            {
+                splineFollower.followSpeed = Mathf.Abs(normalGrindSpeed);
+            }
+            else
+            {
+                splineFollower.followSpeed = -normalGrindSpeed;
+            }
+        }
+    }
+
+    public void JumpOffAtTheEndOfRail()
+    {
+        if (splineFollower.direction == Spline.Direction.Forward)
+        {
+            if (splineFollower.result.percent > 0.99f)
+            {
+                TriggerJumpingOffRails?.Invoke(JumpState.inAir);
+            }
+        }
+        else
+        {
+            if (splineFollower.result.percent < 0.025f)
+            {
+                TriggerJumpingOffRails?.Invoke(JumpState.inAir);
+            }
+        }
+    }
+
+    void ExitRails()
+    {
         splineFollower.follow = !splineFollower.follow;
         splineFollower.spline = null;
         splineProjector.spline = null;
@@ -100,217 +165,20 @@ public class GrindController : MonoBehaviour
         OnRailGrindStateChange?.Invoke(splineFollower.follow);
     }
 
-    private void RailSwitchingByInput()
+    private void GetOffRailsOnJump(JumpState _jumpStste)
     {
-        if (closestNode != null)
-        {
-            float distance = Vector3.Distance(transform.position, closestNode.transform.position);
-            // this is to choose a track when input is pressed
-
-            if (Input.GetKeyDown(KeyCode.D))
-            {
-
-                if (Vector3.Distance(transform.position, closestNode.transform.position) > distanceToSwitchNode) return;
-
-                foreach (var connection in closestNode.GetConnections())
-                {
-                    if (connection.spline == splineFollower.spline)
-                    {
-                        currentConnection = connection;
-                        break;
-                    }
-                }
-
-                Node.Connection mostConvenientConnection = WithInputGetMostConvenientConnection(KeyCode.D);
-                if (mostConvenientConnection == null) return;
-
-                if (mostConvenientConnection.spline != splineFollower.spline)
-                {
-
-                    isInputPressed = true;
-                    Invoke(nameof(disableInputEnabled), 0.15f);
-                    SwitchSpline(currentConnection, mostConvenientConnection);
-                    closestNode = null;
-                    return;
-                }
-            }
-
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-
-                if (Vector3.Distance(transform.position, closestNode.transform.position) > distanceToSwitchNode) return;
-
-
-
-                foreach (var connection in closestNode.GetConnections())
-                {
-                    if (connection.spline == splineFollower.spline)
-                    {
-                        currentConnection = connection;
-                        break;
-                    }
-                }
-
-                Node.Connection mostConvenientConnection = WithInputGetMostConvenientConnection(KeyCode.A);
-                if (mostConvenientConnection == null) return;
-
-                if (mostConvenientConnection.spline != splineFollower.spline)
-                {
-
-                    isInputPressed = true;
-                    Invoke(nameof(disableInputEnabled), 0.15f);
-                    SwitchSpline(currentConnection, mostConvenientConnection);
-                    closestNode = null;
-                    return;
-                }
-            }
-        }
+        if (_jumpStste == JumpState.Grounded || splineFollower.spline == null) return;
+        ExitRails();
     }
 
-    private void GrindRailSprinting()
+    Vector3 JumpMomentumAddon()
     {
-        bool isSpeedingUp = Input.GetKey(KeyCode.LeftShift);
+        if (isGrinding && isSpeedingUp)
+        { return transform.forward * 3f; }
 
-        float targetSpeed = isSpeedingUp ? startSpeed * speedMultiplier : startSpeed;
-        targetSpeed = splineFollower.direction == Spline.Direction.Forward ? targetSpeed : -targetSpeed;
-        splineFollower.followSpeed = Mathf.Lerp(splineFollower.followSpeed, targetSpeed, transitionSpeed * Time.deltaTime);
-    }
+        else if (isGrinding && !isSpeedingUp)
+        { return transform.forward * 2.5f; }
 
-    Node.Connection WithInputGetMostConvenientConnection(KeyCode keyPress)
-    {
-        if (keyPress == KeyCode.D)
-        {
-            Node.Connection[] availableConnections = closestNode.GetConnections();
-            return availableConnections[0];
-        }
-        else if (keyPress == KeyCode.A)
-        {
-            Node.Connection[] availableConnections = closestNode.GetConnections();
-            return availableConnections[2];
-        }
-        return null;
-    }
-
-    // this  will choose a default track if the current track is closed and no input is pressed
-    private void OnJunction(List<SplineTracer.NodeConnection> passed)
-    {
-        if (isInputPressed || !isGrinding) return;
-
-        if (closestNode == null) return;
-
-        bool ProceedSwitchingProccess = ShouldSwitchRailMovingForward();
-        if (ProceedSwitchingProccess) { return; }
-        Node.Connection[] availableConnections = new Node.Connection[closestNode.GetConnections().Length];
-        closestNode.GetConnections().CopyTo(availableConnections, 0);
-
-        GetCurrentConnection(availableConnections);
-
-        foreach (var connection in closestNode.GetConnections())
-        {
-
-            if (!currentConnection.spline.isClosed && connection.spline != splineFollower.spline)
-            {
-                if (isSwitchingTrack) { return; }
-                isSwitchingTrack = true;
-
-                SwitchSpline(currentConnection, connection);
-                closestNode = null;
-                return;
-            }
-        }
-    }
-
-
-    bool ShouldSwitchRailMovingForward()
-    {
-        RaycastHit[] colliderHits = Physics.SphereCastAll(transform.position, 1f, transform.forward, 50);
-
-        foreach (var hit in colliderHits)
-        {
-            if (hit.collider.TryGetComponent(out SplineComputer spline))
-            {
-                if (splineFollower.result.percent < 0.8f) { return true; }
-
-            }
-        }
-        return false;
-    }
-    void SwitchSpline(Node.Connection from, Node.Connection to)
-    {
-        splineFollower.spline = to.spline;
-        splineFollower.RebuildImmediate();
-        double startpercent = splineFollower.ClipPercent(to.spline.GetPointPercent(to.pointIndex));
-        splineFollower.SetPercent(startpercent);
-        if (to.spline.isClosed) return;
-        if (splineFollower.result.percent < 0.5)
-        {
-            splineFollower.followSpeed = startSpeed;
-        }
-        else
-        {
-            splineFollower.followSpeed = -startSpeed;
-        }
-        Invoke(nameof(DisableSwitchingTrack), 0.1f);
-    }
-
-    public void GoGrindOnThoseRails(SplineComputer splineToGrindOn)
-    {
-        if (!isGrinding)
-        {
-
-            splineFollower.spline = splineToGrindOn;
-            splineFollower.RebuildImmediate();
-
-            splineProjector.enabled = true;
-            splineProjector.spline = splineToGrindOn;
-            splineProjector.RebuildImmediate();
-            splineProjector.CalculateProjection();
-
-            double percent = splineProjector.GetPercent();
-            splineFollower.SetPercent(percent);
-
-            splineFollower.follow = true;
-            if (splineFollower.result.percent < 0.5)
-            {
-                splineFollower.followSpeed = startSpeed;
-            }
-            else
-            {
-                splineFollower.followSpeed = -startSpeed;
-            }
-            isGrinding = true;
-            OnRailGrindStateChange?.Invoke(isGrinding);
-            return;
-
-        }
-    }
-
-    private void GetCurrentConnection(Node.Connection[] availableConnections)
-    {
-        foreach (var connection in availableConnections)
-        {
-            if (connection.spline == splineFollower.spline)
-            {
-                currentConnection = connection;
-                break;
-            }
-        }
-    }
-
-    Vector3 ExternalMomentum()
-    {
-        if (!isGrinding) { return Vector3.zero; }
-        Vector3 externalMomentum = splineFollower.EvaluatePosition(splineFollower.result.percent).normalized * splineFollower.followSpeed;
-        return externalMomentum;
-    }
-
-    void disableInputEnabled()
-    {
-        isInputPressed = false;
-    }
-
-    void DisableSwitchingTrack()
-    {
-        isSwitchingTrack = false;
+        return transform.forward;
     }
 }

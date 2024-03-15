@@ -1,3 +1,4 @@
+using CustomInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,12 +6,23 @@ using UnityEngine;
 public class Turret : MonoBehaviour
 {
     Movement player;
+
+    [HorizontalLine("Turret Activation Settings ", 2, FixedColor.CherryRed)]
     [SerializeField] float rotationSpeed = 5f;
     [SerializeField] float fireRate = 1f;
-    [SerializeField] GameObject bulletPrefab;
-    [SerializeField] Transform firePoint;
     [SerializeField] float playerRange = 10f; // Range within which players are detected
-    [SerializeField] float timeBetweenBullets;
+
+    [HorizontalLine("References ", 2, FixedColor.CherryRed)]
+    [SerializeField] GameObject bulletPrefab;
+    [SerializeField] Transform aimHolder;
+    [SerializeField] Transform firePoint;
+    [SerializeField] ParticleSystem muzzleFlashVfx;
+
+    [HorizontalLine("Projectile Settings ", 2, FixedColor.CherryRed)]
+    [SerializeField] int bulletSpeed = 5;
+    [SerializeField] float bulletLifetime = 5f;
+    [SerializeField] int bulletDamage = 1;
+
     private bool isFiring = false;
 
     void Start()
@@ -33,7 +45,7 @@ public class Turret : MonoBehaviour
     void RotateTurret()
     {
         Transform closestPlayer = player.transform;
-        firePoint.transform.LookAt(closestPlayer);
+        aimHolder.LookAt(closestPlayer);
         Vector3 targetDir = closestPlayer.position - transform.position;
         Quaternion lookRotation = Quaternion.LookRotation(targetDir);
         Vector3 rotation = Quaternion.Lerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed).eulerAngles;
@@ -55,7 +67,13 @@ public class Turret : MonoBehaviour
 
     void Fire()
     {
-        Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        GameObject _bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        _bullet.GetComponent<Bullet>().InitializeBullet(bulletDamage, bulletSpeed, bulletLifetime);
+
+        if (muzzleFlashVfx != null)
+        {
+            muzzleFlashVfx.Play();
+        }
     }
 
     bool PlayerInRange()
@@ -72,5 +90,4 @@ public class Turret : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, playerRange);
     }
-
 }

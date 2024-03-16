@@ -652,6 +652,12 @@ MonoBehaviour:
     - 8b2e88c96fe39424c98bb95f9ed3ab3c
     - aed1f8fc5cd2c234a8755246a1b75c19
     - ec002150fd86a8f4c9c2eaa6a45185ea
+    - cf95b6d3c922896458095e3e272c0cf7
+    - 56a982073ac5a154392868600b00246f
+    - f3789226630b95346bc13e0bedf502d9
+    - 15a400c161ffb6347b7b9668be27fa29
+    - 2c718b5c91db21e4480482010d48873a
+    - a0f0f03df20062e4aaae5fe970d2a070
     values:
     - colorIndex: 7
       iconNameOrGuid: ebd7d20882d5abb42abb240c354a0631
@@ -746,7 +752,7 @@ MonoBehaviour:
     - colorIndex: 7
       iconNameOrGuid: 050130b943cdea04b9580c3038b7a945
     - colorIndex: 1
-      iconNameOrGuid: cs Script Icon
+      iconNameOrGuid: ComputeShader Icon
     - colorIndex: 1
       iconNameOrGuid: ScriptableObject Icon
     - colorIndex: 1
@@ -1927,5 +1933,17 @@ MonoBehaviour:
       iconNameOrGuid: cs Script Icon
     - colorIndex: 2
       iconNameOrGuid: Prefab Icon
+    - colorIndex: 2
+      iconNameOrGuid: 4a7e6c454e1d78e42af4ef68dbca9f07
+    - colorIndex: 2
+      iconNameOrGuid: 1c836bffbaaa38842b1a0f31e1f7561b
+    - colorIndex: 2
+      iconNameOrGuid: cs Script Icon
+    - colorIndex: 2
+      iconNameOrGuid: cs Script Icon
+    - colorIndex: 2
+      iconNameOrGuid: 546589f6c4c3ffa4f99d35cf043fc00f
+    - colorIndex: 2
+      iconNameOrGuid: 4a7e6c454e1d78e42af4ef68dbca9f07
     - colorIndex: 2
       iconNameOrGuid: cs Script Icon

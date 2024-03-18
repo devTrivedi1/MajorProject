@@ -16,6 +16,10 @@ MonoBehaviour:
     keys:
     - 99c9720ab356a0642a771bea13969a05
     - ec4c015469ad11e46b6a27c49976e095
+    - bb1258b195c546d419d2409c9bc635ee
+    - 2397c294400125b4e8a062759b31c8fb
+    - c26e9b59370041e4484888788e174389
+    - 68180141ae8a0d340a2dd66aa93b91e9
     values:
     - goDatas_byGlobalId:
         keys: []
@@ -26,3 +30,111 @@ MonoBehaviour:
         values:
         - colorIndex: 0
           iconNameOrGuid: AvatarMask On Icon
+    - goDatas_byGlobalId:
+        keys:
+        - globalObjectIdString: GlobalObjectId_V1-2-bb1258b195c546d419d2409c9bc635ee-1190013393-0
+        - globalObjectIdString: GlobalObjectId_V1-2-bb1258b195c546d419d2409c9bc635ee-192384352-0
+        - globalObjectIdString: GlobalObjectId_V1-2-bb1258b195c546d419d2409c9bc635ee-1440482959-0
+        - globalObjectIdString: GlobalObjectId_V1-2-bb1258b195c546d419d2409c9bc635ee-340495451-0
+        - globalObjectIdString: GlobalObjectId_V1-2-bb1258b195c546d419d2409c9bc635ee-1834471958-0
+        - globalObjectIdString: GlobalObjectId_V1-2-bb1258b195c546d419d2409c9bc635ee-295184915-0
+        - globalObjectIdString: GlobalObjectId_V1-2-bb1258b195c546d419d2409c9bc635ee-801696056-0
+        - globalObjectIdString: GlobalObjectId_V1-2-bb1258b195c546d419d2409c9bc635ee-129110560-0
+        - globalObjectIdString: GlobalObjectId_V1-2-bb1258b195c546d419d2409c9bc635ee-218763523-0
+        - globalObjectIdString: GlobalObjectId_V1-2-bb1258b195c546d419d2409c9bc635ee-838907622-0
+        - globalObjectIdString: GlobalObjectId_V1-2-bb1258b195c546d419d2409c9bc635ee-1591259111-0
+        - globalObjectIdString: GlobalObjectId_V1-2-bb1258b195c546d419d2409c9bc635ee-334346943-0
+        - globalObjectIdString: GlobalObjectId_V1-2-bb1258b195c546d419d2409c9bc635ee-727113289-0
+        - globalObjectIdString: GlobalObjectId_V1-2-bb1258b195c546d419d2409c9bc635ee-625082956-0
+        - globalObjectIdString: GlobalObjectId_V1-2-bb1258b195c546d419d2409c9bc635ee-1179185069-0
+        - globalObjectIdString: GlobalObjectId_V1-2-bb1258b195c546d419d2409c9bc635ee-244699825-0
+        values:
+        - colorIndex: 0
+          iconNameOrGuid: PreMatQuad
+        - colorIndex: 4
+          iconNameOrGuid: 
+        - colorIndex: 6
+          iconNameOrGuid: 
+        - colorIndex: 2
+          iconNameOrGuid: 
+        - colorIndex: 0
+          iconNameOrGuid: Canvas Icon
+        - colorIndex: 0
+          iconNameOrGuid: PreMatQuad
+        - colorIndex: 0
+          iconNameOrGuid: Canvas Icon
+        - colorIndex: 0
+          iconNameOrGuid: StandaloneInputModule Icon
+        - colorIndex: 0
+          iconNameOrGuid: Camera Icon
+        - colorIndex: 0
+          iconNameOrGuid: DirectionalLight Icon
+        - colorIndex: 0
+          iconNameOrGuid: TrailRenderer Icon
+        - colorIndex: 0
+          iconNameOrGuid: TrailRenderer Icon
+        - colorIndex: 0
+          iconNameOrGuid: TrailRenderer Icon
+        - colorIndex: 0
+          iconNameOrGuid: TrailRenderer Icon
+        - colorIndex: 0
+          iconNameOrGuid: TrailRenderer Icon
+        - colorIndex: 0
+          iconNameOrGuid: TrailRenderer Icon
+    - goDatas_byGlobalId:
+        keys:
+        - globalObjectIdString: GlobalObjectId_V1-2-2397c294400125b4e8a062759b31c8fb-784609238-0
+        - globalObjectIdString: GlobalObjectId_V1-2-2397c294400125b4e8a062759b31c8fb-801789623-0
+        values:
+        - colorIndex: 3
+          iconNameOrGuid: TrailRenderer Icon
+        - colorIndex: 7
+          iconNameOrGuid: PreMatQuad
+    - goDatas_byGlobalId:
+        keys:
+        - globalObjectIdString: GlobalObjectId_V1-2-c26e9b59370041e4484888788e174389-876416878-0
+        - globalObjectIdString: GlobalObjectId_V1-2-c26e9b59370041e4484888788e174389-1414974836-0
+        - globalObjectIdString: GlobalObjectId_V1-2-c26e9b59370041e4484888788e174389-520972199-0
+        - globalObjectIdString: GlobalObjectId_V1-2-c26e9b59370041e4484888788e174389-1783955124-0
+        - globalObjectIdString: GlobalObjectId_V1-2-c26e9b59370041e4484888788e174389-1689092308-0
+        - globalObjectIdString: GlobalObjectId_V1-2-c26e9b59370041e4484888788e174389-478929218-0
+        - globalObjectIdString: GlobalObjectId_V1-2-c26e9b59370041e4484888788e174389-1994342210-0
+        - globalObjectIdString: GlobalObjectId_V1-2-c26e9b59370041e4484888788e174389-708282304-0
+        - globalObjectIdString: GlobalObjectId_V1-2-c26e9b59370041e4484888788e174389-616865334-0
+        - globalObjectIdString: GlobalObjectId_V1-2-c26e9b59370041e4484888788e174389-1050785729-0
+        values:
+        - colorIndex: 8
+          iconNameOrGuid: 
+        - colorIndex: 0
+          iconNameOrGuid: TrailRenderer Icon
+        - colorIndex: 0
+          iconNameOrGuid: TrailRenderer Icon
+        - colorIndex: 3
+          iconNameOrGuid: 
+        - colorIndex: 0
+          iconNameOrGuid: TrailRenderer Icon
+        - colorIndex: 0
+          iconNameOrGuid: TrailRenderer Icon
+        - colorIndex: 0
+          iconNameOrGuid: TrailRenderer Icon
+        - colorIndex: 0
+          iconNameOrGuid: TrailRenderer Icon
+        - colorIndex: 0
+          iconNameOrGuid: TrailRenderer Icon
+        - colorIndex: 0
+          iconNameOrGuid: TrailRenderer Icon
+    - goDatas_byGlobalId:
+        keys:
+        - globalObjectIdString: GlobalObjectId_V1-2-68180141ae8a0d340a2dd66aa93b91e9-336962995-0
+        - globalObjectIdString: GlobalObjectId_V1-2-68180141ae8a0d340a2dd66aa93b91e9-689088165-0
+        - globalObjectIdString: GlobalObjectId_V1-2-68180141ae8a0d340a2dd66aa93b91e9-304604259-0
+        - globalObjectIdString: GlobalObjectId_V1-2-68180141ae8a0d340a2dd66aa93b91e9-1810383600-0
+        values:
+        - colorIndex: 7
+          iconNameOrGuid: TrailRenderer Icon
+        - colorIndex: 8
+          iconNameOrGuid: 
+        - colorIndex: 2
+          iconNameOrGuid: 
+        - colorIndex: 6
+          iconNameOrGuid: 

@@ -24,7 +24,7 @@ public class Stomp : MonoBehaviour
         Jump.OnJumpStateChanged -= GetCurrentJumpState;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
        StompDown();
     }

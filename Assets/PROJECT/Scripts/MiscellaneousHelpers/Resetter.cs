@@ -9,11 +9,8 @@ public class Resetter : MonoBehaviour
     private struct ObjectState
     {
         public Dictionary<FieldInfo, object> FieldStates;
-        public Vector3 Position;
-        public Quaternion Rotation;
-        public Vector3 Scale;
-        public bool Active;
-        // Add more Unity component states here as needed
+        public bool Enabled;
+        public List<ComponentState> ComponentStates;
     }
 
     private Dictionary<IResettable, ObjectState> allInitialStates = new();
@@ -28,14 +25,13 @@ public class Resetter : MonoBehaviour
         var resettables = FindObjectsOfType<MonoBehaviour>().OfType<IResettable>();
         foreach (var resettable in resettables)
         {
+            var componentStates = BoilerplateHell(resettable);
+
             var initialState = new ObjectState
             {
                 FieldStates = new Dictionary<FieldInfo, object>(),
-                Position = resettable.transform.position,
-                Rotation = resettable.transform.rotation,
-                Scale = resettable.transform.localScale,
-                Active = resettable.gameObject.activeSelf
-                // Capture other Unity component states as needed
+                Enabled = resettable.enabled,
+                ComponentStates = componentStates
             };
 
             var type = resettable.GetType();
@@ -55,6 +51,7 @@ public class Resetter : MonoBehaviour
 
     public void ResetAll()
     {
+        float startTime = Time.realtimeSinceStartup;
         foreach (var resettable in allInitialStates.Keys)
         {
             var initialState = allInitialStates[resettable];
@@ -63,12 +60,47 @@ public class Resetter : MonoBehaviour
                 entry.Key.SetValue(resettable, entry.Value);
             }
 
-            resettable.transform.position = initialState.Position;
-            resettable.transform.rotation = initialState.Rotation;
-            resettable.transform.localScale = initialState.Scale;
-            resettable.gameObject.SetActive(initialState.Active);
-            // Reset other Unity component states as needed
+            MonoBehaviour mono = (resettable as MonoBehaviour);
+            mono.StopAllCoroutines();
+            (resettable as MonoBehaviour)?.StopAllCoroutines();
+            resettable.enabled = initialState.Enabled;
+
+            foreach (var componentState in initialState.ComponentStates)
+            {
+                componentState.ResetState();
+            }
         }
+        float endTime = Time.realtimeSinceStartup;
+        Debug.Log("Time taken: " + (endTime - startTime) + " seconds.");
+    }
+
+    public List<ComponentState> BoilerplateHell(IResettable resettable)
+    {
+        var componentState = new List<ComponentState>();
+
+        if (resettable is IResettableGO)
+        {
+            var go = new GameObjectState();
+            go.CaptureState(resettable);
+            componentState.Add(go);
+        }
+
+        if (resettable is IResettableRb)
+        {
+            var rb = new RigidbodyState();
+            rb.CaptureState(resettable);
+            componentState.Add(rb);
+        }
+
+        if (resettable is IResettableTransform)
+        {
+            var transform = new TransformState();
+            transform.CaptureState(resettable);
+            componentState.Add(transform);
+        }
+
+        //More Unity components to be added as needed
+        return componentState;
     }
 }
 

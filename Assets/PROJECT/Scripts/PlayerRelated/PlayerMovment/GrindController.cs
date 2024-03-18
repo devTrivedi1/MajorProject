@@ -14,7 +14,7 @@ public class GrindController : MonoBehaviour
     [SelfFill][SerializeField] Rigidbody rb;
 
     [HorizontalLine("Grind Controller Settings",2,FixedColor.BabyBlue)]
-    [SerializeField]float normalGrindSpeed;
+    [SerializeField] public float normalGrindSpeed;
     [SerializeField] float sprintSpeedMultiplier;
     [SerializeField] float SprintingTransitionSpeed;
   
@@ -154,7 +154,7 @@ public class GrindController : MonoBehaviour
         }
     }
 
-    void ExitRails()
+    public void ExitRails()
     {
         splineFollower.follow = !splineFollower.follow;
         splineFollower.spline = null;

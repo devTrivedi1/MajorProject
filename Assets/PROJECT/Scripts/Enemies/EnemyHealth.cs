@@ -14,6 +14,6 @@ public class EnemyHealth : ObjectHealth
             Destroy(particle, 3f);
         }
         OnEnemyDeath?.Invoke(gameObject);
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 }

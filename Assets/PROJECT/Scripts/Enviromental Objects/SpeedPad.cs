@@ -32,36 +32,32 @@ public class SpeedPad : MonoBehaviour, IEnviromentalAids
     {
         playerRB = rb;
     }
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
         if (playerRB != null)
         {
-             collision.gameObject.TryGetComponent(out GrindController GC);
+            other.gameObject.TryGetComponent(out GrindController GC);
 
-            if(GC != null && GC.isGrinding == true)
+            if (GC != null && GC.isGrinding == true)
             {
                 OG_railSpeed = GC.normalGrindSpeed;
                 GC.normalGrindSpeed = GC.normalGrindSpeed + groundspeedBoost;
                 Debug.Log(OG_railSpeed);
             }
-            Vector3 playerForward = playerRB.transform.forward;
-            padRenderer.material.color = activatedCol;
 
-            Vector3 direction = Vector3.Lerp(playerRB.velocity.normalized, playerRB.transform.forward.normalized, forwardInfluence);
-            Vector3 boostForce = direction * groundspeedBoost;
+            padRenderer.material.color = activatedCol;
+            Vector3 boostForce = playerRB.transform.forward * groundspeedBoost;
             playerRB.AddForce(boostForce, ForceMode.VelocityChange);
         }
     }
 
-    private void OnCollisionExit(Collision collision)
+    private void OnTriggerExit(Collider other)
     {
-        collision.gameObject.TryGetComponent(out GrindController GC);
+        other.gameObject.TryGetComponent(out GrindController GC);
         if (GC.isGrinding == true)
         {
             GC.normalGrindSpeed = OG_railSpeed;
         }
+        padRenderer.material.color = unactivatedCol;
     }
-
-
-
 }

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpeedPad : MonoBehaviour, IEnviromentalAids
+public class SpeedPad : MonoBehaviour, INeedPlayerRefs
 {
     [SerializeField]
     private float groundspeedBoost = 10f;
@@ -28,15 +28,17 @@ public class SpeedPad : MonoBehaviour, IEnviromentalAids
         padRenderer.material.color = unactivatedCol;
     }
 
-    public void SetTargetRigidbody(Rigidbody rb)
+    public void FetchPlayerRefs(Rigidbody rb, GrindController gc)
     {
         playerRB = rb;
+        GC = gc;
+        
     }
     private void OnTriggerEnter(Collider other)
     {
         if (playerRB != null)
         {
-            other.gameObject.TryGetComponent(out GrindController GC);
+            //other.gameObject.TryGetComponent(out GrindController GC);
 
             if (GC != null && GC.isGrinding == true)
             {

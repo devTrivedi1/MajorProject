@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class BreakablePlatform : MonoBehaviour, IEnviromentalAids
+public class BreakablePlatform : MonoBehaviour, INeedPlayerRefs
 {
     public float maxTime;
     private Rigidbody playerRB;
@@ -40,7 +40,7 @@ public class BreakablePlatform : MonoBehaviour, IEnviromentalAids
         }
     }
 
-    public void SetTargetRigidbody(Rigidbody rb)
+    public void FetchPlayerRefs(Rigidbody rb, GrindController gc = null)
     {
         playerRB = rb;
     }
@@ -52,4 +52,5 @@ public class BreakablePlatform : MonoBehaviour, IEnviromentalAids
             playerOnPad = true;
         }
     }
+
 }

@@ -3,16 +3,22 @@ using UnityEngine;
 
 public class EnviromentalAidManager : MonoBehaviour
 {
-    public GameObject player;
-    public Rigidbody rb;
+    private GameObject player;
+    private Rigidbody rb;
+    private GrindController gc;
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         rb = player.GetComponent<Rigidbody>();
-        IEnviromentalAids[] aids = FindObjectsOfType<MonoBehaviour>().OfType<IEnviromentalAids>().ToArray();
+        gc = FindObjectOfType<GrindController>();
+        INeedPlayerRefs[] aids = FindObjectsOfType<MonoBehaviour>().OfType<INeedPlayerRefs>().ToArray();
         foreach (var aid in aids)
         {
-            aid.SetTargetRigidbody(rb);
+            aid.FetchPlayerRefs(rb);
+            if (gc != null)
+            {
+                aid.FetchPlayerRefs(rb, gc);
+            }
         }
     }
 }

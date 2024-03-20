@@ -17,7 +17,10 @@ public class Resetter : MonoBehaviour
 
     void Start()
     {
+        float startTime = Time.realtimeSinceStartup;
         CaptureInitialStates();
+        float endTime = Time.realtimeSinceStartup;
+        Debug.Log("Time to capture: " + (endTime - startTime) + " seconds. That is " + Mathf.Round(1 / (endTime - startTime)) + "FPS.");
     }
 
     public void CaptureInitialStates()
@@ -71,7 +74,7 @@ public class Resetter : MonoBehaviour
             }
         }
         float endTime = Time.realtimeSinceStartup;
-        Debug.Log("Time taken: " + (endTime - startTime) + " seconds.");
+        Debug.Log("Time to reset: " + (endTime - startTime) + " seconds. That is " + Mathf.Round(1 / (endTime - startTime)) + "FPS.");
     }
 
     public List<ComponentState> BoilerplateHell(IResettable resettable)

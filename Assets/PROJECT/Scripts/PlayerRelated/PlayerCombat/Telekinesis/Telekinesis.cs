@@ -210,6 +210,7 @@ public class Telekinesis : MonoBehaviour
         }
         else
         {
+            StopCoroutine(objectManipulation);
             StartCoroutine(ManipulateObject(currentObject.transform.position, targetable.transform.position, currentObject, throwAnimationCurve, timeToReachTarget));
             currentObject.StopManipulation();
             currentObject = null;

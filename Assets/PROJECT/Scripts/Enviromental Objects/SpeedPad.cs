@@ -43,7 +43,7 @@ public class SpeedPad : MonoBehaviour, INeedPlayerRefs
             if (GC != null && GC.isGrinding == true)
             {
                 OG_railSpeed = GC.normalGrindSpeed;
-                GC.normalGrindSpeed = GC.normalGrindSpeed + groundspeedBoost;
+                GC.normalGrindSpeed = GC.normalGrindSpeed + railspeedBoost;
                 Debug.Log(OG_railSpeed);
             }
 

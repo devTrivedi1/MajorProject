@@ -22,6 +22,8 @@ public class SpeedPad : MonoBehaviour, INeedPlayerRefs
 
     public Color unactivatedCol = Color.white;
     public Color activatedCol = Color.red;
+
+    private bool RunOnce;
     private void Start()
     {
         padRenderer = GetComponent<MeshRenderer>();
@@ -38,6 +40,14 @@ public class SpeedPad : MonoBehaviour, INeedPlayerRefs
     {
         if (playerRB != null)
         {
+            if (RunOnce)
+            {
+                return;
+            }
+            else
+            {
+                RunOnce = true;
+            }
             //other.gameObject.TryGetComponent(out GrindController GC);
 
             if (GC != null && GC.isGrinding == true)
@@ -56,9 +66,11 @@ public class SpeedPad : MonoBehaviour, INeedPlayerRefs
     private void OnTriggerExit(Collider other)
     {
         other.gameObject.TryGetComponent(out GrindController GC);
-        if (GC.isGrinding == true)
+
+        if (GC != null && GC.isGrinding == true)
         {
             GC.normalGrindSpeed = OG_railSpeed;
+            RunOnce = false;
         }
         padRenderer.material.color = unactivatedCol;
     }

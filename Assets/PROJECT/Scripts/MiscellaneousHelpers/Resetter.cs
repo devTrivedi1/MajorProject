@@ -6,6 +6,14 @@ using System.Linq;
 
 public class Resetter : MonoBehaviour
 {
+    Dictionary<Type, Func<ComponentState>> interfaceCorrelation = new() 
+    {
+        { typeof(IResettableGO), () => new GameObjectState() },
+        { typeof(IResettableRb), () => new RigidbodyState() },
+        { typeof(IResettableTransform), () => new TransformState() }
+        //More Unity component states to be added as needed
+    };
+
     private struct ObjectState
     {
         public Dictionary<FieldInfo, object> FieldStates;
@@ -23,12 +31,12 @@ public class Resetter : MonoBehaviour
         Debug.Log("Time to capture: " + (endTime - startTime) + " seconds. That is " + Mathf.Round(1 / (endTime - startTime)) + "FPS.");
     }
 
-    public void CaptureInitialStates()
+    void CaptureInitialStates()
     {
         var resettables = FindObjectsOfType<MonoBehaviour>().OfType<IResettable>();
         foreach (var resettable in resettables)
         {
-            var componentStates = BoilerplateHell(resettable);
+            var componentStates = GetComponentStates(resettable);
 
             var initialState = new ObjectState
             {
@@ -63,9 +71,7 @@ public class Resetter : MonoBehaviour
                 entry.Key.SetValue(resettable, entry.Value);
             }
 
-            MonoBehaviour mono = (resettable as MonoBehaviour);
-            mono.StopAllCoroutines();
-            (resettable as MonoBehaviour)?.StopAllCoroutines();
+            if (resettable is MonoBehaviour monoBehaviour) { monoBehaviour.StopAllCoroutines(); }
             resettable.enabled = initialState.Enabled;
 
             foreach (var componentState in initialState.ComponentStates)
@@ -77,33 +83,21 @@ public class Resetter : MonoBehaviour
         Debug.Log("Time to reset: " + (endTime - startTime) + " seconds. That is " + Mathf.Round(1 / (endTime - startTime)) + "FPS.");
     }
 
-    public List<ComponentState> BoilerplateHell(IResettable resettable)
+    List<ComponentState> GetComponentStates(IResettable resettable)
     {
-        var componentState = new List<ComponentState>();
+        var componentStates = new List<ComponentState>();
 
-        if (resettable is IResettableGO)
+        foreach (var iResettable in resettable.GetType().GetInterfaces())
         {
-            var go = new GameObjectState();
-            go.CaptureState(resettable);
-            componentState.Add(go);
+            if (interfaceCorrelation.TryGetValue(iResettable, out Func<ComponentState> newComponentState))
+            {
+                ComponentState componentState = newComponentState();
+                componentState.CaptureState(resettable);
+                componentStates.Add(componentState);
+            }
         }
 
-        if (resettable is IResettableRb)
-        {
-            var rb = new RigidbodyState();
-            rb.CaptureState(resettable);
-            componentState.Add(rb);
-        }
-
-        if (resettable is IResettableTransform)
-        {
-            var transform = new TransformState();
-            transform.CaptureState(resettable);
-            componentState.Add(transform);
-        }
-
-        //More Unity components to be added as needed
-        return componentState;
+        return componentStates;
     }
 }
 

@@ -964,10 +964,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slowTimeRemaining: 0
   onCooldown: 0
+  canActivate: 0
+  slowing: 0
   segments: 5
   timePerSegment: 1.5
   slowdownPercentage: 20
   rechargableSegments: 2
+  activationCooldown: 0.5
   slowdownUIParent: {fileID: 270998490}
   segmentPrefab: {fileID: 3384721146000947073, guid: f695ced0cbfcb2f43a931b727adb76ff,
     type: 3}

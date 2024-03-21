@@ -2,6 +2,7 @@ using CustomInspector;
 using VInspector;
 using UnityEngine.UI;
 using UnityEngine;
+using System.Collections;
 
 public class TimeSlowdown : MonoBehaviour
 {
@@ -18,11 +19,13 @@ public class TimeSlowdown : MonoBehaviour
     [SerializeField, Range(0, 100f)] float slowdownPercentage = 50f;
     [SerializeField, Range(1, 10)] int rechargableSegments = 1;
     [SerializeField, Range(0, 1f)] float activationCooldown = 0.5f;
+    [SerializeField, Range(0, 1f)] float timeScaleChangeDuration = 0.5f;
 
     [HorizontalLine("UI", 1, FixedColor.Gray)]
     [SerializeField] Transform slowdownUIParent;
     [SerializeField] GameObject segmentPrefab;
-    
+
+    Coroutine timeScaleCoroutine;
     Image[] spawnedSegments;
     float fixedDeltaTime;
     float activationTime = 0f;
@@ -74,10 +77,16 @@ public class TimeSlowdown : MonoBehaviour
 
     private void HandleSlowdown()
     {
-        slowing = true;
-        Time.timeScale = slowdownPercentage / 100;
-        Time.fixedDeltaTime = fixedDeltaTime * Time.timeScale;
-
+        if (!slowing)
+        {
+            slowing = true;
+            if (timeScaleCoroutine != null)
+            {
+                StopCoroutine(timeScaleCoroutine);
+            }
+            timeScaleCoroutine = StartCoroutine(ChangeTimeScale(slowdownPercentage / 100, timeScaleChangeDuration));
+        }
+        
         slowTimeRemaining -= Time.unscaledDeltaTime;
         slowTimeRemaining = Mathf.Max(0, slowTimeRemaining);
 
@@ -87,10 +96,30 @@ public class TimeSlowdown : MonoBehaviour
     private void ResetTimeScale()
     {
         slowing = false;
-        Time.timeScale = 1;
-        Time.fixedDeltaTime = fixedDeltaTime;
+        if (timeScaleCoroutine != null)
+        {
+            StopCoroutine(timeScaleCoroutine);
+        }
+        timeScaleCoroutine = StartCoroutine(ChangeTimeScale(1, timeScaleChangeDuration));
         canActivate = false;
         activationTime = activationCooldown;
+    }
+
+    IEnumerator ChangeTimeScale(float targetScale, float duration)
+    {
+        float startScale = Time.timeScale;
+        float timer = 0;
+
+        while (timer < duration)
+        {
+            Time.timeScale = Mathf.Lerp(startScale, targetScale, timer / duration);
+            Time.fixedDeltaTime = fixedDeltaTime * Time.timeScale;
+            timer += Time.unscaledDeltaTime;
+            yield return null;
+        }
+
+        Time.timeScale = targetScale;
+        Time.fixedDeltaTime = fixedDeltaTime * Time.timeScale;
     }
 
     private void RechargeSlowdown()

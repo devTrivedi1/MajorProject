@@ -971,6 +971,7 @@ MonoBehaviour:
   slowdownPercentage: 20
   rechargableSegments: 2
   activationCooldown: 0.5
+  timeScaleChangeDuration: 0.25
   slowdownUIParent: {fileID: 270998490}
   segmentPrefab: {fileID: 3384721146000947073, guid: f695ced0cbfcb2f43a931b727adb76ff,
     type: 3}

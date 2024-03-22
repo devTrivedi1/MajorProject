@@ -29,12 +29,16 @@ public class TimeSlowdown : MonoBehaviour
     Image[] spawnedSegments;
     float fixedDeltaTime;
     float activationTime = 0f;
+    bool paused;
+    float savedTimeScale;
 
     private void Start()
     {
         fixedDeltaTime = Time.fixedDeltaTime;
         slowTimeRemaining = segments * timePerSegment;
         rechargableSegments = Mathf.Clamp(rechargableSegments, 0, segments);
+        GameManager.Instance.onPause.AddListener(() => GamePaused(true));
+        GameManager.Instance.onResume.AddListener(() => GamePaused(false));
         SpawnUI();
     }
 
@@ -51,6 +55,8 @@ public class TimeSlowdown : MonoBehaviour
 
     private void Update()
     {
+        if (paused) { return; }
+        
         HandleActivationCooldown();
 
         if (Input.GetKey(KeyCode.Mouse1) && slowTimeRemaining > 0 && !onCooldown && canActivate)
@@ -112,6 +118,11 @@ public class TimeSlowdown : MonoBehaviour
 
         while (timer < duration)
         {
+            if (paused) 
+            {
+                Time.timeScale = 0;
+                yield return null; 
+            }
             Time.timeScale = Mathf.Lerp(startScale, targetScale, timer / duration);
             Time.fixedDeltaTime = fixedDeltaTime * Time.timeScale;
             timer += Time.unscaledDeltaTime;
@@ -146,6 +157,23 @@ public class TimeSlowdown : MonoBehaviour
             {
                 spawnedSegments[i].fillAmount = 0;
             }
+        }
+    }
+
+    void GamePaused(bool paused)
+    {
+        this.paused = paused;
+        if (paused)
+        {
+            if (timeScaleCoroutine != null) { StopCoroutine(timeScaleCoroutine); }
+        }
+        else if (Time.timeScale < 1)
+        {
+            slowing = Input.GetKey(KeyCode.Mouse1);
+            float targetScale = slowing ? slowdownPercentage / 100 : 1;
+            float t = Mathf.Abs((Time.timeScale - targetScale) / (1 - slowdownPercentage / 100));
+            float timeToScale = Mathf.Lerp(0, timeScaleChangeDuration, Mathf.Clamp01(t));
+            StartCoroutine(ChangeTimeScale(targetScale, timeToScale));
         }
     }
 }

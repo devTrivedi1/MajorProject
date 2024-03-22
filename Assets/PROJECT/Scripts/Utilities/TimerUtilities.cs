@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System.Threading.Tasks;
@@ -7,7 +5,6 @@ using System.Threading;
 
 [System.Serializable]
 public class TimerUtilities
-
 {
     [SerializeField] public bool showDecimal;
     [SerializeField] public TextMeshProUGUI textReference;
@@ -24,16 +21,16 @@ public class TimerUtilities
 
     CancellationTokenSource cts = new CancellationTokenSource();
 
-
     public TimerUtilities()
     {
 
     }
 
-    public TimerUtilities(bool _showDecimal, TextMeshProUGUI _textReference)
+    public TimerUtilities(bool _showDecimal, TextMeshProUGUI _textReference,string _addonText ="")
     {
         showDecimal = _showDecimal;
         textReference = _textReference;
+        addonText = _addonText;
     }
 
     public void InitializeUnlimitedStopWatch()

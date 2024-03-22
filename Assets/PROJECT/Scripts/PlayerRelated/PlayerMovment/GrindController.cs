@@ -14,7 +14,7 @@ public class GrindController : MonoBehaviour
     [SelfFill][SerializeField] Rigidbody rb;
 
     [HorizontalLine("Grind Controller Settings",2,FixedColor.BabyBlue)]
-    [SerializeField]float normalGrindSpeed;
+    [SerializeField] float normalGrindSpeed;
     [SerializeField] float sprintSpeedMultiplier;
     [SerializeField] float SprintingTransitionSpeed;
   

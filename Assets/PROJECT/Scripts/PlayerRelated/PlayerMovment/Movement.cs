@@ -60,7 +60,10 @@ public class Movement : MonoBehaviour
 
             if (Physics.Raycast(transform.position, Vector3.down, out hit, 1.5f))
             {
-                transform.rotation = Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation;
+                Quaternion targetRotation = Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation;
+                transform.rotation = targetRotation;
+                moveDirection = targetRotation * moveDirection;
+              
             }
         }
         rb.AddForce(moveForce, ForceMode.Acceleration);

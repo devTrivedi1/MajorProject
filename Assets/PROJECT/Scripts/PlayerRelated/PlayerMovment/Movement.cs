@@ -6,6 +6,7 @@ using System;
 public class Movement : MonoBehaviour
 {
     [SerializeField] float speed = 5;
+    [SerializeField] float tolerableSlopeAngle = 30;
 
     [SerializeField] bool isPlayerGrinding = false;
     [SerializeField] Rigidbody rb;
@@ -46,21 +47,28 @@ public class Movement : MonoBehaviour
         moveDirection = cameraForwardDirection * zInput + cameraRightDirection * xInput;
         moveDirection = moveDirection.normalized;
         OnMoveDirectionChanged?.Invoke(moveDirection);
-
         Vector3 moveForce = new Vector3(moveDirection.x * speed, 0, moveDirection.z * speed);
+
 
 
         if (moveDirection != Vector3.zero)
         {
-            transform.forward = Vector3.Lerp(transform.forward, moveDirection, Time.fixedDeltaTime * 20f);
+            Quaternion forwardRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
+
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position + (transform.forward / 2), Vector3.down, out hit))
+            {
+
+                Quaternion slopeRotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
+                slopeRotation.y = 1;
+                moveForce = slopeRotation * moveForce;
+                Quaternion combinedRotation = slopeRotation* forwardRotation;
+                transform.rotation = combinedRotation;
+                
+            }
         }
         rb.AddForce(moveForce, ForceMode.Acceleration);
-
-
     }
-
-
-
 
     public void SetIsPlayerGrinding(bool value)
     {
@@ -70,8 +78,7 @@ public class Movement : MonoBehaviour
 
     Vector3 JumpMomentumAddon()
     {
-       
-        if (!isPlayerGrinding && moveDirection.magnitude>0)
+        if (!isPlayerGrinding && moveDirection.magnitude > 0)
         {
             return transform.forward;
         }

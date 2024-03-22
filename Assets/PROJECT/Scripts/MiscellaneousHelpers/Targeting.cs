@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class Targeting : MonoBehaviour
 {
     Targetable[] allTargetables;
-    public float screenCenterThreshold = 0.1f;
+    public float screenCenterThreshold = 0.25f;
     public static Targeting Instance { get; private set; }
 
     private void Awake()

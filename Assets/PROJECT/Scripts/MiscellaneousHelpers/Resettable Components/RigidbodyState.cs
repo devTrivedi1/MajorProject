@@ -4,6 +4,7 @@ public class RigidbodyState : ComponentState
 {
     Rigidbody rb;
     Vector3 Velocity;
+    Vector3 AngularVelocity;
     bool Kinematic;
     RigidbodyConstraints RigidbodyConstraints;
 
@@ -13,6 +14,7 @@ public class RigidbodyState : ComponentState
         {
             rb = rigidbody.rb;
             Velocity = rigidbody.rb.velocity;
+            AngularVelocity = rigidbody.rb.angularVelocity;
             Kinematic = rigidbody.rb.isKinematic;
             RigidbodyConstraints = rigidbody.rb.constraints;
         }
@@ -22,7 +24,10 @@ public class RigidbodyState : ComponentState
     {
         if (rb == null) { return; }
         rb.velocity = Velocity;
+        rb.angularVelocity = AngularVelocity;
         rb.isKinematic = Kinematic;
         rb.constraints = RigidbodyConstraints;
+        rb.ResetInertiaTensor();
+        rb.ResetCenterOfMass();
     }
 }

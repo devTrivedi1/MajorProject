@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
+using System.Collections;
 
 public class Resetter : MonoBehaviour
 {
@@ -25,6 +26,12 @@ public class Resetter : MonoBehaviour
 
     void Start()
     {
+        StartCoroutine(Capture());
+    }
+
+    IEnumerator Capture()
+    {
+        yield return new WaitForEndOfFrame();
         float startTime = Time.realtimeSinceStartup;
         CaptureInitialStates();
         float endTime = Time.realtimeSinceStartup;
@@ -46,7 +53,7 @@ public class Resetter : MonoBehaviour
             };
 
             var type = resettable.GetType();
-            FieldInfo[] fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            var fields = GetAllFields(type);
 
             foreach (var field in fields)
             {
@@ -81,6 +88,18 @@ public class Resetter : MonoBehaviour
         }
         float endTime = Time.realtimeSinceStartup;
         Debug.Log("Time to reset: " + (endTime - startTime) + " seconds. That is " + Mathf.Round(1 / (endTime - startTime)) + "FPS.");
+    }
+
+    // Recursive function that returns ALL fields up to the base class, as long as it is an IResettable
+    IEnumerable<FieldInfo> GetAllFields(Type t)
+    {
+        if (t == null || !typeof(IResettable).IsAssignableFrom(t))
+        {
+            return Enumerable.Empty<FieldInfo>();
+        }
+
+        BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;
+        return t.GetFields(flags).Concat(GetAllFields(t.BaseType));
     }
 
     List<ComponentState> GetComponentStates(IResettable resettable)

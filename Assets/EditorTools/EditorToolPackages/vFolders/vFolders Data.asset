@@ -659,6 +659,8 @@ MonoBehaviour:
     - 2c718b5c91db21e4480482010d48873a
     - a0f0f03df20062e4aaae5fe970d2a070
     - 833a6c6eae3607c4b9ad98ace0d5dd5c
+    - 723fb5c9ef9b12440ab5fc6572cba2e3
+    - 7d8c93f8ab77f434d97d25db3e339a0b
     values:
     - colorIndex: 7
       iconNameOrGuid: ebd7d20882d5abb42abb240c354a0631
@@ -1946,6 +1948,10 @@ MonoBehaviour:
       iconNameOrGuid: 546589f6c4c3ffa4f99d35cf043fc00f
     - colorIndex: 2
       iconNameOrGuid: 4a7e6c454e1d78e42af4ef68dbca9f07
+    - colorIndex: 2
+      iconNameOrGuid: cs Script Icon
+    - colorIndex: 2
+      iconNameOrGuid: cs Script Icon
     - colorIndex: 2
       iconNameOrGuid: cs Script Icon
     - colorIndex: 2

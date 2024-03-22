@@ -5,9 +5,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using VInspector;
 
-public class Telekinesis : MonoBehaviour
+public class Telekinesis : MonoBehaviour, IResettable
 {
-    TelekinesisState state = TelekinesisState.Idle;
+    [Resettable] TelekinesisState state = TelekinesisState.Idle;
     Coroutine objectManipulation;
 
     [VInspector.Foldout("Debug")]
@@ -42,15 +42,15 @@ public class Telekinesis : MonoBehaviour
     [SerializeField] AnimationCurve throwAnimationCurve;
 
     TelekineticObject[] telekineticObjects;
-    TelekineticObject currentObject;
-    (Targetable target, Vector3 viewportPoint) currentTarget;
+    [Resettable] TelekineticObject currentObject;
+    [Resettable] (Targetable target, Vector3 viewportPoint) currentTarget;
 
     private void Start()
     {
         currentSteeringDirection = Random.onUnitSphere * orbitDistance;
         nextTargetDirection = Random.onUnitSphere * orbitDistance;
         telekineticObjects = FindObjectsOfType<TelekineticObject>();
-        if (Targeting.Instance == null) { Instantiate(new GameObject("Targeting System")).AddComponent<Targeting>(); }
+        if (Targeting.Instance == null) { new GameObject("Targeting System").AddComponent<Targeting>(); }
     }
 
     void Update()
@@ -76,7 +76,7 @@ public class Telekinesis : MonoBehaviour
         if (nearestObject != null)
         {
             currentObject = nearestObject;
-            currentObject.Rb.useGravity = false;
+            currentObject.rb.useGravity = false;
             objectManipulation = StartCoroutine(
                 ManipulateObject(currentObject.transform.position, orbitPosition.position, currentObject, grabAnimationCurve, timeToReachPlayer, TelekinesisState.Holding)
                 );
@@ -138,7 +138,7 @@ public class Telekinesis : MonoBehaviour
                 obj.transform.position = targetPosition;
                 yield return null;
             }
-            obj.Rb.useGravity = true;
+            obj.rb.useGravity = true;
             if (state != TelekinesisState.Idle)
             {
                 this.state = state;
@@ -146,7 +146,7 @@ public class Telekinesis : MonoBehaviour
             }
             else
             {
-                obj.Rb.AddForce((endPosition - obj.transform.position).normalized * throwForce, ForceMode.VelocityChange);
+                obj.rb.AddForce((endPosition - obj.transform.position).normalized * throwForce, ForceMode.VelocityChange);
             }
         }
     }
@@ -180,7 +180,7 @@ public class Telekinesis : MonoBehaviour
             float distanceFromDesired = (desiredPosition - currentObject.transform.position).magnitude;
             Vector3 centeringForceDirection = (desiredPosition - currentObject.transform.position).normalized;
             Vector3 centeringVelocity = distanceFromDesired * orbitSpeed * centeringForceDirection;
-            currentObject.Rb.velocity = centeringVelocity + tangentialVelocity;
+            currentObject.rb.velocity = centeringVelocity + tangentialVelocity;
             orbitAxis = Vector3.Lerp(orbitAxis, currentSteeringDirection, axisChangeSpeed * Time.fixedDeltaTime);
 
             if (axisChangeTimer >= axisChangeInterval)
@@ -199,10 +199,10 @@ public class Telekinesis : MonoBehaviour
         currentObject.transform.parent = null;
         if (targetable == null)
         {
-            currentObject.Rb.useGravity = true;
+            currentObject.rb.useGravity = true;
             currentObject.StopManipulation();
             Vector3 throwDirection = Camera.main.transform.forward;
-            currentObject.Rb.AddForce(throwDirection * throwForce, ForceMode.VelocityChange);
+            currentObject.rb.AddForce(throwDirection * throwForce, ForceMode.VelocityChange);
             state = TelekinesisState.Idle;
             StopCoroutine(objectManipulation);
             currentObject = null;

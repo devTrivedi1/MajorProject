@@ -4,13 +4,13 @@ using UnityEngine.UI;
 using UnityEngine;
 using System.Collections;
 
-public class TimeSlowdown : MonoBehaviour
+public class TimeSlowdown : MonoBehaviour, IResettable
 {
     [VInspector.Foldout("Debug")]
-    [SerializeField, ReadOnly] float slowTimeRemaining;
-    [SerializeField, ReadOnly] bool onCooldown = false;
-    [SerializeField, ReadOnly] bool canActivate = false;
-    [SerializeField, ReadOnly] bool slowing = false;
+    [SerializeField, ReadOnly, Resettable] float slowTimeRemaining;
+    [SerializeField, ReadOnly, Resettable] bool onCooldown = false;
+    [SerializeField, ReadOnly, Resettable] bool canActivate = false;
+    [SerializeField, ReadOnly, Resettable] bool slowing = false;
     [EndFoldout]
 
     [HorizontalLine("Settings", 1, FixedColor.Gray)]
@@ -169,7 +169,7 @@ public class TimeSlowdown : MonoBehaviour
         }
         else if (Time.timeScale < 1)
         {
-            slowing = Input.GetKey(KeyCode.Mouse1);
+            slowing = Input.GetKey(KeyCode.Mouse1) && slowTimeRemaining > 0 && !onCooldown && canActivate;
             float targetScale = slowing ? slowdownPercentage / 100 : 1;
             float t = Mathf.Abs((Time.timeScale - targetScale) / (1 - slowdownPercentage / 100));
             float timeToScale = Mathf.Lerp(0, timeScaleChangeDuration, Mathf.Clamp01(t));

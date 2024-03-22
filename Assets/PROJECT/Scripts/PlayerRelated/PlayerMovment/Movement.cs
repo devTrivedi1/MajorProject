@@ -55,7 +55,13 @@ public class Movement : MonoBehaviour
         {
             Quaternion forwardRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
 
-            transform.rotation = Quaternion.Slerp(transform.rotation, forwardRotation, Time.deltaTime * 20);        
+            transform.rotation = Quaternion.Slerp(transform.rotation, forwardRotation, Time.deltaTime * 20);
+            RaycastHit hit;
+
+            if (Physics.Raycast(transform.position, Vector3.down, out hit, 1.5f))
+            {
+                transform.rotation = Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation;
+            }
         }
         rb.AddForce(moveForce, ForceMode.Acceleration);
     }

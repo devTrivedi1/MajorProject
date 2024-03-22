@@ -26,6 +26,13 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
         Time.timeScale = 1;
+
+        PlayerHealth.OnPlayerDeath += Lose;
+    }
+
+    private void OnDisable()
+    {
+        PlayerHealth.OnPlayerDeath -= Lose;
     }
 
     private void Update()
@@ -34,8 +41,6 @@ public class GameManager : MonoBehaviour
         {
             TogglePause();
         }
-
-        if (hasGameEnded) Time.timeScale = 0;
     }
 
     public void Win()

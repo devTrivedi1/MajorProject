@@ -1,25 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-public class BreakablePlatform : MonoBehaviour, INeedPlayerRefs
+
+public class BreakablePlatform : EnviromentalAid
 {
     public float maxTime;
-    private Rigidbody playerRB;
     private Rigidbody PadRB;
-    private MeshRenderer padRenderer;
     private bool playerOnPad;
     private float timer = 0.0f;
 
-    public Color startColor = Color.white; 
-    public Color endColor = Color.red; 
-    private void Start()
+    public Color startColor = Color.white;
+    public Color endColor = Color.red;
+
+    protected override void Start()
     {
+        base.Start(); 
         PadRB = GetComponent<Rigidbody>();
         PadRB.useGravity = false;
         PadRB.isKinematic = true;
-
-         padRenderer = GetComponent<MeshRenderer>();
-         padRenderer.material.color = startColor;
+        padRenderer.material.color = startColor;
     }
 
     private void Update()
@@ -40,17 +37,26 @@ public class BreakablePlatform : MonoBehaviour, INeedPlayerRefs
         }
     }
 
-    public void FetchPlayerRefs(Rigidbody rb, GrindController gc = null)
+    protected override void OnFetchPlayerRefs(GrindController gc)
     {
-        playerRB = rb;
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (playerRB != null)
+        if (collision.gameObject == playerRB.gameObject)
         {
             playerOnPad = true;
+            ActivateVFX(); 
         }
     }
 
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject == playerRB.gameObject)
+        {
+            playerOnPad = false;
+            DeactivateVFX(); 
+        }
+    }
 }
+

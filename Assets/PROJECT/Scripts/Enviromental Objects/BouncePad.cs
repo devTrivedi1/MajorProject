@@ -1,31 +1,23 @@
 using UnityEngine;
 
-public class BouncePad : MonoBehaviour, INeedPlayerRefs
+public class BouncePad : EnviromentalAid
 {
     public float jumpHeight = 10f;
-    private Rigidbody playerRB;
     private GrindController _gc;
 
-    public void FetchPlayerRefs(Rigidbody rb, GrindController gc)
+    protected override void OnFetchPlayerRefs(GrindController gc)
     {
-        playerRB = rb;
         _gc = gc;
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        //collision.gameObject.TryGetComponent(out GrindController GC);
-
         if (playerRB != null)
         {
-            if (_gc.isGrinding == true)
+            if (_gc != null && _gc.isGrinding)
             {
-                //Grinding+Jumppad == BEEG JUMP
                 _gc.ExitRails();
-                float force = Mathf.Sqrt(2 * jumpHeight * Mathf.Abs(Physics.gravity.y) * playerRB.mass);
-                Vector3 forwardDirection = playerRB.transform.forward;
-                playerRB.AddForce(Vector3.up * force + forwardDirection * force * 0.6f, ForceMode.Impulse);
-                
+                PerformJump(0.6f); // larger force multiplier for grinding!!!!!!!
             }
             else
             {
@@ -36,16 +28,14 @@ public class BouncePad : MonoBehaviour, INeedPlayerRefs
 
     void RegularBounce()
     {
-        if (playerRB.velocity.magnitude > 1)
-        {
-            float force = Mathf.Sqrt(2 * jumpHeight * Mathf.Abs(Physics.gravity.y) * playerRB.mass);
-            Vector3 forwardDirection = playerRB.transform.forward;
-            playerRB.AddForce(Vector3.up * force + forwardDirection * force * 0.2f, ForceMode.Impulse);
-        }
-        else
-        {
-            float force = Mathf.Sqrt(2 * jumpHeight * Mathf.Abs(Physics.gravity.y) * playerRB.mass);
-            playerRB.AddForce(Vector3.up * force, ForceMode.Impulse);
-        }
+        float forceMultiplier = (playerRB.velocity.magnitude > 1) ? 0.2f : 0.0f; 
+        PerformJump(forceMultiplier);
+    }
+
+    void PerformJump(float forwardMultiplier)
+    {
+        float force = Mathf.Sqrt(2 * jumpHeight * Mathf.Abs(Physics.gravity.y) * playerRB.mass);
+        Vector3 forwardDirection = (playerRB.transform.forward * force * forwardMultiplier) + (Vector3.up * force);
+        playerRB.AddForce(forwardDirection, ForceMode.Impulse);
     }
 }

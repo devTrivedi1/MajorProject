@@ -1,24 +1,25 @@
-using System.Linq;
 using UnityEngine;
 
-public class EnviromentalAidManager : MonoBehaviour
+public class EnvironmentalAidManager : MonoBehaviour
 {
     private GameObject player;
     private Rigidbody rb;
     private GrindController gc;
+
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
-        rb = player.GetComponent<Rigidbody>();
         gc = FindObjectOfType<GrindController>();
-        INeedPlayerRefs[] aids = FindObjectsOfType<MonoBehaviour>().OfType<INeedPlayerRefs>().ToArray();
-        foreach (var aid in aids)
+
+        if (gc != null)
         {
-            aid.FetchPlayerRefs(rb);
-            if (gc != null)
+            player = gc.gameObject;
+            rb = player.GetComponent<Rigidbody>();
+            EnviromentalAid[] aids = FindObjectsOfType<EnviromentalAid>();
+
+            foreach (var aid in aids)
             {
                 aid.FetchPlayerRefs(rb, gc);
             }
-        }
+        } 
     }
 }

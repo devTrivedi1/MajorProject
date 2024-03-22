@@ -1,63 +1,33 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class SpeedPad : MonoBehaviour, INeedPlayerRefs
+public class SpeedPad : EnviromentalAid
 {
     [SerializeField]
     private float groundspeedBoost = 10f;
-
-    private Rigidbody playerRB;
-    private MeshRenderer padRenderer;
-
     [SerializeField]
     private float railspeedBoost;
 
-    [SerializeField]
     private float OG_railSpeed;
-
-    private float forwardInfluence;
     private GrindController GC;
 
-    public Color unactivatedCol = Color.white;
-    public Color activatedCol = Color.red;
-
-    private bool RunOnce;
-    private void Start()
+    protected override void OnFetchPlayerRefs(GrindController gc)
     {
-        padRenderer = GetComponent<MeshRenderer>();
-        padRenderer.material.color = unactivatedCol;
-    }
-
-    public void FetchPlayerRefs(Rigidbody rb, GrindController gc)
-    {
-        playerRB = rb;
         GC = gc;
-        
     }
+
     private void OnTriggerEnter(Collider other)
     {
-        if (playerRB != null)
+        if (playerRB != null && !isActivated)
         {
-            if (RunOnce)
-            {
-                return;
-            }
-            else
-            {
-                RunOnce = true;
-            }
-            //other.gameObject.TryGetComponent(out GrindController GC);
+            isActivated = true; 
 
-            if (GC != null && GC.isGrinding == true)
+            if (GC != null && GC.isGrinding)
             {
                 OG_railSpeed = GC.normalGrindSpeed;
-                GC.normalGrindSpeed = GC.normalGrindSpeed + railspeedBoost;
-                Debug.Log(OG_railSpeed);
+                GC.normalGrindSpeed += railspeedBoost;
             }
 
-            padRenderer.material.color = activatedCol;
+            ActivateVFX();
             Vector3 boostForce = playerRB.transform.forward * groundspeedBoost;
             playerRB.AddForce(boostForce, ForceMode.VelocityChange);
         }
@@ -65,13 +35,11 @@ public class SpeedPad : MonoBehaviour, INeedPlayerRefs
 
     private void OnTriggerExit(Collider other)
     {
-        other.gameObject.TryGetComponent(out GrindController GC);
-
-        if (GC != null && GC.isGrinding == true)
+        if (GC != null && GC.isGrinding)
         {
             GC.normalGrindSpeed = OG_railSpeed;
-            RunOnce = false;
+            isActivated = false;
         }
-        padRenderer.material.color = unactivatedCol;
+        DeactivateVFX();
     }
 }

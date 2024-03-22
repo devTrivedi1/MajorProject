@@ -10,20 +10,15 @@ public class KnockbackThrowable : TelekineticObject
 
     Vector3 lastExplosionPosition;
 
-    public override IEnumerator ApplyEffect(Targetable targetable, float throwForce)
+    protected override void Effect(Targetable targetable = null, float throwForce = 0)
     {
-        if (targetable.TryGetComponent(out Rigidbody rb))
+        Collider[] objects = Physics.OverlapSphere(transform.position, knockbackRadius, layerMask);
+        PhysicsUtilities.KnockbackObjects(transform, knockbackRadius, forceStrength, iterations, objects);
+        for (int i = 0; i < objects.Length; i++)
         {
-            Collider[] objects = Physics.OverlapSphere(transform.position, knockbackRadius, layerMask);
-            PhysicsUtilities.KnockbackObjects(transform, knockbackRadius, forceStrength, iterations, objects);
-            for (int i = 0; i < objects.Length; i++)
-            {
-                if (objects[i].TryGetComponent(out IDamageable damageable)) { damageable.TakeDamage(damage); }
-            }
-            lastExplosionPosition = transform.position;
+            if (objects[i].TryGetComponent(out IDamageable damageable)) { damageable.TakeDamage(damage); }
         }
-        gameObject.SetActive(false);
-        yield return null;
+        lastExplosionPosition = transform.position;
     }
 
 #if UNITY_EDITOR

@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     public UnityEvent onResume;
     bool isGamePaused = false;
     bool hasGameEnded = false;
+    float timeScale;
 
     private void Awake()
     {
@@ -79,6 +80,7 @@ public class GameManager : MonoBehaviour
     {
         if (Time.timeScale > 0)
         {
+            timeScale = Time.timeScale;
             Time.timeScale = 0;
         }
         onPause.Invoke();
@@ -86,7 +88,7 @@ public class GameManager : MonoBehaviour
 
     private void ResumeGame()
     {
-        Time.timeScale = 1;
+        Time.timeScale = timeScale;
         onResume.Invoke();
     }
 

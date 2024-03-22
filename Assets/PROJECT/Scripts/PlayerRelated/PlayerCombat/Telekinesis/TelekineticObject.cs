@@ -8,6 +8,7 @@ public class TelekineticObject : MonoBehaviour
     Rigidbody rb;
     public Rigidbody Rb => rb;
     public bool Thrown { get; private set; } = false;
+    bool applied = false;
 
     private void Start()
     {
@@ -20,13 +21,12 @@ public class TelekineticObject : MonoBehaviour
         Thrown = true;
     }
 
-    public virtual IEnumerator ApplyEffect(Targetable targetable, float throwForce) 
+    protected virtual void Effect(Targetable targetable = null, float throwForce = 0)
     {
-        if (targetable.TryGetComponent(out Rigidbody rb))
+        if (targetable != null)
         {
             rb.AddForce((targetable.transform.position - transform.position).normalized * throwForce, ForceMode.VelocityChange);
         }
-        yield return null;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -37,6 +37,11 @@ public class TelekineticObject : MonoBehaviour
             {
                 damageable.TakeDamage(damage);
             }
+            if (!applied)
+            {
+                Effect(collision.transform.GetComponent<Targetable>());
+                applied = true;
+            }    
             gameObject.SetActive(false);
         }
     }

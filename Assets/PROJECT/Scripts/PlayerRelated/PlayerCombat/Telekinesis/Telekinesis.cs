@@ -147,7 +147,6 @@ public class Telekinesis : MonoBehaviour
             else
             {
                 obj.Rb.AddForce((endPosition - obj.transform.position).normalized * throwForce, ForceMode.VelocityChange);
-                StartCoroutine(obj.ApplyEffect(currentTarget.target, throwForce));
             }
         }
     }
@@ -210,6 +209,7 @@ public class Telekinesis : MonoBehaviour
         }
         else
         {
+            StopCoroutine(objectManipulation);
             StartCoroutine(ManipulateObject(currentObject.transform.position, targetable.transform.position, currentObject, throwAnimationCurve, timeToReachTarget));
             currentObject.StopManipulation();
             currentObject = null;

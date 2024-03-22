@@ -37,6 +37,7 @@ public class Jump : MonoBehaviour
 
     public static Action<JumpState> OnJumpStateChanged;
     public static Func<Vector3> GetExternalMomentum;
+    public static Action<float> OnGravityChanged;
 
     private void OnEnable()
     {
@@ -104,7 +105,7 @@ public class Jump : MonoBehaviour
         if(jumpState == JumpState.Grounded) return;
         if (rb.velocity.y < 0)
         {
-            rb.velocity -= Vector3.up * fallMultiplier;
+            OnGravityChanged?.Invoke(fallMultiplier);
         } 
     }
 
@@ -117,6 +118,7 @@ public class Jump : MonoBehaviour
             SetJumpStateTo(JumpState.Grounded);
             OnJumpStateChanged?.Invoke(jumpState);
             ExternalMomentum = Vector3.zero;
+            OnGravityChanged?.Invoke(0);
         }
         else
         {

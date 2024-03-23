@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public UnityEvent onLose;
     public UnityEvent onPause;
     public UnityEvent onResume;
+    Resetter resetter;
     bool isGamePaused = false;
     bool hasGameEnded = false;
     float timeScale;
@@ -27,7 +28,7 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
         Time.timeScale = 1;
-
+        resetter = FindObjectOfType<Resetter>();
         PlayerHealth.OnPlayerDeath += Lose;
     }
 
@@ -41,6 +42,11 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             TogglePause();
+        }
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            Restart();
         }
     }
 
@@ -95,7 +101,15 @@ public class GameManager : MonoBehaviour
     public void Restart()
     {
         Time.timeScale = 1;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+        if (resetter != null)
+        {
+            resetter.ResetAll();
+        }
+        else
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
     }
 
     private void EndGame()

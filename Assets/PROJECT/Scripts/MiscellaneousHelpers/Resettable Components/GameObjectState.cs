@@ -2,19 +2,19 @@
 
 public class GameObjectState : ComponentState
 {
-    bool Active;
+    bool active;
     GameObject gameObject;
 
     public override void CaptureState(IResettable resettable)
     {
         gameObject = (resettable as IResettableGO).gameObject;
         if (gameObject == null) { return; }
-        Active = gameObject.activeSelf;
+        active = gameObject.activeSelf;
     }
 
     public override void ResetState()
     {
         if (gameObject == null) { return; }
-        gameObject.SetActive(Active);
+        gameObject.SetActive(active);
     }
 }

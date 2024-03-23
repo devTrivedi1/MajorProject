@@ -3,24 +3,27 @@
 public class TransformState : ComponentState
 {
     Transform transform;
-    Vector3 Position;
-    Quaternion Rotation;
-    Vector3 Scale;
+    Vector3 position;
+    Quaternion rotation;
+    Vector3 scale;
+    Transform parent;
     
     public override void CaptureState(IResettable resettable)
     {
         transform = (resettable as IResettableTransform).transform;
         if (transform == null) { return; }
-        Position = transform.position;
-        Rotation = transform.rotation;
-        Scale = transform.localScale;
+        position = transform.position;
+        rotation = transform.rotation;
+        scale = transform.localScale;
+        parent = transform.parent;
     }
 
     public override void ResetState()
     {
         if (transform == null) { return; }
-        transform.position = Position;
-        transform.rotation = Rotation;
-        transform.localScale = Scale;
+        transform.position = position;
+        transform.rotation = rotation;
+        transform.localScale = scale;
+        transform.parent = parent;
     }
 }

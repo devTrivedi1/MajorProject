@@ -130,7 +130,7 @@ public class Telekinesis : MonoBehaviour, IResettable
             Vector3 controlPoint1 = startPosition + Random.onUnitSphere * curveModifier;
             Vector3 controlPoint2 = endPosition - Random.onUnitSphere * curveModifier;
             float time = 0;
-            while (time < timeToReach && Vector3.Distance(obj.transform.position, endPosition) > 1f)
+            while (time < timeToReach)
             {
                 time += Time.deltaTime;
                 float t = animationCurve.Evaluate(time / timeToReach);

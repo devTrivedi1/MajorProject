@@ -103,7 +103,6 @@ GameObject:
   - component: {fileID: 4629142642535276224}
   - component: {fileID: 5254175447700249778}
   - component: {fileID: 7022461846534704616}
-  - component: {fileID: 5542194288813332779}
   m_Layer: 7
   m_Name: CubeBean
   m_TagString: Untagged
@@ -567,23 +566,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxHealth: 20
   currentHealth: 0
---- !u!114 &5542194288813332779
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6610254831930790219}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05ea9387ba3c330439a9adf33e2b394e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rb: {fileID: 8484478593795908385}
-  gravityDirection: 1
-  gravityForceMode: 5
-  UseCustomGravity: 1
-  CurrentGravityForce: 9.8
 --- !u!1 &9035216538989951799
 GameObject:
   m_ObjectHideFlags: 0

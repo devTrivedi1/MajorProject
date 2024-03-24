@@ -172,6 +172,9 @@ MonoBehaviour:
         - globalObjectIdString: GlobalObjectId_V1-1-58a36718b35b5a94d9c512f97c2d431e-2175550715498712427-0
         - globalObjectIdString: GlobalObjectId_V1-1-58a36718b35b5a94d9c512f97c2d431e-2540922656922601781-0
         - globalObjectIdString: GlobalObjectId_V1-1-58a36718b35b5a94d9c512f97c2d431e-8422680964631637703-0
+        - globalObjectIdString: GlobalObjectId_V1-0-58a36718b35b5a94d9c512f97c2d431e-0-0
+        - globalObjectIdString: GlobalObjectId_V1-1-58a36718b35b5a94d9c512f97c2d431e-4801651124289890495-0
+        - globalObjectIdString: GlobalObjectId_V1-1-58a36718b35b5a94d9c512f97c2d431e-3973027439765532343-0
         values:
         - colorIndex: 2
           iconNameOrGuid: be8abf3ed47609740b490372ece90428
@@ -187,6 +190,12 @@ MonoBehaviour:
           iconNameOrGuid: Camera Icon
         - colorIndex: 0
           iconNameOrGuid: Favorite
+        - colorIndex: 0
+          iconNameOrGuid: 99c00f649b29b4c45b7508c8dc4f53d1
+        - colorIndex: 0
+          iconNameOrGuid: 96f7582a52a6843c09e0c71617e94f2d
+        - colorIndex: 0
+          iconNameOrGuid: 99c00f649b29b4c45b7508c8dc4f53d1
     - goDatas_byGlobalId:
         keys:
         - globalObjectIdString: GlobalObjectId_V1-1-2763e4eb4c124eb41ae5a1883afc2645-6610254831930790219-0

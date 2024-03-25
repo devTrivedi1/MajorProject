@@ -183,6 +183,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2255949509520504350, guid: 698bf4eb4f0bb5f409557a598dd28c0f,
         type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.56
+      objectReference: {fileID: 0}
+    - target: {fileID: 2255949509520504350, guid: 698bf4eb4f0bb5f409557a598dd28c0f,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.43999982
+      objectReference: {fileID: 0}
+    - target: {fileID: 2255949509520504350, guid: 698bf4eb4f0bb5f409557a598dd28c0f,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.8600001
+      objectReference: {fileID: 0}
+    - target: {fileID: 2255949509520504350, guid: 698bf4eb4f0bb5f409557a598dd28c0f,
+        type: 3}
       propertyPath: m_LocalRotation.x
       value: 0.08248054
       objectReference: {fileID: 0}
@@ -235,6 +250,21 @@ PrefabInstance:
         type: 3}
       propertyPath: MaxHealth
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6195899088673795526, guid: 698bf4eb4f0bb5f409557a598dd28c0f,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.56
+      objectReference: {fileID: 0}
+    - target: {fileID: 6195899088673795526, guid: 698bf4eb4f0bb5f409557a598dd28c0f,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.43999982
+      objectReference: {fileID: 0}
+    - target: {fileID: 6195899088673795526, guid: 698bf4eb4f0bb5f409557a598dd28c0f,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.8600001
       objectReference: {fileID: 0}
     - target: {fileID: 6207718371764226180, guid: 698bf4eb4f0bb5f409557a598dd28c0f,
         type: 3}
@@ -447,6 +477,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 312555512467073361, guid: debe8d62d151eea4d99548929567977d,
+        type: 3}
+      propertyPath: gizmoColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 312555512467073361, guid: debe8d62d151eea4d99548929567977d,
+        type: 3}
+      propertyPath: gizmoColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 312555512467073361, guid: debe8d62d151eea4d99548929567977d,
+        type: 3}
+      propertyPath: gizmoColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 312555512467073361, guid: debe8d62d151eea4d99548929567977d,
+        type: 3}
+      propertyPath: gizmoColor.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2758529890035295767, guid: debe8d62d151eea4d99548929567977d,
         type: 3}
       propertyPath: m_LocalPosition.x

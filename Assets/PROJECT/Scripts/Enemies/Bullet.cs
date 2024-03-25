@@ -41,5 +41,12 @@ public class Bullet : MonoBehaviour
             ParticleSystem particle = Instantiate(impactVfx, transform.position, Quaternion.identity);
             Destroy(particle, particle.main.duration + 1f);
         }
+        else
+        {
+            Destroy(gameObject);
+            if (impactVfx == null) return;
+            ParticleSystem particle = Instantiate(impactVfx, transform.position, Quaternion.identity);
+            Destroy(particle, particle.main.duration + 1f);
+        }
     }
 }

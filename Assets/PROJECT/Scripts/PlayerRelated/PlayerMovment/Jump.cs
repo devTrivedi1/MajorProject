@@ -42,6 +42,7 @@ public class Jump : MonoBehaviour
     private void OnEnable()
     {
         GrindController.TriggerJumpingOffRails += SetJumpStateTo;
+       
 
     }
 
@@ -112,8 +113,8 @@ public class Jump : MonoBehaviour
     private void GroundDetection()
     {
         if (jumpState == JumpState.inAir) return;
-
-        if (Physics.OverlapSphere(transform.position + groundDetectionOffsetVector, groundDetectionRadius, 1 << layerMask).Length > 0)
+        int layerMask = ~(1 << LayerMask.NameToLayer("Player"));
+        if (Physics.OverlapSphere(transform.position + groundDetectionOffsetVector, groundDetectionRadius, layerMask).Length > 0)
         {
             SetJumpStateTo(JumpState.Grounded);
             OnJumpStateChanged?.Invoke(jumpState);

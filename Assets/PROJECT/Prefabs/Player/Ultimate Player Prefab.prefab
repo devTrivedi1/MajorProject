@@ -3226,8 +3226,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2580500456150035025, guid: 2763e4eb4c124eb41ae5a1883afc2645,
         type: 3}
+      propertyPath: _followSpeed
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 2580500456150035025, guid: 2763e4eb4c124eb41ae5a1883afc2645,
+        type: 3}
       propertyPath: _result.percent
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4629142642535276224, guid: 2763e4eb4c124eb41ae5a1883afc2645,
+        type: 3}
+      propertyPath: PositionSize
+      value: 0.71
+      objectReference: {fileID: 0}
+    - target: {fileID: 4629142642535276224, guid: 2763e4eb4c124eb41ae5a1883afc2645,
+        type: 3}
+      propertyPath: GizmoOffset.y
+      value: -0.151
       objectReference: {fileID: 0}
     - target: {fileID: 5862628151560248644, guid: 2763e4eb4c124eb41ae5a1883afc2645,
         type: 3}
@@ -3238,6 +3253,16 @@ PrefabInstance:
         type: 3}
       propertyPath: momentumMultiplier
       value: 2.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862628151560248644, guid: 2763e4eb4c124eb41ae5a1883afc2645,
+        type: 3}
+      propertyPath: groundDetectionOffset
+      value: -0.151
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862628151560248644, guid: 2763e4eb4c124eb41ae5a1883afc2645,
+        type: 3}
+      propertyPath: groundDetectionRadius
+      value: 0.71
       objectReference: {fileID: 0}
     - target: {fileID: 6419335832059336180, guid: 2763e4eb4c124eb41ae5a1883afc2645,
         type: 3}
@@ -3253,6 +3278,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: CubeBean
+      objectReference: {fileID: 0}
+    - target: {fileID: 8484478593795908385, guid: 2763e4eb4c124eb41ae5a1883afc2645,
+        type: 3}
+      propertyPath: m_CollisionDetection
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8810444560142036200, guid: 2763e4eb4c124eb41ae5a1883afc2645,
         type: 3}
@@ -3435,7 +3465,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 6436209759244527531}
   stompInputKey: 306
-  stompForce: 20
+  stompForce: 40
   jumpState: 0
 --- !u!1001 &3672198416093508726
 PrefabInstance:

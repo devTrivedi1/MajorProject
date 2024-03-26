@@ -157,8 +157,8 @@ MonoBehaviour:
   m_RendererFeatures:
   - {fileID: -1878332245247344467}
   - {fileID: 5119326373698051780}
-  - {fileID: 7999654548038428059}
-  m_RendererFeatureMap: adc0de57c6d2eee5c49e8fa936800b479b25ab6d6d7b046f
+  - {fileID: 6830392995518056761}
+  m_RendererFeatureMap: adc0de57c6d2eee5c49e8fa936800b4739892b8e3d6eca5e
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
@@ -281,7 +281,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2df16983cdbc45e59623974172f2908b, type: 3}
   m_Name: VolFx
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   _event: 600
   _format:
     enabled: 1
@@ -307,7 +307,7 @@ MonoBehaviour:
     - {fileID: 4878683270951053469}
     - {fileID: 979240341329984066}
   _blitShader: {fileID: 4800000, guid: a8a709d9db2241741ab3032b946ef258, type: 3}
---- !u!114 &7999654548038428059
+--- !u!114 &6830392995518056761
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

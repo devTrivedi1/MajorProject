@@ -542,7 +542,7 @@ PrefabInstance:
     - target: {fileID: 3252619883528015425, guid: 58a36718b35b5a94d9c512f97c2d431e,
         type: 3}
       propertyPath: m_ClearFlags
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3252619883528015425, guid: 58a36718b35b5a94d9c512f97c2d431e,
         type: 3}
@@ -648,6 +648,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_FollowOffset.z
       value: -6.0052137
+      objectReference: {fileID: 0}
+    - target: {fileID: 6594077237774430114, guid: 58a36718b35b5a94d9c512f97c2d431e,
+        type: 3}
+      propertyPath: m_Dithering
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6594077237774430114, guid: 58a36718b35b5a94d9c512f97c2d431e,
+        type: 3}
+      propertyPath: m_RendererIndex
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 6594077237774430114, guid: 58a36718b35b5a94d9c512f97c2d431e,
         type: 3}

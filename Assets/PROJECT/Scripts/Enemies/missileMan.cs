@@ -1,18 +1,16 @@
-using CustomInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Turret : EnemyBase
+public class missileMan : EnemyBase
 {
     bool isFiring = false;
     [SerializeField] ParticleSystem muzzleFlashVfx;
 
-    void FixedUpdate()
+    void Update()
     {
         if (PlayerInRange())
         {
-            Rotate();
             if (!isFiring)
             {
                 StartCoroutine(FireRoutine());
@@ -36,7 +34,7 @@ public class Turret : EnemyBase
     void Fire()
     {
         GameObject _bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-        _bullet.GetComponent<Bullet>().InitializeStats(projectileDamage, projectileSpeed, projectileLifetime);
+        _bullet.GetComponent<ProjectileBase>().InitializeStats(projectileDamage, projectileSpeed, projectileLifetime);
 
         if (muzzleFlashVfx != null)
         {

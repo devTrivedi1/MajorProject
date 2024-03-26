@@ -30,15 +30,7 @@ public class EnemyBase : MonoBehaviour
         player = FindObjectOfType<Movement>();
     }
 
-    void Update()
-    {
-        if (PlayerInRange())
-        {
-            Rotate();
-        }
-    }
-
-    void Rotate()
+    public void Rotate()
     {
         Transform closestPlayer = player.transform;
         if (aimHolder != null) { aimHolder.LookAt(closestPlayer); }

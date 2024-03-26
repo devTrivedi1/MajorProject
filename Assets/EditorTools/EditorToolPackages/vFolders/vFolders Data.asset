@@ -660,6 +660,7 @@ MonoBehaviour:
     - a0f0f03df20062e4aaae5fe970d2a070
     - 833a6c6eae3607c4b9ad98ace0d5dd5c
     - 3cd80c8e58b9f654aa70f79d195b6482
+    - acecad4f233eece4b8fd3c1ecbed879d
     values:
     - colorIndex: 7
       iconNameOrGuid: ebd7d20882d5abb42abb240c354a0631
@@ -1953,3 +1954,5 @@ MonoBehaviour:
       iconNameOrGuid: cs Script Icon
     - colorIndex: 2
       iconNameOrGuid: 
+    - colorIndex: 2
+      iconNameOrGuid: cs Script Icon

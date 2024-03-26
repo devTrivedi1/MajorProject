@@ -371,7 +371,7 @@ MonoBehaviour:
   _targetObject: {fileID: 0}
   _offset: {x: 0, y: 0}
   _rotationOffset: {x: 0, y: 0, z: 0}
-  lastPosition: {x: 0.002, y: 0, z: -0.008}
+  lastPosition: {x: 0.58194935, y: 2.2868662, z: 25.421791}
 --- !u!54 &8484478593795908385
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -414,7 +414,7 @@ MonoBehaviour:
   splineFollower: {fileID: 2580500456150035025}
   splineProjector: {fileID: 1293558691242129740}
   rb: {fileID: 8484478593795908385}
-  normalGrindSpeed: 10
+  normalGrindSpeed: 25
   sprintSpeedMultiplier: 2
   SprintingTransitionSpeed: 10
   isGrinding: 0
@@ -430,9 +430,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b08d7a0f22a38245a3ce8ad5a604d79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 100
+  rb: {fileID: 8484478593795908385}
+  speed: 150
   isPlayerGrinding: 0
-  rb: {fileID: 0}
+  tolerableSlopeAngle: 30
+  downSlopeGravity: 30
+  upSlopeSpeed: 1.25
+  slopeCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  slopeAlignDuration: 0.5
+  onSlope: 0
 --- !u!114 &5862628151560248644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -447,11 +458,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 8484478593795908385}
   jumpGizmo: {fileID: 4629142642535276224}
-  verticalForce: 30
+  verticalForce: 60
   momentumMultiplier: 15
   groundDetectionOffset: -0.3
   groundDetectionRadius: 0.5
-  fallMultiplier: 1.25
+  fallMultiplier: 2.5
   layerMask: 6
   ExternalMomentum: {x: 0, y: 0, z: 0}
   jumpState: 0

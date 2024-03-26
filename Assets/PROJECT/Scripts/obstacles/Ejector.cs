@@ -7,7 +7,7 @@ public class Ejector : EnviromentalAid
     private GrindController grindController;
     [SerializeField] int damage = 1;
     [SerializeField] float ejectSpeed = 140f;
-    [SerializeField] float upwardForceMultiplier = 60f;
+    [SerializeField] float upwardForce = 60f;
 
     protected override void OnFetchPlayerRefs(GrindController gc)
     {
@@ -32,11 +32,11 @@ public class Ejector : EnviromentalAid
 
         if (direction == 0)
         {
-            chosenDirection = (playerRB.transform.right * force) + (Vector3.up * upwardForceMultiplier);
+            chosenDirection = (playerRB.transform.right * force) + (Vector3.up * upwardForce);
         }
         else
         {
-            chosenDirection = (-playerRB.transform.right * force) + (Vector3.up * upwardForceMultiplier);
+            chosenDirection = (-playerRB.transform.right * force) + (Vector3.up * upwardForce);
         }
 
         playerRB.AddForce(chosenDirection, ForceMode.Impulse);

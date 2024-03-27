@@ -156,7 +156,7 @@ public class GrindController : MonoBehaviour
 
     public void ExitRails()
     {
-        splineFollower.follow = !splineFollower.follow;
+        splineFollower.follow = false;
         splineFollower.spline = null;
         splineProjector.spline = null;
         splineProjector.enabled = false;

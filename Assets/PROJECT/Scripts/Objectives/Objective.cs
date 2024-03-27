@@ -3,7 +3,7 @@ using UnityEngine;
 
 public abstract class Objective : MonoBehaviour
 {
-    public Action ObjectiveComplete { get; private set; }
+    public Action ObjectiveComplete;
     bool isObjectiveComplete;
 
     protected abstract bool CheckCompletion();

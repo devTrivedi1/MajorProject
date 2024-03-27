@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEditor;
+using UnityEngine;
 using VInspector;
 
 public class KnockbackThrowable : TelekineticObject
@@ -10,7 +11,6 @@ public class KnockbackThrowable : TelekineticObject
     
     [Foldout("Debug")]
     [SerializeField] bool showRadius = false;
-    Vector3 lastExplosionPosition;
     [EndFoldout]
 
     protected override void Effect(Targetable targetable = null, float throwForce = 0)
@@ -21,7 +21,6 @@ public class KnockbackThrowable : TelekineticObject
         {
             if (objects[i].TryGetComponent(out IDamageable damageable)) { damageable.TakeDamage(damage); }
         }
-        lastExplosionPosition = transform.position;
     }
 
 #if UNITY_EDITOR
@@ -29,13 +28,9 @@ public class KnockbackThrowable : TelekineticObject
     {
         if (showRadius)
         {
-            Gizmos.color = new(0, 1, 1, 0.2f);
-            Gizmos.DrawSphere(transform.position, knockbackRadius);
+            Handles.color = new(0, 1, 1, 0.2f);
+            Handles.DrawSolidDisc(transform.position, transform.up, knockbackRadius);
         }
-
-        if (lastExplosionPosition == Vector3.zero) { return; }  
-        Gizmos.color = new(0, 1, 1, 0.2f);
-        Gizmos.DrawSphere(lastExplosionPosition, knockbackRadius);
     }
 #endif
 }

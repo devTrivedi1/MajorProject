@@ -1,14 +1,26 @@
+using CustomInspector;
+using UnityEngine;
+
 public class DestroyEnemies : Objective
 {
-    //Enemy[] enemies;
+    [SerializeField, ReadOnly] EnemyBase[] enemies;
 
     private void Start()
     {
-        //enemies = FindObjectsOfType<Enemy>();
+        enemies = FindObjectsOfType<EnemyBase>();
     }
 
     protected override bool CheckCompletion()
     {
-        throw new System.NotImplementedException();
+        bool allDead = true;
+        foreach (var enemy in enemies)
+        {
+            if (enemy.gameObject.activeSelf)
+            {
+                allDead = false;
+                break;
+            }
+        }
+        return allDead;
     }
 }

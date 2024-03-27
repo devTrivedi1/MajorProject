@@ -6,6 +6,7 @@ public class TelekineticObject : MonoBehaviour, IResettable, IResettableTransfor
     [SerializeField] protected int damage = 1;
     [Resettable] bool applied = false;
     [Resettable] bool thrown = false;
+    Transform target;
     Rigidbody _rb;
     public Rigidbody rb => _rb;
     public bool Thrown => thrown;
@@ -16,9 +17,10 @@ public class TelekineticObject : MonoBehaviour, IResettable, IResettableTransfor
         thrown = false;
     }
 
-    public void StopManipulation()
+    public void EnableEffect(Transform target = null)
     {
         thrown = true;
+        this.target = target;
     }
 
     protected virtual void Effect(Targetable targetable = null, float throwForce = 0)
@@ -31,7 +33,7 @@ public class TelekineticObject : MonoBehaviour, IResettable, IResettableTransfor
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (thrown)
+        if (thrown && (target == null || target == collision.transform))
         {
             if (collision.transform.TryGetComponent(out IDamageable damageable))
             {

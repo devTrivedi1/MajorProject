@@ -35,7 +35,7 @@ public class Resetter : MonoBehaviour
         float startTime = Time.realtimeSinceStartup;
         CaptureInitialStates();
         float endTime = Time.realtimeSinceStartup;
-        Debug.Log("Time to capture: " + (endTime - startTime) + " seconds. That is " + Mathf.Round(1 / (endTime - startTime)) + "FPS.");
+        //Debug.Log("Time to capture: " + (endTime - startTime) + " seconds. That is " + Mathf.Round(1 / (endTime - startTime)) + "FPS.");
     }
 
     void CaptureInitialStates()
@@ -87,7 +87,7 @@ public class Resetter : MonoBehaviour
             }
         }
         float endTime = Time.realtimeSinceStartup;
-        Debug.Log("Time to reset: " + (endTime - startTime) + " seconds. That is " + Mathf.Round(1 / (endTime - startTime)) + "FPS.");
+        //Debug.Log("Time to reset: " + (endTime - startTime) + " seconds. That is " + Mathf.Round(1 / (endTime - startTime)) + "FPS.");
     }
 
     // Recursive function that returns ALL fields up to the base class, as long as it is an IResettable

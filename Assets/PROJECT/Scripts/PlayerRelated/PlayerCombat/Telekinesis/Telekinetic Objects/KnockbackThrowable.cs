@@ -1,34 +1,38 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
+using VInspector;
 
 public class KnockbackThrowable : TelekineticObject
 {
     [SerializeField] float forceStrength = 5f;
     [SerializeField] float knockbackRadius = 10f;
+    [SerializeField] float dragOffset = 0.5f;
     [SerializeField] LayerMask layerMask;
-    [SerializeField] int iterations = 3;
-
+    
+    [Foldout("Debug")]
+    [SerializeField] bool showRadius = false;
     Vector3 lastExplosionPosition;
+    [EndFoldout]
 
-    public override IEnumerator ApplyEffect(Targetable targetable, float throwForce)
+    protected override void Effect(Targetable targetable = null, float throwForce = 0)
     {
-        if (targetable.TryGetComponent(out Rigidbody rb))
+        Collider[] objects = Physics.OverlapSphere(transform.position, knockbackRadius, layerMask);
+        PhysicsUtilities.KnockbackObjects(transform, knockbackRadius, forceStrength, dragOffset, objects);
+        for (int i = 0; i < objects.Length; i++)
         {
-            Collider[] objects = Physics.OverlapSphere(transform.position, knockbackRadius, layerMask);
-            PhysicsUtilities.KnockbackObjects(transform, knockbackRadius, forceStrength, iterations, objects);
-            for (int i = 0; i < objects.Length; i++)
-            {
-                if (objects[i].TryGetComponent(out IDamageable damageable)) { damageable.TakeDamage(damage); }
-            }
-            lastExplosionPosition = transform.position;
+            if (objects[i].TryGetComponent(out IDamageable damageable)) { damageable.TakeDamage(damage); }
         }
-        gameObject.SetActive(false);
-        yield return null;
+        lastExplosionPosition = transform.position;
     }
 
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
+        if (showRadius)
+        {
+            Gizmos.color = new(0, 1, 1, 0.2f);
+            Gizmos.DrawSphere(transform.position, knockbackRadius);
+        }
+
         if (lastExplosionPosition == Vector3.zero) { return; }  
         Gizmos.color = new(0, 1, 1, 0.2f);
         Gizmos.DrawSphere(lastExplosionPosition, knockbackRadius);

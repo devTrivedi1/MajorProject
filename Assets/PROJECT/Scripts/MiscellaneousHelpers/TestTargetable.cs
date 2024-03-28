@@ -1,36 +1,22 @@
-using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 
-public class TestTargetable : Targetable, IResettable
+public class TestTargetable : Targetable, IResettable, IResettableGO, IResettableTransform, IResettableRb
 {
-   [SerializeField] int exampleValue = 15;
-   [SerializeField] Targetable exampleTarget = null;
-    public List<System.Action> ResetActions { get; set; } = new();
+    [Resettable][SerializeField] private int exampleValue = 15;
+    [Resettable][SerializeField] private Targetable exampleTarget = null;
 
-   private void Start()
-   {
-        var startingTarget = exampleTarget;
-        var startingValue = exampleValue;
-        var startingPosition = transform.position;
-        ResetActions.Add(() => exampleValue = startingValue);
-        ResetActions.Add(() => exampleTarget = startingTarget);
-        ResetActions.Add(() => transform.position = startingPosition);
-   }
+    public Rigidbody rb => GetComponent<Rigidbody>();
 
-   [VInspector.Button]
-   public void ResetObject()
-   {
-       foreach (var action in ResetActions)
-       {
-           action.Invoke();
-       }
-   }
+    [VInspector.Button]
+    public void ResetObject()
+    {
+        FindObjectOfType<Resetter>().ResetAll();
+    }
 
    [VInspector.Button]
    public void SetValues()
    {
-       exampleTarget = FindObjectOfType<Targetable>();
-       exampleValue = Random.Range(0, 100);
+        exampleTarget = FindObjectOfType<Targetable>();
+        exampleValue = Random.Range(0, 100);
    }
 }

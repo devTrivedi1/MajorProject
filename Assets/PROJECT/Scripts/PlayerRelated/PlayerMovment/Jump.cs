@@ -37,10 +37,12 @@ public class Jump : MonoBehaviour
 
     public static Action<JumpState> OnJumpStateChanged;
     public static Func<Vector3> GetExternalMomentum;
+    public static Action<float> OnGravityChanged;
 
     private void OnEnable()
     {
         GrindController.TriggerJumpingOffRails += SetJumpStateTo;
+       
 
     }
 
@@ -104,19 +106,20 @@ public class Jump : MonoBehaviour
         if(jumpState == JumpState.Grounded) return;
         if (rb.velocity.y < 0)
         {
-            rb.velocity -= Vector3.up * fallMultiplier;
+            OnGravityChanged?.Invoke(fallMultiplier);
         } 
     }
 
     private void GroundDetection()
     {
         if (jumpState == JumpState.inAir) return;
-
-        if (Physics.OverlapSphere(transform.position + groundDetectionOffsetVector, groundDetectionRadius, 1 << layerMask).Length > 0)
+        int layerMask = ~(1 << LayerMask.NameToLayer("Player"));
+        if (Physics.OverlapSphere(transform.position + groundDetectionOffsetVector, groundDetectionRadius, layerMask).Length > 0)
         {
             SetJumpStateTo(JumpState.Grounded);
             OnJumpStateChanged?.Invoke(jumpState);
             ExternalMomentum = Vector3.zero;
+            OnGravityChanged?.Invoke(0);
         }
         else
         {

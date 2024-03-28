@@ -3,46 +3,23 @@ using UnityEngine;
 
 public static class PhysicsUtilities
 {
-    public static void KnockbackObjects(Transform origin, float radius, float knockbackStrength, int iterations, Collider[] objects)
+    public static void KnockbackObjects(Transform origin, float radius, float knockbackStrength, float dragOffset, Collider[] objects)
     {
         foreach (Collider obj in objects)
         {
             if (obj.transform == origin) {  continue; }
             if (obj.TryGetComponent(out Rigidbody rb))
             {
-                ApplyForces(rb, origin.position, radius, knockbackStrength, iterations);
+                //ApplyForces(rb, origin.position, radius, knockbackStrength, iterations);
+                float adjustedForce = knockbackStrength * Mathf.Max(rb.drag * dragOffset, 1);
+                rb.AddExplosionForce(adjustedForce, origin.position, radius, 0, ForceMode.VelocityChange);
             }
         }
     }
 
-    public static void KnockbackWithinRadius(Transform origin, float radius, float knockbackStrength, LayerMask mask, int iterations)
+    public static void KnockbackWithinRadius(Transform origin, float radius, float knockbackStrength, float dragOffset, LayerMask mask)
     {
         Collider[] objects = Physics.OverlapSphere(origin.position, radius, mask);
-        KnockbackObjects(origin, radius, knockbackStrength, iterations, objects);
-    }
-
-    static IEnumerator ApplyForce(Rigidbody rb, Vector3 explosionOrigin, float explosionForce, float explosionRadius, int iterations)
-    {
-        int count = 0;
-        while (count < iterations && rb != null)
-        {
-            if (rb != null)
-            {
-                float strength = Mathf.Lerp(1, 0.4f, Vector3.Distance(rb.position, explosionOrigin) / explosionRadius);
-                Vector3 direction = (rb.position - explosionOrigin).normalized;
-                rb.AddForce(explosionForce * strength * direction, ForceMode.VelocityChange);
-            }
-            count++;
-            yield return new WaitForSeconds(Time.fixedDeltaTime);
-        }
-    }
-
-    public static void ApplyForces(Rigidbody rb, Vector3 explosionOrigin, float explosionRadius, float explosionForce, int iterations)
-    {
-        if (CoroutineWorkHorse.Instance == null)
-        {
-            (new GameObject("Coroutine WorkHorse")).AddComponent<CoroutineWorkHorse>();
-        }
-        CoroutineWorkHorse.Instance.StartWork(ApplyForce(rb, explosionOrigin, explosionRadius, explosionForce, iterations));
+        KnockbackObjects(origin, radius, knockbackStrength, dragOffset, objects);
     }
 }

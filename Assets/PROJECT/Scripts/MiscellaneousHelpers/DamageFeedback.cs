@@ -87,7 +87,7 @@ public class DamageFeedback : MonoBehaviour
 
     void EnableTakeDamageEffects(int damage, GameObject _damageable)
     {
-        if (_damageable == gameObject)
+        if (_damageable == gameObject && damage != 0)
         {
             elapsedTime = 0;
             isTakingDamage = true;

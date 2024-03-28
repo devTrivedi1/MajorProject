@@ -28,8 +28,8 @@ public class KnockbackThrowable : TelekineticObject
     {
         if (showRadius)
         {
-            Handles.color = new(0, 1, 1, 0.2f);
-            Handles.DrawSolidDisc(transform.position, transform.up, knockbackRadius);
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawWireSphere(transform.position, knockbackRadius);
         }
     }
 #endif

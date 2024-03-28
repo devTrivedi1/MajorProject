@@ -11,14 +11,15 @@ public class RigidbodyState : ComponentState
 
     public override void CaptureState(IResettable resettable)
     {
-        if (resettable is IResettableRb rigidbody && rigidbody.rb != null)
+        if (resettable is IResettableRb rigidbody)
         {
             rb = rigidbody.rb;
-            velocity = rigidbody.rb.velocity;
-            angularVelocity = rigidbody.rb.angularVelocity;
-            kinematic = rigidbody.rb.isKinematic;
-            rigidbodyConstraints = rigidbody.rb.constraints;
-            gravity = rigidbody.rb.useGravity;
+            if (rb ==  null) { return; }
+            velocity = rb.velocity;
+            angularVelocity = rb.angularVelocity;
+            kinematic = rb.isKinematic;
+            rigidbodyConstraints = rb.constraints;
+            gravity = rb.useGravity;
         }
     }
 

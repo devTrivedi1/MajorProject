@@ -7,7 +7,7 @@
         //destroyables? = FindObjectsOfType<Destroyable?>();
     }
 
-    protected override bool CheckCompletion()
+    public override bool CheckCompletion()
     {
         throw new System.NotImplementedException();
     }

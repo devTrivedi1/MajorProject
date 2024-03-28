@@ -27,6 +27,7 @@ public class Targeting : MonoBehaviour
         float closestDistance = maxDistance;
         foreach (Targetable obj in listOfAllObjects)
         {
+            if (!obj.gameObject.activeSelf) { continue; }
             float distance = Vector3.Distance(obj.transform.position, referencePosition);
             if (distance < closestDistance)
             {
@@ -42,7 +43,7 @@ public class Targeting : MonoBehaviour
         List<(Targetable target, Vector3 viewportPoint)> targetsOnScreen = new();
         foreach (var target in allTargetables)
         {
-            if (Vector3.SqrMagnitude(position - target.transform.position) > (maxDistance * maxDistance)) { continue; }
+            if (!target.gameObject.activeSelf || Vector3.SqrMagnitude(position - target.transform.position) > (maxDistance * maxDistance)) { continue; }
             Vector3 viewportPoint = camera.WorldToViewportPoint(target.transform.position);
             if (viewportPoint.z > 0 && viewportPoint.x > 0 && viewportPoint.x < 1 && viewportPoint.y > 0 && viewportPoint.y < 1)
             {

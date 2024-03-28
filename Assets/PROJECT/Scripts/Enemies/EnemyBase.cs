@@ -1,10 +1,7 @@
 using CustomInspector;
-using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography;
 using UnityEngine;
 
-public class EnemyBase : MonoBehaviour
+public class EnemyBase : Targetable, IResettable, IResettableGO, IResettableTransform, IResettableRb
 {
     [HideInInspector] public Movement player;
 
@@ -24,6 +21,7 @@ public class EnemyBase : MonoBehaviour
     public Transform aimHolder;
     public Transform firePoint;
 
+    public Rigidbody rb => GetComponent<Rigidbody>();
 
     void Start()
     {

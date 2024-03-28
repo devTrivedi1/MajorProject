@@ -8,7 +8,7 @@ public class RunEnder : MonoBehaviour
 
     private void Start()
     {
-        Objective objective = FindObjectOfType<Objective>();
+        ObjectiveManager objective = FindObjectOfType<ObjectiveManager>();
         if (objective != null)
         {
             objective.ObjectiveComplete += () => open = true;

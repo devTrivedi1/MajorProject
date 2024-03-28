@@ -39,7 +39,8 @@ public class Telekinesis : MonoBehaviour, IResettable
     [SerializeField] float throwForce = 10f;
     [SerializeField] float lockOnRange = 30f;
     [SerializeField] float screenCenterThreshold = 0.4f;
-    [SerializeField] float timeToReachTarget = 0.5f;
+    [SerializeField] float minTimeToReachTarget = 0.2f;
+    [SerializeField] float maxTimeToReachTarget = 0.8f;
     [SerializeField] AnimationCurve throwAnimationCurve;
 
     TelekineticObject[] telekineticObjects;
@@ -113,7 +114,8 @@ public class Telekinesis : MonoBehaviour, IResettable
         else
         {
             StopCoroutine(objectManipulation);
-            StartCoroutine(ManipulateObject(targetable.transform, throwAnimationCurve, timeToReachTarget));
+            float time = Mathf.Lerp(minTimeToReachTarget, maxTimeToReachTarget, Vector3.Distance(currentObject.transform.position, targetable.transform.position) / lockOnRange);
+            StartCoroutine(ManipulateObject(targetable.transform, throwAnimationCurve, time));
             currentObject.EnableEffect(targetable.transform);
             currentObject = null;
             state = TelekinesisState.Idle;

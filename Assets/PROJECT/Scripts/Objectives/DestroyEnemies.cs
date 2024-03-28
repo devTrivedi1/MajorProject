@@ -1,16 +1,13 @@
-using CustomInspector;
-using UnityEngine;
-
 public class DestroyEnemies : Objective
 {
-    [SerializeField, ReadOnly] EnemyBase[] enemies;
+    EnemyBase[] enemies;
 
     private void Start()
     {
         enemies = FindObjectsOfType<EnemyBase>();
     }
 
-    protected override bool CheckCompletion()
+    public override bool CheckCompletion()
     {
         bool allDead = true;
         foreach (var enemy in enemies)
